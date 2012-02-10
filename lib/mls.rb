@@ -25,6 +25,6 @@ module MLS
 
 end
 
-
+require 'mls/address'
 require 'mls/listing'
 require 'mls/property'
