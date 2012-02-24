@@ -1,6 +1,6 @@
 class MLS::Listing < MLS::Resource
 
-  LEASES = ['Full Serivce', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross']
+  LEASES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross']
 
   # validates :use, :presence => true
   # validates :property, :presence => true
@@ -28,7 +28,7 @@ class MLS::Listing < MLS::Resource
   def property
     attributes['property'] ||= MLS::Property.find(property_id)
   end
-
+  
   schema do
     # attribute :use, :string
     attribute :total_size, :integer
