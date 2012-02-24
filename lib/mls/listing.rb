@@ -73,4 +73,12 @@ class MLS::Listing < MLS::Resource
     attribute :rate_units, :string
   end
 
+  def available_on
+    Date.parse(attributes[:available_on])
+  end
+
+  def sublease_expiration
+    Date.parse(attributes[:sublease_expiration])
+  end
+
 end
