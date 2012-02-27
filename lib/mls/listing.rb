@@ -11,7 +11,7 @@ class MLS::Listing < MLS::Resource
   validates :lease, :inclusion => {:in => LEASES, :allow_nil => true, :allow_blank => true}
   validates :asking_rate, :numericality => { :allow_nil => true }
   validates :sublease_expiration, :presence => { :if => proc { |l| l.sublease? }}
-  validates :nnn_expenses, :presence => { :if => proc { |l| l.lease == 'NNN' }}, :numericality => { :allow_nil => true }
+  validates :nnn_expenses, :numericality => { :allow_nil => true }
   validates :available_on, :presence => true
   validates :floor, :numericality => { :allow_nil => true }
   validates :offices, :numericality => { :allow_nil => true }
