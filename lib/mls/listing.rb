@@ -73,6 +73,23 @@ class MLS::Listing < MLS::Resource
     attribute :rate_units, :string
   end
 
+  def name
+    case kind
+    when 'unit'
+      "#{property.name} Unit: #{unit}"
+    when 'floor'
+      "#{property.name} Floor: #{unit}"
+    when 'building'
+      property.name
+    when 'shared'
+      property.name
+    when 'coworking'
+      property.name
+    else
+      property.name
+    end
+  end
+
   def available_on
     Date.parse(attributes[:available_on])
   end
