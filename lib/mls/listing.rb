@@ -82,11 +82,11 @@ class MLS::Listing < MLS::Resource
     when 'building'
       property.name
     when 'shared'
-      property.name
+      attributes[:name]
     when 'coworking'
-      property.name
+      attributes[:name]
     else
-      property.name
+      attributes[:name] || property.name
     end
   end
 
