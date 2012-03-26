@@ -98,4 +98,11 @@ class MLS::Listing < MLS::Resource
     Date.parse(attributes[:sublease_expiration])
   end
 
+  private
+
+  def self.instantiate_collection(collection, prefix_options = {})
+    puts collection
+    collection['properties'].collect! { |record| instantiate_record(record, prefix_options) }
+  end
+
 end
