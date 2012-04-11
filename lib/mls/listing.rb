@@ -74,20 +74,16 @@ class MLS::Listing < MLS::Resource
   end
 
   def name
-    case kind
-    when 'unit'
-      "#{property.name} Unit: #{unit}"
-    when 'floor'
-      "#{property.name} Floor: #{unit}"
-    when 'building'
-      property.name
-    when 'shared'
-      attributes[:name]
-    when 'coworking'
-      attributes[:name]
-    else
-      attributes[:name] || property.name
+    return property.name if property.name && !property.name.empty?
+  
+    name = property.name
+    if kind == 'lease' && space_type == 'unit'
+      name += "Unit: #{unit}" if unit && !unit.empty?
+    elsif kind == 'lease' && space_type == 'floor'
+      name += "Floor: #{floor}" if floor && !floor.empty?
     end
+    
+    name
   end
 
   def available_on
