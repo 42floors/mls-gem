@@ -94,6 +94,15 @@ class MLS::Listing < MLS::Resource
     Date.parse(attributes[:sublease_expiration])
   end
 
+  def photos
+    return @photos if @photos
+    @photos = []
+    attributes[:photos].each do |digest|
+      @photos << MLS::Photo.new(digest)
+    end
+    @photos
+  end
+
   private
 
   def self.instantiate_collection(collection, prefix_options = {})
