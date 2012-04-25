@@ -35,6 +35,7 @@ module MLS
 end
 
 require 'mls/use'
+require 'mls/photo'
 require 'mls/address'
 require 'mls/listing'
 require 'mls/property'
