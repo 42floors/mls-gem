@@ -74,19 +74,16 @@ class MLS::Listing < MLS::Resource
   end
 
   def name
-    return attributes[:name] if attributes[:name] && !attributes[:name].empty?
-
-    if property.name
-      name = property.name
-      if kind == 'lease' && space_type == 'unit'
-        name += "Unit: #{unit}" if unit && !unit.empty?
-      elsif kind == 'lease' && space_type == 'floor'
-        name += "Floor: #{floor}" if floor && !floor.empty?
-      end
-      return name
-    end
+    return property.name if property.name && !property.name.empty?
   
-    return address.formatted_address.sub(/,.+$/,'')
+    name = property.name
+    if kind == 'lease' && space_type == 'unit'
+      name += ", Unit #{unit}" if unit && !unit.empty?
+    elsif kind == 'lease' && space_type == 'floor'
+      name += ", Floor #{floor}" if floor && !floor.empty?
+    end
+    
+    name
   end
 
   def available_on
