@@ -78,9 +78,9 @@ class MLS::Listing < MLS::Resource
   
     if property.name
       name = property.name
-      if kind == 'lease' && space_type == 'unit'
+      if space_type == 'unit'
         name += ", Unit #{unit}" if unit && !unit.empty?
-      elsif kind == 'lease' && space_type == 'floor'
+      elsif space_type == 'floor'
         name += ", Floor #{floor}" if floor && !floor.empty?
       end
       return name
