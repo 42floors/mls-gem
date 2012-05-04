@@ -7,7 +7,6 @@ class MLS::Property < MLS::Resource
   private
 
   def self.instantiate_collection(collection, prefix_options = {})
-    puts collection
     collection['properties'].collect! { |record| instantiate_record(record, prefix_options) }
   end
 
