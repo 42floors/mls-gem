@@ -94,7 +94,7 @@ class MLS::Listing < MLS::Resource
   end
 
   def sublease_expiration
-    Date.parse(attributes[:sublease_expiration])
+    Date.parse(attributes[:sublease_expiration]) if attributes[:sublease_expiration]
   end
 
   def photos
