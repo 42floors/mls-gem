@@ -26,7 +26,7 @@ class MLS::Listing < MLS::Resource
   validates :rate_units, :presence => true, :inclusion => { :in => ['ft^2/year', 'ft^2/month'] }
 
   def property
-    attributes['property'] ||= attributes[:property_id].nil? ? nil : MLS::Property.find(property_id)
+    attributes[:property] ||= attributes[:property_id].nil? ? nil : MLS::Property.find(property_id)
   end
   
   schema do
