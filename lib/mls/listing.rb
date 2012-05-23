@@ -1,15 +1,14 @@
 class MLS::Listing < MLS::Resource
-
-  LEASES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross']
-
-  # validates :use, :presence => true
-  # validates :property, :presence => true
-  # validates :address, :presence => true, :inclusion => { :in => lambda { |l| l.property.try(:addresses).to_a } }
+  
+  KINDS = %w(lease shared coworking)
+  SPACE_TYPES = %w(unit floor building)
+  LEASE_TYPES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross', 'Triple Net', 'Modified Net']
+  
+  
   validates :total_size, :presence => true, :numericality => true
   validates :maximum_contiguous_size, :presence => true, :numericality => true
   validates :minimum_divisable_size, :presence => true, :numericality => true
-  validates :lease, :inclusion => {:in => LEASES, :allow_nil => true, :allow_blank => true}
-  validates :asking_rate, :numericality => { :allow_nil => true }
+  validates :rate, :numericality => { :allow_nil => true }
   validates :sublease_expiration, :presence => { :if => proc { |l| l.sublease? }}
   validates :nnn_expenses, :numericality => { :allow_nil => true }
   validates :available_on, :presence => true
@@ -17,14 +16,13 @@ class MLS::Listing < MLS::Resource
   validates :offices, :numericality => { :allow_nil => true }
   validates :conference_rooms, :numericality => { :allow_nil => true }
   validates :bathrooms, :numericality => { :allow_nil => true }
-  validates :showers, :numericality => { :allow_nil => true }
-  validates :maximum_rate, :numericality => { :allow_nil => true }
-  validates :minimum_rate, :numericality => { :allow_nil => true }
   validates :maximum_term_length, :numericality => { :allow_nil => true, :only_integer => true }
   validates :minimum_term_length, :numericality => { :allow_nil => true, :only_integer => true }
-  validates :kind, :presence => true, :inclusion => {:in => ['unit', 'floor', 'building']}
-  validates :rate_units, :presence => true, :inclusion => { :in => ['ft^2/year', 'ft^2/month'] }
-
+  validates :kind, :presence => true, :inclusion => {:in => KINDS}
+  validates :space_type, :presence => true, :inclusion => {:in => SPACE_TYPES}, :if => Proc.new{ |l| l.kind == 'lease' }
+  validates :lease_type, :inclusion => {:in => LEASE_TYPES}, :allow_nil => true, :if => Proc.new{ |l| l.kind == 'lease' }
+  validates :rate_units, :presence => true, :inclusion => { :in => ['ft^2/year', 'ft^2/month', 'desk/month'] }
+  
   def property
     attributes[:property] ||= attributes[:property_id].nil? ? nil : MLS::Property.find(property_id)
   end
@@ -37,8 +35,12 @@ class MLS::Listing < MLS::Resource
     attribute :minimum_divisable_size, :integer
     attribute :available_on, :date
     attribute :unit, :string
+    attribute :space_type, :string
     attribute :lease, :string
-    attribute :asking_rate, :decimal, :precision => 8,  :scale => 2
+    attribute :lease_type, :string
+    attribute :rate, :decimal, :precision => 8,  :scale => 2
+    attribute :rate_per_month, :decimal, :precision => 8,  :scale => 2
+    attribute :rate_per_year, :decimal, :precision => 8,  :scale => 2
     attribute :sublease_expiration, :date
     attribute :nnn_expenses, :decimal
     attribute :floor, :integer
