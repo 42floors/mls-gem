@@ -78,8 +78,8 @@ class MLS::Listing < MLS::Resource
   def name
     return attributes[:name] if attributes[:name] && !attributes[:name].empty?
   
-    if property.name
-      name = property.name
+    if address.name
+      name = address.name
       if space_type == 'unit'
         name += ", Unit #{unit}" if unit
       elsif space_type == 'floor'
