@@ -1,6 +1,6 @@
 class MLS::Listing < MLS::Resource
   
-  KINDS = %w(lease shared coworking)
+  KINDS = %w(lease sublease coworking)
   SPACE_TYPES = %w(unit floor building)
   LEASE_TYPES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross', 'Triple Net', 'Modified Net']
   
