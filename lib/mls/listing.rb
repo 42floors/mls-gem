@@ -75,22 +75,6 @@ class MLS::Listing < MLS::Resource
     attribute :rate_units, :string
   end
 
-  def name
-    return attributes[:name] if attributes[:name] && !attributes[:name].empty?
-  
-    if address.name
-      name = address.name
-      if space_type == 'unit'
-        name += ", Unit #{unit}" if unit
-      elsif space_type == 'floor'
-        name += ", Floor #{floor}" if floor
-      end
-      return name
-    end
-    
-    return address.formatted_address.sub(/,.+$/,'')
-  end
-  
   def available_on
     Date.parse(attributes[:available_on])
   end
