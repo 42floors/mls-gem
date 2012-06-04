@@ -108,10 +108,4 @@ class MLS::Listing < MLS::Resource
     @photos
   end
 
-  private
-
-  def self.instantiate_collection(collection, prefix_options = {})
-    collection['listings'].collect! { |record| instantiate_record(record, prefix_options) }
-  end
-
 end
