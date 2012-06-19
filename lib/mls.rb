@@ -32,13 +32,13 @@ module MLS
     self.user      = nil
     self.password  = nil
 
-    def create
-      json = JSON.generate({self.class.element_name => JSON.parse(encode)})
-      connection.post(collection_path, json, self.class.headers).tap do |response|
-        self.id = id_from_response(response)
-        load_attributes_from_response(response)
-      end
-    end
+    # def create
+    #   json = JSON.generate({self.class.element_name => JSON.parse(encode)})
+    #   connection.post(collection_path, json, self.class.headers).tap do |response|
+    #     self.id = id_from_response(response)
+    #     load_attributes_from_response(response)
+    #   end
+    # end
 
     private
 
@@ -53,6 +53,7 @@ module MLS
 end
 
 require 'mls/use'
+require 'mls/user'
 require 'mls/photo'
 require 'mls/address'
 require 'mls/listing'

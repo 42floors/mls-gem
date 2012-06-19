@@ -4,9 +4,4 @@ class MLS::Address < MLS::Resource
     get :query, :query => q
   end
 
-  private
-
-  def self.instantiate_collection(collection, prefix_options = {})
-    collection['addresses'].collect! { |record| instantiate_record(record, prefix_options) }
-  end  
 end
