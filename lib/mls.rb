@@ -24,7 +24,8 @@ end
 class Boolean
 end
 
-module MLS
+class MLS
+  include Singleton
 
   API_VERSION = '0.1.0'
 
