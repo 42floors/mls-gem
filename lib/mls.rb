@@ -1,59 +1,193 @@
-require 'mls/version'
+require 'uri'
+require 'cgi'
+require 'logger'
+require 'net/https'
+require 'singleton'
+require 'yajl'
+require 'bigdecimal'
+require 'bigdecimal/util'
+require 'active_support'
 require 'active_resource'
+require 'date'
+require 'time'
 
-module MLS
+class BigDecimal
+  old_to_s = instance_method :to_s
 
-  class << self
+  define_method :to_s do |param='F'|
+    old_to_s.bind(self).(param)
+  end
+end
 
-    attr_accessor :environment
+class Decimal
+end
+class Boolean
+end
 
-    def env
-      @environment ||= 'development'
-    end
+class MLS
+  include Singleton
 
-    def site
-      env == 'production' ? 'http://mls.42floors.com' : 'http://staging.mls.42floors.com'
-    end
+  API_VERSION = '0.1.0'
 
-    def asset_host=(host)
-      @asset_host = host
-    end
+  attr_accessor :url, :api_key, :auth_key, :logger
 
-    def asset_host
-      return @asset_host if @asset_host
-      env == 'production' ? 'assets.42floors.com' : 's3.amazonaws.com/staging-assets.42floors.com'
-    end
+  def url=(uri)
+    @url = uri
 
+    uri = URI.parse(uri)
+    @api_key = CGI.unescape(uri.user)
+    @host = uri.host
+    @port = uri.port
   end
 
-  class Resource < ActiveResource::Base
-    self.site      = MLS.site
-    self.prefix    = '/api/'
-    self.user      = nil
-    self.password  = nil
+  def logger
+    @logger ||= default_logger
+  end
 
-    # def create
-    #   json = JSON.generate({self.class.element_name => JSON.parse(encode)})
-    #   connection.post(collection_path, json, self.class.headers).tap do |response|
-    #     self.id = id_from_response(response)
-    #     load_attributes_from_response(response)
-    #   end
-    # end
+  def connection
+    @connection ||= Net::HTTP.new(@host, @port)
+  end
 
-    private
+  def add_headers(req)
+    req['Content-Type'] = 'application/json'
+    req['X-42Floors-API-Version'] = API_VERSION
+    req['X-42Floors-API-Key'] = api_key
+    req['X-42Floors-API-Auth-Key'] = auth_key if auth_key
+  end
+  
+  def put(url, body={})
+    req = Net::HTTP::Put.new("/api#{url}")
+    req.body = Yajl::Encoder.encode(body)
+    add_headers(req)
+    
+    response = connection.request(req)
+    if block_given?
+      yield(response.code.to_i, response)
+    else
+      handle_response(response)
+    end
+  end
 
-    def self.instantiate_collection(collection, prefix_options = {})
-      collection[self.collection_name].collect! do |record|
-        instantiate_record(record, prefix_options)
-      end
+  def post(url, body={})
+    req = Net::HTTP::Post.new("/api#{url}")
+    req.body = Yajl::Encoder.encode(body)
+    add_headers(req)
+    
+    response = connection.request(req)
+    if block_given?
+      yield(response.code.to_i, response)
+    else
+      handle_response(response)
+    end
+  end
+
+  def delete(url, body={})
+    req = Net::HTTP::Delete.new("/api#{url}")
+    req.body = Yajl::Encoder.encode(body)
+    add_headers(req)
+    
+    response = connection.request(req)
+    if block_given?
+      yield(response.code.to_i, response)
+    else
+      handle_response(response)
+    end
+  end
+
+  def get(url, params={})
+    url = "/api#{url}?" + params.to_param
+    req = Net::HTTP::Get.new(url)
+    add_headers(req)
+    response = connection.request(req)
+    if block_given?
+      yield(response.code.to_i, response)
+    else
+      handle_response(response)
     end
     
+    response
+  end
+
+  def handle_response(response)
+    if response['X-42Floors-API-Version-Deprecated']
+      logger.warn("DEPRECATION WARNING: API v#{API_VERSION} is being phased out")
+    end
+    
+    raise(response.code, response.body)
+    response.body
+  end
+  
+  def raise(error_code, message=nil)
+    case error_code.to_i
+    when 401
+      super Unauthorized, message
+    when 404, 410
+      super NotFound, message
+    when 422
+      super ApiVersionUnsupported, message
+    when 300...400
+      super MLS::Exception, error_code
+    when 400
+      super MLS::BadRequest, message
+    when 401...500
+      super MLS::Exception, error_code
+    when 500...600
+      super MLS::Exception, error_code
+    end
+  end
+
+  def ping
+    get('/ping').body
+  end
+
+  def auth_ping
+    post('/ping').body
+  end
+
+  def default_logger
+    logger = Logger.new(STDOUT)
+    logger.level = Logger::INFO
+    logger
+  end
+
+  def self.method_missing(method, *args, &block)
+    instance.__send__(method, *args, &block)
+  end
+  
+  def self.parse(json)
+    Yajl::Parser.new(:symbolize_keys => true).parse(json)
   end
 
 end
 
-require 'mls/use'
-require 'mls/user'
-require 'mls/photo'
-require 'mls/address'
-require 'mls/listing'
+#require File.expand_path('../mls/errors', __FILE__)
+#require File.expand_path('../mls/resource', __FILE__)
+#require File.expand_path('../mls/model', __FILE__)
+#require File.expand_path('../mls/property', __FILE__)
+#require File.expand_path('../mls/parser', __FILE__)
+
+require 'mls/errors'
+require 'mls/resource'
+require 'mls/model'
+require 'mls/property'
+require 'mls/parser'
+
+#require File.expand_path('../mls/properties/fixnum', __FILE__)
+#require File.expand_path('../mls/properties/boolean', __FILE__)
+#require File.expand_path('../mls/properties/decimal', __FILE__)
+#require File.expand_path('../mls/properties/datetime', __FILE__)
+#require File.expand_path('../mls/properties/string', __FILE__)
+
+require 'mls/properties/fixnum'
+require 'mls/properties/boolean'
+require 'mls/properties/decimal'
+require 'mls/properties/datetime'
+require 'mls/properties/string'
+
+#require File.expand_path('../mls/models/account', __FILE__)
+#require File.expand_path('../mls/models/listing', __FILE__)
+#require File.expand_path('../mls/models/address', __FILE__)
+
+require 'mls/models/account'
+require 'mls/models/listing'
+require 'mls/models/address'

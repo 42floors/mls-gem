@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'turn'
   s.add_runtime_dependency 'activeresource'
+  s.add_runtime_dependency 'yajl-ruby'
 end
