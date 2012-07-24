@@ -20,9 +20,16 @@ class TestAccount < ::Test::Unit::TestCase
     assert account.respond_to?(:twitter)
     assert account.respond_to?(:facebook)
     assert account.respond_to?(:web)
+    assert account.respond_to?(:mls_number)
     assert account.respond_to?(:state)
-    assert account.respond_to?(:zip)
+    assert account.respond_to?(:country)
     assert account.respond_to?(:auth_key)
+    assert account.respond_to?(:funding)
+    assert account.respond_to?(:message)
+    assert account.respond_to?(:population)
+    assert account.respond_to?(:growing)
+    assert account.respond_to?(:move_in)
+    assert account.respond_to?(:extra_info)
   end
 
   def test_methods

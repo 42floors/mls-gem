@@ -27,10 +27,9 @@ end
 class MLS
   include Singleton
 
-  # What does this mean???
   API_VERSION = '0.1.0'
 
-  attr_accessor :url, :api_key, :auth_key, :logger
+  attr_accessor :url, :api_key, :auth_key, :logger, :asset_host
 
   def url=(uri)
     @url = uri
@@ -47,6 +46,10 @@ class MLS
 
   def connection
     @connection ||= Net::HTTP.new(@host, @port)
+  end
+
+  def asset_host
+    @asset_host ||= get('/asset_host').body
   end
 
   def add_headers(req)
@@ -178,3 +181,5 @@ require 'mls/model'
 require 'mls/models/account'
 require 'mls/models/listing'
 require 'mls/models/address'
+require 'mls/models/photo'
+require 'mls/models/tour_request'

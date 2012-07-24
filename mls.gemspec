@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   # Runtime
   s.add_runtime_dependency 'activeresource'
   s.add_runtime_dependency 'yajl-ruby'
+  s.add_runtime_dependency 'simplecov'
 end

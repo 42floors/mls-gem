@@ -6,6 +6,7 @@ class MLS::Account < MLS::Resource
   property :id,                      Fixnum
   property :role,                    String,   :default => 'user'
   property :name,                    String
+  property :title,                   String
   property :email,                   String
   property :password,                String,   :serialize => :if_present
   property :password_confirmation,   String,   :serialize => :if_present
@@ -19,11 +20,20 @@ class MLS::Account < MLS::Resource
   property :twitter,                 String
   property :facebook,                String
   property :web,                     String
+  property :mls_number,              String
   
+  property :city,                    String
   property :state,                   String
-  property :zip,                     String
+  property :country,                 String
   
   property :auth_key,                String
+
+  property :funding,                 String
+  property :message,                 String
+  property :population,              String
+  property :growing,                 Boolean
+  property :move_in,                 String
+  property :extra_info,              String
   
   def update!
     MLS.put('/account', to_hash) do |code, response|
@@ -56,19 +66,9 @@ class MLS::Account < MLS::Resource
     role != 'user' && role != ''
   end
 
-  def favorites(page=nil, per_page=nil)
-    params_hash = {:page => page, :per_page => per_page}
-    Rails.logger.warn(params_hash)
-    MLS.get('/account/favorites', params_hash) do |code, response|
-      case code
-      when 400
-        @errors = MLS.parse(response.body)[:errors]
-        return false
-      else
-        MLS.handle_response(response)
-        return MLS::Listing::Parser.parse_collection(response.body)
-      end
-    end
+  def favorites
+    response = MLS.get('/account/favorites')
+    MLS::Listing::Parser.parse_collection(response.body)
   end
   
   def favorite(listing_id)
@@ -98,7 +98,7 @@ class MLS::Account < MLS::Resource
       end
     end
   end
-  
+
   class << self
     
     def current
@@ -140,7 +140,6 @@ class MLS::Account < MLS::Resource
       return false
     end
 
-    
   end
   
 end
