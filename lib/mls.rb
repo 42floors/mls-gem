@@ -27,6 +27,7 @@ end
 class MLS
   include Singleton
 
+  # What does this mean???
   API_VERSION = '0.1.0'
 
   attr_accessor :url, :api_key, :auth_key, :logger
@@ -160,34 +161,20 @@ class MLS
 
 end
 
-#require File.expand_path('../mls/errors', __FILE__)
-#require File.expand_path('../mls/resource', __FILE__)
-#require File.expand_path('../mls/model', __FILE__)
-#require File.expand_path('../mls/property', __FILE__)
-#require File.expand_path('../mls/parser', __FILE__)
-
 require 'mls/errors'
 require 'mls/resource'
-require 'mls/model'
-require 'mls/property'
 require 'mls/parser'
 
-#require File.expand_path('../mls/properties/fixnum', __FILE__)
-#require File.expand_path('../mls/properties/boolean', __FILE__)
-#require File.expand_path('../mls/properties/decimal', __FILE__)
-#require File.expand_path('../mls/properties/datetime', __FILE__)
-#require File.expand_path('../mls/properties/string', __FILE__)
-
+# Properties
+require 'mls/property'
 require 'mls/properties/fixnum'
 require 'mls/properties/boolean'
 require 'mls/properties/decimal'
 require 'mls/properties/datetime'
 require 'mls/properties/string'
 
-#require File.expand_path('../mls/models/account', __FILE__)
-#require File.expand_path('../mls/models/listing', __FILE__)
-#require File.expand_path('../mls/models/address', __FILE__)
-
+# Models
+require 'mls/model'
 require 'mls/models/account'
 require 'mls/models/listing'
 require 'mls/models/address'
