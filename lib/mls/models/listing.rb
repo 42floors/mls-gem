@@ -62,12 +62,21 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime
   
   
-  attr_accessor :address, :agents
+  attr_accessor :address, :agents, :photos
   
-  def photos
-    []
+
+  def to_hash
+    hash = super
+    hash[:address] = address.to_hash
+    hash[:agents] = agents.map {|a| a.to_hash}
+    hash[:photos] = photos.map {|p| p.digest}
+    hash
   end
-  
+
+  def sublease?
+    kind == 'sublease'
+  end
+
   class << self
     
     def find(id)
@@ -83,7 +92,7 @@ end
 class MLS::Listing::Parser < MLS::Parser
   
   def photos=(photos)
-    puts photos
+    @object.photos = photos.map {|d| MLS::Photo.new(d) }
   end
    
   def address=(address)
@@ -91,7 +100,7 @@ class MLS::Listing::Parser < MLS::Parser
   end
   
   def agents=(agents)
-    puts agents
+    @object.agents = agents.map {|a| MLS::Account::Parser.build(a) }
   end
   
 end
