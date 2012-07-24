@@ -13,6 +13,8 @@ class MLS::Property::DateTime < MLS::Property
   def dump(value)
     if value.is_a?(::DateTime)
       value.iso8601
+    elsif value.nil?
+      nil
     else
       raise 'unsupported date type'
     end
