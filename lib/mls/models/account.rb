@@ -14,6 +14,7 @@ class MLS::Account < MLS::Resource
   property :perishable_token_set_at, String
   
   property :phone,                   String
+  property :system_phone,            String
   property :company,                 String
   property :license,                 String
   property :linkedin,                String
