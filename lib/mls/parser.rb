@@ -27,9 +27,10 @@ class MLS::Parser
     self.new.parse(data)
   end
   
-  def self.parse_collection(data)
+  def self.parse_collection(data, options={})
+    root = options[:collection_root_element] || collection_root_element
     collection = []
-    extract_attributes(data)[collection_root_element].each do |attrs|
+    extract_attributes(data)[root].each do |attrs|
       collection << build(attrs)
     end
     collection
