@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "mls/version"
 
 Gem::Specification.new do |s|
   s.name        = "mls"
-  s.version     = MLS::VERSION
+  s.version     = '0.2.2'
   s.authors     = ["James R. Bracy"]
   s.email       = ["james@42floors.com"]
   s.homepage    = "http://mls.42floors.com"
