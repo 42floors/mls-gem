@@ -30,7 +30,6 @@ class MLS::Account < MLS::Resource
   property :auth_key,                String
 
   property :funding,                 String
-  property :message,                 String
   property :population,              String
   property :growing,                 Boolean
   property :move_in,                 String
