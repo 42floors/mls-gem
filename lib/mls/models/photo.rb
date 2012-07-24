@@ -1,5 +1,7 @@
 class MLS::Photo < MLS::Resource
 
+  attr_accessor :digest
+
   def initialize(digest)
     @digest = digest
   end
