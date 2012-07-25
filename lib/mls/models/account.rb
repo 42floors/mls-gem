@@ -67,7 +67,7 @@ class MLS::Account < MLS::Resource
   end
 
   def favorites
-    response = MLS.get('/accounts/favorites')
+    response = MLS.get('/account/favorites')
     MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
 
@@ -78,7 +78,7 @@ class MLS::Account < MLS::Resource
   def favorite(listing_id)
     params_hash = {:id => listing_id}
     Rails.logger.warn(params_hash)
-    MLS.post('/accounts/favorites', params_hash) do |code, response|
+    MLS.post('/account/favorites', params_hash) do |code, response|
       case code
       when 400
         @errors = MLS.parse(response.body)[:errors]
@@ -91,7 +91,7 @@ class MLS::Account < MLS::Resource
   end
 
   def unfavorite(listing_id)
-    MLS.delete("/accounts/favorites/#{listing_id}") do |code, response|
+    MLS.delete("/account/favorites/#{listing_id}") do |code, response|
       case code
       when 400
         @errors = MLS.parse(response.body)[:errors]
