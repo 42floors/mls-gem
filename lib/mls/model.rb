@@ -82,13 +82,16 @@ module MLS::Model
   end
   
   # used for parser
-  
+  def root_element_string
+    ActiveSupport::Inflector.demodulize(self).underscore
+  end
+
   def root_element
-    @root_element ||= ActiveSupport::Inflector.demodulize(self).downcase.to_sym
+    @root_element ||= root_element_string.to_sym
   end
   
   def collection_root_element
-    @collection_root_element ||= ActiveSupport::Inflector.demodulize(self).downcase.pluralize.to_sym
+    @collection_root_element ||= root_element_string.pluralize.to_sym
   end
   
 end

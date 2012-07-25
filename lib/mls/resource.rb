@@ -1,6 +1,7 @@
 class MLS::Resource
 
-  attr_reader :errors, :persisted
+  attr_reader :persisted
+  attr_accessor :errors
 
   def self.inherited(subclass)
     subclass.extend(MLS::Model)

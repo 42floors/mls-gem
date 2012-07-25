@@ -24,11 +24,11 @@ class MLS::TourRequest < MLS::Resource
       MLS.post('/account/tour_requests', params) do |code, response|
         case code
         when 400
-          @errors = MLS.parse(response.body)[:errors]
-          return false
+          return MLS::TourRequest::Parser.parse(response.body)
         else
           MLS.handle_response(response)
-          return true
+          puts response.body
+          return MLS::TourRequest::Parser.parse(response.body)
         end
       end
     end
@@ -39,9 +39,5 @@ class MLS::TourRequest::Parser < MLS::Parser
   
   def listing=(listing)
     @object.listing = MLS::Listing::Parser.build(listing)
-  end
-
-  def self.collection_root_element
-    :tour_requests
   end
 end
