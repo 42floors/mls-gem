@@ -74,7 +74,11 @@ class MLS::Account < MLS::Resource
   end
 
   def favorited?(listing)
-    return favorites.include? listing
+    if favorite_ids
+      favorite_ids.include?(listing.id) 
+    else
+      favorites.include?(listing)
+    end
   end
   
   def favorite(listing_id)
