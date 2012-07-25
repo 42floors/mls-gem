@@ -63,15 +63,6 @@ class MLS::Listing < MLS::Resource
   
   
   attr_accessor :address, :agents, :photos
-  
-
-  def to_hash
-    hash = super
-    hash[:address] = address.to_hash
-    hash[:agents] = agents.map {|a| a.to_hash}
-    hash[:photos] = photos.map {|p| p.digest}
-    hash
-  end
 
   def sublease?
     kind == 'sublease'
