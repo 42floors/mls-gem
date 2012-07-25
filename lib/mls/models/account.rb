@@ -83,7 +83,6 @@ class MLS::Account < MLS::Resource
   
   def favorite(listing_id)
     params_hash = {:id => listing_id}
-    Rails.logger.warn(params_hash)
     MLS.post('/account/favorites', params_hash) do |code, response|
       case code
       when 400
