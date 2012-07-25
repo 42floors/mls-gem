@@ -34,7 +34,9 @@ class MLS::Account < MLS::Resource
   property :growing,                 Boolean
   property :move_in,                 String
   property :extra_info,              String
-  
+
+  attr_reader :favorite_ids
+
   def update!
     MLS.put('/account', to_hash) do |code, response|
       case code
@@ -149,5 +151,9 @@ class MLS::Account < MLS::Resource
 end
 
 class MLS::Account::Parser < MLS::Parser
+
+  def favorite_ids=(ids)
+    @object.instance_variable_set('@favorite_ids', ids)
+  end
 
 end
