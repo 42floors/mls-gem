@@ -12,3 +12,6 @@ end
 
 class MLS::ApiVersionUnsupported < MLS::Exception
 end
+
+class MLS::RecordInvalid < MLS::Exception
+end

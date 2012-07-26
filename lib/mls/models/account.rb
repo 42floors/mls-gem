@@ -37,31 +37,44 @@ class MLS::Account < MLS::Resource
 
   attr_reader :favorite_ids
 
-  def update!
+  def update
     MLS.put('/account', to_hash) do |code, response|
       case code
+      when 200
+        MLS::Account::Parser.update(self, response.body)
+        true
       when 400
-        @errors = MLS.parse(response.body)[:errors]
-        return false
+        MLS::Account::Parser.update(self, response.body)
+        false
       else
         MLS.handle_response(response)
-        MLS::Account::Parser.update(self, response.body)
+        raise "shouldn't get here...."
       end
     end
   end
+
+  def update!
+    update || raise(MLS::RecordInvalid)
+  end
   
-  def create!
-    Rails.logger.warn(to_hash)
+  def create
     MLS.post('/account', to_hash) do |code, response|
       case code
+      when 201
+        MLS::Account::Parser.update(self, response.body)
+        true
       when 400
-        @errors = MLS.parse(response.body)[:errors]
-        return false
+        MLS::Account::Parser.update(self, response.body)
+        false
       else
         MLS.handle_response(response)
-        MLS::Account::Parser.update(self, response.body)
+        raise "shouldn't get here...."
       end
     end
+  end
+
+  def create!
+    create || raise(MLS::RecordInvalid)
   end
 
   def agent?

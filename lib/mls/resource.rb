@@ -24,6 +24,10 @@ class MLS::Resource
   end
   
   def save
+    new_record? ? create : update
+  end
+
+  def save!
     new_record? ? create! : update!
   end
   
