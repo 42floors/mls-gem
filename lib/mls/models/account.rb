@@ -52,10 +52,6 @@ class MLS::Account < MLS::Resource
       end
     end
   end
-
-  def update!
-    update || raise(MLS::RecordInvalid)
-  end
   
   def create
     MLS.post('/account', to_hash) do |code, response|
@@ -71,10 +67,6 @@ class MLS::Account < MLS::Resource
         raise "shouldn't get here...."
       end
     end
-  end
-
-  def create!
-    create || raise(MLS::RecordInvalid)
   end
 
   def agent?

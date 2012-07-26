@@ -31,6 +31,14 @@ class MLS::Resource
     new_record? ? create! : update!
   end
   
+  def update!
+    update || raise(MLS::RecordInvalid)
+  end
+
+  def create!
+    create || raise(MLS::RecordInvalid)
+  end
+
   # Properties ===================================================================================================
   
   def properties
