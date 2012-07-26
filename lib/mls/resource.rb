@@ -44,7 +44,7 @@ class MLS::Resource
   end
 
   def update_attributes(attrs)
-    attrs.each { |k, v| self.send("#{k}=".to_sym, v) }
+    attrs.each { |k, v| self.send("#{k}=".to_sym, v) } unless attrs.nil?
   end
   
   # Combo Breaker ================================================================================================
