@@ -62,7 +62,7 @@ class MLS::Account < MLS::Resource
       case code
       when 201
         MLS::Account::Parser.update(self, response.body)
-        true
+        @persisted = true
       when 400
         MLS::Account::Parser.update(self, response.body)
         false
