@@ -39,10 +39,26 @@ class MLS::Resource
     create || raise(MLS::RecordInvalid)
   end
 
+  def ==(other)
+    self.class == other.class && properties_for_comparison == other.properties_for_comparison
+  end
+
   # Properties ===================================================================================================
   
   def properties
     self.class.properties
+  end
+
+  def properties_for_comparison
+    compare = {}
+    properties.reject{ |k, p| properties_excluded_from_comparison.include?(k) }.each do |k, p|
+      compare[k] = self.send(properties[k].name.to_sym)
+    end
+    compare
+  end
+
+  def properties_excluded_from_comparison
+    self.class.properties_excluded_from_comparison
   end
   
   def set_default_values

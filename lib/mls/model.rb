@@ -13,9 +13,18 @@ module MLS::Model
 
     property = klass.new(name, options)
     @properties[property.name] = property
+    @properties_excluded_from_comparison = []
 
     create_reader_for(property)
     create_writer_for(property)
+  end
+
+  def exclude_from_comparison(*properties)
+    @properties_excluded_from_comparison |= properties
+  end
+
+  def properties_excluded_from_comparison
+    @properties_excluded_from_comparison
   end
 
   def properties

@@ -35,6 +35,8 @@ class MLS::Account < MLS::Resource
   property :move_in,                 String
   property :extra_info,              String
 
+  exclude_from_comparison :password, :password_confirmation
+
   attr_reader :favorite_ids
 
   def update
