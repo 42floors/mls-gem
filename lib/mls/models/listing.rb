@@ -68,6 +68,28 @@ class MLS::Listing < MLS::Resource
     kind == 'sublease'
   end
 
+  def create
+    MLS.post('/listings', to_hash) do |code, response|
+      case code
+      when 201
+        MLS::Account::Parser.update(self, response.body)
+        true
+      when 400
+        MLS::Account::Parser.update(self, response.body)
+        false
+      else
+        MLS.handle_response(response)
+        raise "shouldn't get here...."
+      end
+    end
+  end
+
+  def to_hash
+    hash = super
+    hash[:address_attributes] = address.to_hash
+    hash
+  end
+
   class << self
     
     def find(id)

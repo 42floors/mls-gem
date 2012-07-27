@@ -30,6 +30,14 @@ class MLS::Resource
   def save!
     new_record? ? create! : update!
   end
+
+  def update!
+    update || raise(MLS::RecordInvalid)
+  end
+
+  def create!
+    create || raise(MLS::RecordInvalid)
+  end
   
   def update!
     update || raise(MLS::RecordInvalid)
