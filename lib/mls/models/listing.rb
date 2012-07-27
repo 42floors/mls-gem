@@ -86,7 +86,7 @@ class MLS::Listing < MLS::Resource
 
   def to_hash
     hash = super
-    hash[:address_attributes] = address.to_hash
+    hash[:address_attributes] = address.to_hash if address
     hash
   end
 
