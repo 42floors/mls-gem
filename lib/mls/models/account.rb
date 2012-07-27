@@ -133,9 +133,7 @@ class MLS::Account < MLS::Resource
     end
 
     def reset_password!(email)
-      params_hash = {:email => email}
-      Rails.logger.warn(params_hash)
-      MLS.post('/account/reset_password', params_hash) do |code, response|
+      MLS.put('/account/reset_password', {:email => email}) do |code, response|
         case code
         when 400
           @errors = MLS.parse(response.body)[:errors]
@@ -148,7 +146,6 @@ class MLS::Account < MLS::Resource
     end
 
     def update_password!(params_hash)
-      Rails.logger.warn(params_hash)
       response = MLS.put('/account/update_password', params_hash)
       MLS::Account::Parser.parse(response)
     rescue MLS::BadRequest => response
