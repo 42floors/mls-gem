@@ -6,8 +6,8 @@ class MLS::Listing < MLS::Resource
   RATE_UNITS = ['ft^2/year', 'ft^2/month', 'desk/month']
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
   
-  property :id,                           Fixnum
-  property :address_id,                   Fixnum
+  property :id,                           Fixnum,   :serialize => :if_present
+  property :address_id,                   Fixnum,   :serialize => :false
   property :use_id,                       Fixnum
   property :use,                          String
   property :account_id,                   Fixnum
