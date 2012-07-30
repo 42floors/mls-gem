@@ -62,7 +62,7 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime
   
   
-  attr_accessor :address, :agents, :photos
+  attr_accessor :address, :agents, :account, :photos
 
   def sublease?
     kind == 'sublease'
