@@ -27,8 +27,8 @@ class MLS::Listing < MLS::Resource
   property :lease_type,                   String
   property :rate,                         Decimal
   property :rate_units,                   String, :default => 'ft^2/month'
-  property :rate_per_month,               Decimal
-  property :rate_per_year,                Decimal
+  property :rate_per_month,               Decimal, :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
+  property :rate_per_year,                Decimal, :serialize => :false
   property :tenant_improvements,          String
   property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
@@ -69,7 +69,7 @@ class MLS::Listing < MLS::Resource
   end
 
   def create
-    MLS.post('/listings', to_hash) do |code, response|
+    MLS.post('/listings', :listing => to_hash) do |code, response|
       case code
       when 201
         MLS::Listing::Parser.update(self, response.body)
