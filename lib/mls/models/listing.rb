@@ -72,10 +72,10 @@ class MLS::Listing < MLS::Resource
     MLS.post('/listings', to_hash) do |code, response|
       case code
       when 201
-        MLS::Account::Parser.update(self, response.body)
+        MLS::Listing::Parser.update(self, response.body)
         true
       when 400
-        MLS::Account::Parser.update(self, response.body)
+        MLS::Listing::Parser.update(self, response.body)
         false
       else
         MLS.handle_response(response)
