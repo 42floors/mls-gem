@@ -88,8 +88,8 @@ class MLS::Account < MLS::Resource
     end
   end
   
-  def favorite(listing_id)
-    params_hash = {:id => listing_id}
+  def favorite(listing)
+    params_hash = {:id => listing.is_a?(MLS::Listing) ? listing.id : listing }
     MLS.post('/account/favorites', params_hash) do |code, response|
       case code
       when 400
