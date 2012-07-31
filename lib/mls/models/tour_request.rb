@@ -27,7 +27,6 @@ class MLS::TourRequest < MLS::Resource
           return MLS::TourRequest::Parser.parse(response.body)
         else
           MLS.handle_response(response)
-          puts response.body
           return MLS::TourRequest::Parser.parse(response.body)
         end
       end

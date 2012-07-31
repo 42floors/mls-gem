@@ -5,6 +5,13 @@ module MLS::Model
     model.instance_variable_set(:@associations, {})
   end
 
+  def create(attrs={})
+    model = self.new(attrs)
+    model.save
+    model
+  end
+    
+
   # Properties ===================================================================================================
   
   def property(name, type, options = {})
