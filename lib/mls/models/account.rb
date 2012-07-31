@@ -103,6 +103,7 @@ class MLS::Account < MLS::Resource
   end
 
   def unfavorite(listing_id)
+    listing_id = listing_id.is_a?(MLS::Listing) ? listing_id.id : listing_id
     MLS.delete("/account/favorites/#{listing_id}") do |code, response|
       case code
       when 400
@@ -116,7 +117,7 @@ class MLS::Account < MLS::Resource
   end
 
   class << self
-    
+
     def current
       response = MLS.get('/account')
       MLS::Account::Parser.parse(response.body)
