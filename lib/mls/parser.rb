@@ -7,6 +7,8 @@ class MLS::Parser
   end
   
   def parse(data)
+    Rails.logger.debug self.class.root_element
+    Rails.logger.debug extract_attributes(data)
     attributes = extract_attributes(data)[self.class.root_element]
     update_attributes(attributes)
     object

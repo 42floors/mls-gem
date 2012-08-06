@@ -16,6 +16,23 @@ class MLS::Address < MLS::Resource
   property :state, String
   property :country, String
   property :postal_code, String
+  property :min_rate_per_year, Decimal
+  property :max_rate_per_year, Decimal
+  property :max_size, Fixnum
+  property :min_size, Fixnum
+  property :comments, String
+  property :year_built, Fixnum
+  property :total_size, Fixnum
+  property :floors, Fixnum
+  property :internet_speed, Decimal
+  property :parking_garage, Boolean
+  property :lobby_attendant, Boolean
+  property :gym, Boolean
+  property :leed_certification, String
+
+  
+
+  attr_accessor :listings, :listing_kinds, :photos
 
   class << self
     
@@ -28,6 +45,12 @@ class MLS::Address < MLS::Resource
     def box_cluster(bounds, zoom, filters={})
       response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :filters => filters)
     end
+
+    def find_by_slug(address_slug)
+      response = MLS.get('/addresses/find_by_slug', 
+                         :address_slug => address_slug)
+      MLS::Address::Parser.parse(response.body)
+    end
     
   end
   
@@ -35,5 +58,16 @@ end
 
 
 class MLS::Address::Parser < MLS::Parser
-  
+
+  def listings=(listings)
+    @object.listings = listings.map {|d| MLS::Listing::Parser.build(d)}
+  end
+
+  def listing_kinds=(listing_kinds)
+    @object.listing_kinds = listing_kinds
+  end
+
+  def photos=(photos)
+    @object.photos = photos.map {|d| MLS::Photo.new(d) }
+  end
 end
