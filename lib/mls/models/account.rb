@@ -154,6 +154,19 @@ class MLS::Account < MLS::Resource
       return false
     end
 
+    def search(terms)
+      results = nil
+      MLS.get('/account/search', :query => terms) do |code, response|
+        case code
+        when 200
+          results = MLS::Account::Parser.parse_collection(response.body)
+        else
+          MLS.handle_response(response)
+        end
+      end
+      results
+    end
+
   end
   
 end

@@ -23,9 +23,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'turn'
+  s.add_development_dependency 'faker'
+  s.add_development_dependency 'factory_girl'
 
   # Runtime
-  s.add_runtime_dependency 'activeresource'
+  s.add_runtime_dependency 'activesupport'
   s.add_runtime_dependency 'yajl-ruby'
   s.add_runtime_dependency 'simplecov'
 end
