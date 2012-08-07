@@ -37,7 +37,7 @@ class MLS::Account < MLS::Resource
 
   exclude_from_comparison :password, :password_confirmation
 
-  attr_reader :favorite_ids
+  attr_writer :favorites
 
   def update
     MLS.put('/account', to_hash) do |code, response|
@@ -76,16 +76,14 @@ class MLS::Account < MLS::Resource
   end
 
   def favorites
+    return @favorites if @favorites
+
     response = MLS.get('/account/favorites')
-    MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
+    @favorites = MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
 
   def favorited?(listing)
-    if favorite_ids
-      favorite_ids.include?(listing.id) 
-    else
-      favorites.include?(listing)
-    end
+    favorites.include?(listing)
   end
   
   def favorite(listing)
@@ -173,8 +171,8 @@ end
 
 class MLS::Account::Parser < MLS::Parser
 
-  def favorite_ids=(ids)
-    @object.instance_variable_set('@favorite_ids', ids)
+  def favorites=(favorites)
+    @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
   end
 
 end
