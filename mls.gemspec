@@ -29,5 +29,6 @@ Gem::Specification.new do |s|
   # Runtime
   s.add_runtime_dependency 'activesupport'
   s.add_runtime_dependency 'yajl-ruby'
-  s.add_runtime_dependency 'simplecov'
+  s.add_runtime_dependency 'rest-client'
+  
 end

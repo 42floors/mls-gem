@@ -31,4 +31,5 @@ class TestMLS < ::Test::Unit::TestCase
   def test_class_methods
     assert MLS.respond_to?(:parse)
   end
+  
 end

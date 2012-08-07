@@ -15,3 +15,4 @@ end
 
 class MLS::RecordInvalid < MLS::Exception
 end
+

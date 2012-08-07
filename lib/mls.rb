@@ -31,12 +31,9 @@ class MLS
   attr_accessor :url, :api_key, :auth_key, :logger, :asset_host
 
   def url=(uri)
-    @url = uri
-
-    uri = URI.parse(uri)
-    @api_key = CGI.unescape(uri.user)
-    @host = uri.host
-    @port = uri.port
+    @url = URI.parse(uri)
+    @api_key = CGI.unescape(@url.user)
+    @host, @port = @url.host, @url.port
   end
 
   def logger
@@ -51,11 +48,18 @@ class MLS
     @asset_host ||= get('/asset_host').body
   end
 
+  def headers
+    h = {
+      'Content-Type' => 'application/json',
+      'X-42Floors-API-Version' => API_VERSION,
+      'X-42Floors-API-Key' => api_key
+    }
+    h['X-42Floors-API-Auth-Key'] = auth_key if auth_key
+    h
+  end
+  
   def add_headers(req)
-    req['Content-Type'] = 'application/json'
-    req['X-42Floors-API-Version'] = API_VERSION
-    req['X-42Floors-API-Key'] = api_key
-    req['X-42Floors-API-Auth-Key'] = auth_key if auth_key
+    headers.each { |k, v| req[k] = v }
   end
   
   def put(url, body={})

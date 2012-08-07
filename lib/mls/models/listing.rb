@@ -62,7 +62,7 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime
   
   
-  attr_accessor :address, :agents, :account, :photos
+  attr_accessor :address, :agents, :account, :photos, :address_attributes, :agents_attributes
 
   def sublease?
     kind == 'sublease'
@@ -105,7 +105,7 @@ end
 class MLS::Listing::Parser < MLS::Parser
   
   def photos=(photos)
-    @object.photos = photos.map {|d| MLS::Photo.new(d) }
+    @object.photos = photos.map {|d| MLS::Photo.new(:digest => d) }
   end
    
   def address=(address)
