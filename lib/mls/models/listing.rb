@@ -97,6 +97,11 @@ class MLS::Listing < MLS::Resource
       MLS::Listing::Parser.parse(response.body)
     end
 
+    def all(filters = {})
+      response = MLS.get('/listings', :filter => filters)
+      MLS::Listing::Parser.parse_collection(response.body)
+    end
+
   end
   
 end

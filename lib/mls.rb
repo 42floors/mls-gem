@@ -127,11 +127,11 @@ class MLS
   def raise(error_code, message=nil)
     case error_code.to_i
     when 401
-      super Unauthorized, message
+      super MLS::Unauthorized, message
     when 404, 410
-      super NotFound, message
+      super MLS::NotFound, message
     when 422
-      super ApiVersionUnsupported, message
+      super MLS::ApiVersionUnsupported, message
     when 300...400
       super MLS::Exception, error_code
     when 400
