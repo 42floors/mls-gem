@@ -12,6 +12,8 @@ class MLS::Listing < MLS::Resource
   property :use,                          String
   property :account_id,                   Fixnum
   property :hidden,                       Boolean, :default => false
+  property :source,                       String
+  property :source_url,                   String
     
   property :name,                         String
   property :kind,                         String, :default => 'lease'
@@ -62,7 +64,7 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime
   
   
-  attr_accessor :address, :agents, :account, :photos, :address_attributes, :agents_attributes
+  attr_accessor :address, :agents, :account, :photos#, :address_attributes, :agents_attributes, :photo_ids
 
   def sublease?
     kind == 'sublease'
@@ -87,6 +89,8 @@ class MLS::Listing < MLS::Resource
   def to_hash
     hash = super
     hash[:address_attributes] = address.to_hash if address
+    hash[:agents_attributes] = agents.inject({}) { |acc, x| acc[acc.length] = x.to_hash; acc } if agents
+    hash[:photo_ids] = photos.map(&:id) if photos
     hash
   end
 

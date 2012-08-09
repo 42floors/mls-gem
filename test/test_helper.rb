@@ -10,5 +10,7 @@ require 'faker'
 require 'test/unit'
 require 'factory_girl'
 
-puts FactoryGirl.find_definitions
+FactoryGirl.find_definitions
+
+MLS.url = ENV["MLS_TEST_URL"]
 

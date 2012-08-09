@@ -21,7 +21,7 @@ class MLS::Account < MLS::Resource
   property :twitter,                 String
   property :facebook,                String
   property :web,                     String
-  property :mls_number,              String
+  property :system_phone,            String
   
   property :city,                    String
   property :state,                   String
