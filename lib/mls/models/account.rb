@@ -37,6 +37,7 @@ class MLS::Account < MLS::Resource
 
   exclude_from_comparison :password, :password_confirmation
 
+  attr_accessor :favorite_ids
   attr_writer :favorites
 
   def update
@@ -170,9 +171,5 @@ class MLS::Account < MLS::Resource
 end
 
 class MLS::Account::Parser < MLS::Parser
-
-  def favorites=(favorites)
-    @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
-  end
 
 end
