@@ -37,7 +37,7 @@ class MLS::Account < MLS::Resource
 
   exclude_from_comparison :password, :password_confirmation
 
-  attr_accessor :favorite_ids, :password_required
+  attr_accessor :password_required
 
   attr_writer :favorites
 
