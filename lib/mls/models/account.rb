@@ -79,11 +79,10 @@ class MLS::Account < MLS::Resource
 
   def favorites
     return @favorites if @favorites
-
     response = MLS.get('/account/favorites')
     @favorites = MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
-
+  
   def favorited?(listing)
     favorites.include?(listing)
   end
@@ -178,5 +177,9 @@ class MLS::Account < MLS::Resource
 end
 
 class MLS::Account::Parser < MLS::Parser
+
+  def favorites=(favorites)
+    @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
+  end
 
 end
