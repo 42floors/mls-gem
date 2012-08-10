@@ -37,7 +37,8 @@ class MLS::Account < MLS::Resource
 
   exclude_from_comparison :password, :password_confirmation
 
-  attr_accessor :favorite_ids
+  attr_accessor :favorite_ids, :password_required
+
   attr_writer :favorites
 
   def update
@@ -115,6 +116,12 @@ class MLS::Account < MLS::Resource
     end
   end
 
+  def to_hash
+    hash = super
+    hash[:password_required] = password_required unless password_required.nil?
+    hash
+  end
+    
   class << self
 
     def current

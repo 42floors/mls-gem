@@ -21,7 +21,7 @@ class MLS::Photo < MLS::Resource
     url.user = nil
     url.path = "/api/photos"
     response = RestClient.post(url.to_s, {:file => image_file}, MLS.headers)
-    image_file.close
+    image_file.close unless image_file.closed?
 
     MLS::Photo::Parser.parse(response.body)
   end

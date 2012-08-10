@@ -13,4 +13,5 @@ require 'factory_girl'
 FactoryGirl.find_definitions
 
 MLS.url = ENV["MLS_TEST_URL"]
+MLS.auth_key = MLS::Account.authenticate(ENV["MLS_USER"], ENV["MLS_PASSWORD"]).auth_key
 
