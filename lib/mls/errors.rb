@@ -16,3 +16,5 @@ end
 class MLS::RecordInvalid < MLS::Exception
 end
 
+class MLS::ServiceUnavailable < MLS::Exception
+end

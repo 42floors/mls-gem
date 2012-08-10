@@ -132,6 +132,8 @@ class MLS
       super MLS::NotFound, message
     when 422
       super MLS::ApiVersionUnsupported, message
+    when 503
+      super MLS::ServiceUnavailable, message
     when 300...400
       super MLS::Exception, error_code
     when 400
