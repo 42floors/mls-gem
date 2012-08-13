@@ -98,7 +98,6 @@ class MLS::Listing < MLS::Resource
     
     def find(id)
       response = MLS.get("/listings/#{id}")
-      Rails.logger.debug response.body
       MLS::Listing::Parser.parse(response.body)
     end
 
