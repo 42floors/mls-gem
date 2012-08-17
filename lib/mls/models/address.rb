@@ -46,9 +46,8 @@ class MLS::Address < MLS::Resource
       response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :filters => filters)
     end
 
-    def find_by_slug(address_slug)
-      response = MLS.get('/addresses/find_by_slug', 
-                         :address_slug => address_slug)
+    def find(id)
+      response = MLS.get("/addresses/#{id}")
       MLS::Address::Parser.parse(response.body)
     end
     
@@ -68,6 +67,6 @@ class MLS::Address::Parser < MLS::Parser
   end
 
   def photos=(photos)
-    @object.photos = photos.map {|d| MLS::Photo.new(d) }
+    @object.photos = photos.map {|d| MLS::Photo.new({:digest => d})}
   end
 end
