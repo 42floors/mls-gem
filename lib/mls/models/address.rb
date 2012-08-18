@@ -16,10 +16,10 @@ class MLS::Address < MLS::Resource
   property :state, String
   property :country, String
   property :postal_code, String
-  property :min_rate_per_year, Decimal
-  property :max_rate_per_year, Decimal
-  property :max_size, Fixnum
-  property :min_size, Fixnum
+  property :min_rate_per_year, Decimal, :serialize => :if_present
+  property :max_rate_per_year, Decimal, :serialize => :if_present
+  property :max_size, Fixnum, :serialize => :if_present
+  property :min_size, Fixnum, :serialize => :if_present
   property :comments, String
   property :year_built, Fixnum
   property :total_size, Fixnum
