@@ -51,6 +51,11 @@ class MLS::Address < MLS::Resource
       MLS::Address::Parser.parse(response.body)
     end
     
+    def all(filters = {})
+      response = MLS.get('/addresses', :filter => filters)
+      MLS::Address::Parser.parse_collection(response.body)
+    end
+    
   end
   
 end
