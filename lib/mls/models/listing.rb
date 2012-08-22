@@ -62,6 +62,7 @@ class MLS::Listing < MLS::Resource
   
   property :created_at,                   DateTime
   property :updated_at,                   DateTime
+  property :leased_on,                    DateTime
   
   
   attr_accessor :address, :agents, :account, :photos#, :address_attributes, :agents_attributes, :photo_ids
