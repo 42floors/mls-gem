@@ -71,6 +71,10 @@ class MLS::Listing < MLS::Resource
     kind == 'sublease'
   end
 
+  def leased?
+    !leased_on.nil?
+  end
+
   def create
     MLS.post('/listings', :listing => to_hash) do |code, response|
       case code
