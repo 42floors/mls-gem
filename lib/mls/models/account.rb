@@ -96,6 +96,7 @@ class MLS::Account < MLS::Resource
         return false
       else
         MLS.handle_response(response)
+        @favorites = nil
         return true
       end
     end
@@ -110,6 +111,7 @@ class MLS::Account < MLS::Resource
         return false
       else
         MLS.handle_response(response)
+        @favorites = nil
         return true
       end
     end
