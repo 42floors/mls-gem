@@ -86,7 +86,7 @@ class MLS::Listing < MLS::Resource
         false
       else
         MLS.handle_response(response)
-        raise "shouldn't get here...."
+        raise "HTTP Error: #{code}"
       end
     end
   end
@@ -99,8 +99,24 @@ class MLS::Listing < MLS::Resource
     hash
   end
 
+  def import
+    MLS.post('/import', :listing => to_hash) do |code, response|
+      case code
+      when 200, 201, 202
+        MLS::Listing::Parser.update(self, response.body)
+        true
+      when 400
+        MLS::Listing::Parser.update(self, response.body)
+        false
+      else
+        MLS.handle_response(response)
+        raise "HTTP Error: #{code}"
+      end
+    end
+  end
+
   class << self
-    
+
     def find(id)
       response = MLS.get("/listings/#{id}")
       MLS::Listing::Parser.parse(response.body)
@@ -111,8 +127,14 @@ class MLS::Listing < MLS::Resource
       MLS::Listing::Parser.parse_collection(response.body)
     end
 
+    def import(attrs)
+      model = self.new(attrs)
+      model.import
+      model
+    end
+
   end
-  
+
 end
 
 

@@ -10,10 +10,9 @@ module MLS::Model
     model.save
     model
   end
-    
 
   # Properties ===================================================================================================
-  
+
   def property(name, type, options = {})
     klass = MLS::Property.determine_class(type)
     raise NotImplementedError, "#{type} is not supported" unless klass
