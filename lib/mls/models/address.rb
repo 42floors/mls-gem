@@ -43,7 +43,7 @@ class MLS::Address < MLS::Resource
 
     # Bounds is passed as 'n,e,s,w' or [n, e, s, w]
     def box_cluster(bounds, zoom, where={})
-      response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :where => filters)
+      response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :where => where)
     end
 
     def find(id)
