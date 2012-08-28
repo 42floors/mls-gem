@@ -42,8 +42,8 @@ class MLS::Address < MLS::Resource
     end
 
     # Bounds is passed as 'n,e,s,w' or [n, e, s, w]
-    def box_cluster(bounds, zoom, filters={})
-      response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :filters => filters)
+    def box_cluster(bounds, zoom, where={})
+      response = MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :where => filters)
     end
 
     def find(id)
@@ -51,8 +51,9 @@ class MLS::Address < MLS::Resource
       MLS::Address::Parser.parse(response.body)
     end
     
-    def all(filters = {})
-      response = MLS.get('/addresses', :filters => filters)
+    # currently supported options are :include && :where
+    def all(options={})
+      response = MLS.get('/addresses', options)
       MLS::Address::Parser.parse_collection(response.body)
     end
     
