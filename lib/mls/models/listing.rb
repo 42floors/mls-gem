@@ -6,10 +6,10 @@ class MLS::Listing < MLS::Resource
   RATE_UNITS = ['ft^2/year', 'ft^2/month', 'desk/month']
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
   
-  property :id,                           Fixnum,   :serialize => :if_present
+  property :id,                           Fixnum,   :serialize => :false
   property :address_id,                   Fixnum,   :serialize => :false
   property :use_id,                       Fixnum
-  property :use,                          String
+  property :use,                          String,   :serialize => :if_present
   property :account_id,                   Fixnum
   property :hidden,                       Boolean, :default => false
   property :source,                       String
@@ -31,7 +31,7 @@ class MLS::Listing < MLS::Resource
   property :rate_units,                   String, :default => 'ft^2/month'
   property :rate_per_month,               Decimal, :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_year,                Decimal, :serialize => :false
-  property :tenant_improvements,          String
+  property :tenant_improvements,          String, :serialize => :if_present
   property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
 
@@ -79,6 +79,23 @@ class MLS::Listing < MLS::Resource
     MLS.post('/listings', :listing => to_hash) do |code, response|
       case code
       when 201
+        MLS::Listing::Parser.update(self, response.body)
+        true
+      when 400
+        MLS::Listing::Parser.update(self, response.body)
+        false
+      else
+        MLS.handle_response(response)
+        raise "HTTP Error: #{code}"
+      end
+    end
+  end
+
+  def save
+    return create unless id
+    MLS.put("/listings/#{id}", :listing => to_hash) do |code, response|
+      case code
+      when 200
         MLS::Listing::Parser.update(self, response.body)
         true
       when 400
@@ -141,7 +158,9 @@ end
 class MLS::Listing::Parser < MLS::Parser
   
   def photos=(photos)
-    @object.photos = photos.map {|d| MLS::Photo.new(:digest => d) }
+    @object.photos = photos.map do |p|
+      MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
+    end
   end
    
   def address=(address)
