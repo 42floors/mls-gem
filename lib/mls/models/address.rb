@@ -29,11 +29,13 @@ class MLS::Address < MLS::Resource
   property :lobby_attendant, Boolean
   property :gym, Boolean
   property :leed_certification, String
-  property :listings_count, Fixnum
-  property :leased_listings_count, Fixnum
-  property :hidden_listings_count, Fixnum
-  property :import_listings_count, Fixnum
-  property :active_listings_count, Fixnum
+  
+  # Counter caches
+  property :listings_count, Fixnum, :serialize => :false
+  property :leased_listings_count, Fixnum, :serialize => :false
+  property :hidden_listings_count, Fixnum, :serialize => :false
+  property :import_listings_count, Fixnum, :serialize => :false
+  property :active_listings_count, Fixnum, :serialize => :false
 
   attr_accessor :listings, :listing_kinds, :photos
 
