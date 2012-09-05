@@ -64,9 +64,17 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime
   property :leased_on,                    DateTime
   
-  
+  property :avatar_digest,                String, :serialize => false
   attr_accessor :address, :agents, :account, :photos#, :address_attributes, :agents_attributes, :photo_ids
 
+  def avatar(size='150x100', protocol='http')
+    if avatar_digest
+      "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+    else
+      address.avatar(size, protocol)
+    end
+  end
+  
   def sublease?
     kind == 'sublease'
   end
