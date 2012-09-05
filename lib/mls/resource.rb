@@ -85,7 +85,8 @@ class MLS::Resource
     hash = {}
     
     properties.each do |name, property|
-      serialize = property.options[:serialize] || :always
+      serialize = property.options[:serialize]
+      serialize = :always if serialize.nil?
       case serialize
       when :always
         hash[name] = property.dump(self.send(name))

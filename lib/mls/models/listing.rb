@@ -11,13 +11,13 @@ class MLS::Listing < MLS::Resource
   property :use_id,                       Fixnum
   property :use,                          String,   :serialize => :if_present
   property :account_id,                   Fixnum
-  property :hidden,                       Boolean, :default => false
+  property :hidden,                       Boolean,  :default => false
   property :source,                       String
   property :source_url,                   String
     
   property :name,                         String
-  property :kind,                         String, :default => 'lease'
-  property :space_type,                   String, :default => 'unit'
+  property :kind,                         String,   :default => 'lease'
+  property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
   property :floor,                        Fixnum
   property :comments,                     String
@@ -28,10 +28,10 @@ class MLS::Listing < MLS::Resource
 
   property :lease_type,                   String
   property :rate,                         Decimal
-  property :rate_units,                   String, :default => 'ft^2/month'
-  property :rate_per_month,               Decimal, :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
-  property :rate_per_year,                Decimal, :serialize => :false
-  property :tenant_improvements,          String, :serialize => :if_present
+  property :rate_units,                   String,   :default => 'ft^2/month'
+  property :rate_per_month,               Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
+  property :rate_per_year,                Decimal,  :serialize => :false
+  property :tenant_improvements,          String,   :serialize => :if_present
   property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
 
@@ -44,27 +44,27 @@ class MLS::Listing < MLS::Resource
   property :bathrooms,                    Fixnum
   property :desks,                        Fixnum
   
-  property :kitchen,                      Boolean, :default => false
-  property :showers,                      Boolean, :default => false
-  property :bike_rack,                    Boolean, :default => false
-  property :bikes_allowed,                Boolean, :default => false
-  property :server_room,                  Boolean, :default => false
-  property :reception_area,               Boolean, :default => false
-  property :turnkey,                      Boolean, :default => false
-  property :patio,                        Boolean, :default => false
-  property :copy_room,                    Boolean, :default => false
-  property :dog_friendly,                 Boolean, :default => false
-  property :cabling,                      Boolean, :default => false
-  property :ready_to_move_in,             Boolean, :default => false
-  property :recent_space_improvements,    Boolean, :default => false
-  property :printers,                     Boolean, :default => false
-  property :furniture_available,          Boolean, :default => false
+  property :kitchen,                      Boolean,  :default => false
+  property :showers,                      Boolean,  :default => false
+  property :bike_rack,                    Boolean,  :default => false
+  property :bikes_allowed,                Boolean,  :default => false
+  property :server_room,                  Boolean,  :default => false
+  property :reception_area,               Boolean,  :default => false
+  property :turnkey,                      Boolean,  :default => false
+  property :patio,                        Boolean,  :default => false
+  property :copy_room,                    Boolean,  :default => false
+  property :dog_friendly,                 Boolean,  :default => false
+  property :cabling,                      Boolean,  :default => false
+  property :ready_to_move_in,             Boolean,  :default => false
+  property :recent_space_improvements,    Boolean,  :default => false
+  property :printers,                     Boolean,  :default => false
+  property :furniture_available,          Boolean,  :default => false
   
   property :created_at,                   DateTime
   property :updated_at,                   DateTime
   property :leased_on,                    DateTime
   
-  property :avatar_digest,                String, :serialize => false
+  property :avatar_digest,                String,   :serialize => false
   attr_accessor :address, :agents, :account, :photos#, :address_attributes, :agents_attributes, :photo_ids
 
   def avatar(size='150x100', protocol='http')
