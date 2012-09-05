@@ -43,26 +43,11 @@ class MLS::Address < MLS::Resource
     params = {
       :size => size,
       :format => 'png',
-      :maptype => 'roadmap',
       :sensor => false,
-      :markers => {
-        :style => { :icon => 'http://42floors.com/images/active-marker.png' },
-        :addresses => [formatted_address]
-      },
-      :style => "feature:all|element:geometry|saturation:-50&style="+
-                "feature:water|element:geometry|hue:0x57C8B4|lightness:40|saturation:10&style="+   
-                "feature:poi|element:geometry|hue:0xcaf979|saturation:50&style="+
-                "feature:landscape.man_made|element:geometry|hue:0xFFFFFF|saturation:-100|lightness:80&style="+
-                "feature:poi|element:labels|visibility:off&style="+
-                "feature:road|element:geometry|hue:0xfcdb4b|saturation:-100|lightness:60&style="+
-                "feature:road|element:labels|hue:0xcecece|saturation:-100|lightness:30&style="+
-                "feature:administrative|element:labels|hue:0xcecece|saturation:-100|lightness:40"
+      :location => [formatted_address]
     }
-    
-    params[:markers] = params[:markers][:style].map{|k,v| k.to_s + ':' + v.to_s } + params[:markers][:addresses]
-    params[:markers] = params[:markers].join('|')
-    
-    "#{protocol}://maps.googleapis.com/maps/api/staticmap?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
+
+    "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
   end
 
   class << self
