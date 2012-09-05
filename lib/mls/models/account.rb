@@ -4,6 +4,7 @@ class MLS::Account < MLS::Resource
   DEFAULTS = {:role => 'user'}
 
   property :id,                      Fixnum
+  property :type,                    String,   :default => 'User'
   property :role,                    String,   :default => 'user'
   property :name,                    String
   property :title,                   String
