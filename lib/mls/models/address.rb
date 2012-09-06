@@ -81,10 +81,10 @@ end
 class MLS::Address::Parser < MLS::Parser
 
   def listings=(listings)
-    @object.listings = listings.map { |d|
-      d = MLS::Listing::Parser.build(d)
-      d.address = @object
-      d
+    @object.listings = listings.map { |data|
+      listing = MLS::Listing::Parser.build(data)
+      listing.address = @object
+      listing
     }
   end
 
