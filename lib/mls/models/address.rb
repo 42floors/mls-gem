@@ -84,6 +84,7 @@ class MLS::Address::Parser < MLS::Parser
     @object.listings = listings.map { |d|
       d = MLS::Listing::Parser.build(d)
       d.address = @object
+      d
     }
   end
 
