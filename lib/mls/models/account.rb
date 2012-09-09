@@ -137,7 +137,7 @@ class MLS::Account < MLS::Resource
       
       response = MLS.get('/account', {:email => email, :password => password})
       MLS::Account::Parser.parse(response.body)
-    rescue MLS::Unauthorized => response
+    rescue MLS::Exception::Unauthorized => response
       nil
     end
 
@@ -157,7 +157,7 @@ class MLS::Account < MLS::Resource
     def update_password!(params_hash)
       response = MLS.put('/account/update_password', params_hash)
       MLS::Account::Parser.parse(response)
-    rescue MLS::BadRequest => response
+    rescue MLS::Exception::BadRequest => response
       @errors = MLS.parse(response.message)
       return false
     end

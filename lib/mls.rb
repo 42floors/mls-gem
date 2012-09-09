@@ -10,19 +10,14 @@ require 'active_support/core_ext'
 require 'date'
 require 'time'
 
-class BigDecimal
-  old_to_s = instance_method :to_s
-
-  define_method :to_s do |param='F'|
-    old_to_s.bind(self).(param)
-  end
+class Decimal #:nodoc:
 end
 
-class Decimal
-end
-class Boolean
+class Boolean #:nodoc:
 end
 
+# _MLS_ is a low-level API. It provides basic HTTP #get, #post, #put, and #delete
+# calls to the MLS. It can also provides basic error checking of responses.
 class MLS
   include Singleton
 
@@ -127,17 +122,17 @@ class MLS
   def raise(error_code, message=nil)
     case error_code.to_i
     when 401
-      super MLS::Unauthorized, message
+      super MLS::Exception::Unauthorized, message
     when 404, 410
-      super MLS::NotFound, message
+      super MLS::Exception::NotFound, message
     when 422
-      super MLS::ApiVersionUnsupported, message
+      super MLS::Exception::ApiVersionUnsupported, message
     when 503
-      super MLS::ServiceUnavailable, message
+      super MLS::Exception::ServiceUnavailable, message
     when 300...400
       super MLS::Exception, error_code
     when 400
-      super MLS::BadRequest, message
+      super MLS::Exception::BadRequest, message
     when 401...500
       super MLS::Exception, error_code
     when 500...600

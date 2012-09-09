@@ -1,20 +1,20 @@
 class MLS::Exception < Exception
 end
 
-class MLS::BadRequest < MLS::Exception
+class MLS::Exception::BadRequest < MLS::Exception
 end
 
-class MLS::Unauthorized < MLS::Exception
+class MLS::Exception::Unauthorized < MLS::Exception
 end
 
-class MLS::NotFound < MLS::Exception
+class MLS::Exception::NotFound < MLS::Exception
 end
 
-class MLS::ApiVersionUnsupported < MLS::Exception
+class MLS::Exception::ApiVersionUnsupported < MLS::Exception
 end
 
-class MLS::RecordInvalid < MLS::Exception
+class MLS::Exception::RecordInvalid < MLS::Exception
 end
 
-class MLS::ServiceUnavailable < MLS::Exception
+class MLS::Exception::ServiceUnavailable < MLS::Exception
 end

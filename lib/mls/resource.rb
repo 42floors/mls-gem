@@ -32,19 +32,19 @@ class MLS::Resource
   end
 
   def update!
-    update || raise(MLS::RecordInvalid)
+    update || raise(MLS::Exception::RecordInvalid)
   end
 
   def create!
-    create || raise(MLS::RecordInvalid)
+    create || raise(MLS::Exception::RecordInvalid)
   end
   
   def update!
-    update || raise(MLS::RecordInvalid)
+    update || raise(MLS::Exception::RecordInvalid)
   end
 
   def create!
-    create || raise(MLS::RecordInvalid)
+    create || raise(MLS::Exception::RecordInvalid)
   end
 
   def ==(other)
