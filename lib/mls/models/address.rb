@@ -39,12 +39,14 @@ class MLS::Address < MLS::Resource
 
   attr_accessor :listings, :listing_kinds, :photos
 
+  # should include an optional use address or no_image image
   def avatar(size='100x200', protocol='http')
     params = {
       :size => size,
       :format => 'png',
       :sensor => false,
-      :location => [formatted_address]
+      :location => [formatted_address],
+      :fov => 120
     }
 
     "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
