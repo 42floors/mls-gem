@@ -164,7 +164,7 @@ class MLS::Listing < MLS::Resource
 
     def import(attrs)
       model = self.new(attrs)
-      {:result => model.import, :model => model}
+      {:status => model.import, :model => model}
     end
 
   end
