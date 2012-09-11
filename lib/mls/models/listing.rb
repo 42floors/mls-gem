@@ -126,9 +126,17 @@ class MLS::Listing < MLS::Resource
   end
 
   def import
+    result = :failure
     MLS.post('/import', :listing => to_hash) do |code, response|
       case code
-      when 200, 201, 202
+      when 200
+        result = :duplicate
+        MLS::Listing::Parser.update(self, response.body)
+      when 201
+        result = :created
+        MLS::Listing::Parser.update(self, response.body)
+      when 202
+        result = :updated
         MLS::Listing::Parser.update(self, response.body)
         true
       when 400
@@ -139,6 +147,7 @@ class MLS::Listing < MLS::Resource
         raise "HTTP Error: #{code}"
       end
     end
+    result
   end
 
   class << self
@@ -155,8 +164,7 @@ class MLS::Listing < MLS::Resource
 
     def import(attrs)
       model = self.new(attrs)
-      model.import
-      model
+      {:result => model.import, :model => model}
     end
 
   end
