@@ -14,6 +14,7 @@ class MLS::Listing < MLS::Resource
   property :hidden,                       Boolean,  :default => false
   property :source,                       String
   property :source_url,                   String
+  property :flyer_url,                    String, :serialize => false
     
   property :name,                         String
   property :kind,                         String,   :default => 'lease'
