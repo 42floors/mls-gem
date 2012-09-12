@@ -131,6 +131,18 @@ class MLS::Account < MLS::Resource
       MLS::Account::Parser.parse(response.body)
     end
     
+    # Authenticate and Account via <tt>email</tt> and <tt>password</tt>. Returns
+    # the <tt>Account</tt> object if successfully authenticated. Returns <tt>nil</tt>
+    # if the account could not be found, password was incorrect, or the account
+    # was revoked
+    #
+    # ==== Examples
+    #  #!ruby
+    #  Account.authenticate(:email => 'jon@does.net', :password => 'opensesame') # => #<Account>
+    #    
+    #  Account.authenticate('jon@does.net', 'opensesame') # => #<Account>
+    #
+    #  Account.authenticate('jon@does.net', 'wrong') # => nil
     def authenticate(attrs_or_email, password=nil)
       email = attrs_or_email.is_a?(Hash) ? attrs_or_email[:email] : attrs_or_email
       password = attrs_or_email.is_a?(Hash) ? attrs_or_email[:password] : password

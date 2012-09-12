@@ -23,8 +23,14 @@ class MLS
 
   API_VERSION = '0.1.0'
 
-  attr_accessor :url, :api_key, :auth_key, :logger, :asset_host
+  attr_reader :url
+  attr_writer :asset_host
+  attr_accessor :api_key, :auth_key, :logger
 
+  # Sets the API Token and Host of the MLS Server
+  #
+  #  #!ruby
+  #  MLS.url = "https://mls.42floors.com/API_KEY"
   def url=(uri)
     @url = URI.parse(uri)
     @api_key = CGI.unescape(@url.user)
@@ -35,10 +41,14 @@ class MLS
     @logger ||= default_logger
   end
 
+  # Returns the current connection to the MLS or if connection has been made
+  # it returns a new connection
   def connection
     @connection ||= Net::HTTP.new(@host, @port)
   end
 
+  # provides the asset host, if asset_host is set then it is returned,
+  # otherwise it queries the MLS for this configuration.
   def asset_host
     @asset_host ||= get('/asset_host').body
   end
@@ -140,6 +150,13 @@ class MLS
     end
   end
 
+  # Ping the MLS. If everything is configured and operating correctly <tt>"pong"</tt>
+  # will be returned. Otherwise and MLS::Exception should be thrown.
+  #
+  #  #!ruby
+  #  MLS.ping # => "pong"
+  #    
+  #  MLS.ping # raises MLS::Exception::ServiceUnavailable if a 503 is returned
   def ping
     get('/ping').body
   end
@@ -154,7 +171,8 @@ class MLS
     logger
   end
 
-  def self.method_missing(method, *args, &block)
+  # Delegates all uncauge class method calls to the singleton
+  def self.method_missing(method, *args, &block) #:nodoc:
     instance.__send__(method, *args, &block)
   end
   
