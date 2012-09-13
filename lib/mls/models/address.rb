@@ -68,6 +68,11 @@ class MLS::Address < MLS::Resource
       response = MLS.get("/addresses/#{id}")
       MLS::Address::Parser.parse(response.body)
     end
+
+    def find_by_address(state, city, street, street_number)
+      response = MLS.get("/addresses/find_by_address/#{state}/#{city}/#{street}/#{street_number}")
+      MLS::Address::Parser.parse(response.body)
+    end
     
     # currently supported options are :include && :where
     def all(options={})
