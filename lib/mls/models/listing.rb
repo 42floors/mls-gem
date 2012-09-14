@@ -122,17 +122,12 @@ class MLS::Listing < MLS::Resource
 
   def save
     return create unless id
-    MLS.put("/listings/#{id}", :listing => to_hash) do |code, response|
-      case code
-      when 200
+    MLS.put("/listings/#{id}", {:listing => to_hash}, 400) do |code, response|
+      if code == 200 || code == 400
         MLS::Listing::Parser.update(self, response.body)
-        true
-      when 400
-        MLS::Listing::Parser.update(self, response.body)
-        false
+        code == 200      
       else
-        MLS.handle_response(response)
-        raise "HTTP Error: #{code}"
+        raise MLS::Exception::UnexpectedResponse, code
       end
     end
   end

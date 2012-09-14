@@ -16,16 +16,8 @@ class MLS::TourRequest < MLS::Resource
 
   class << self
     def get_all_for_account
-      MLS.get('/account/tour_requests') do |code, response|
-        case code
-        when 400
-          @errors = MLS.parse(response.body)[:errors]
-          return false
-        else
-          MLS.handle_response(response)
-          return MLS::TourRequest::Parser.parse_collection(response.body)
-        end
-      end
+      response = MLS.get('/account/tour_requests')
+      MLS::TourRequest::Parser.parse_collection(response.body)
     end
 
   end

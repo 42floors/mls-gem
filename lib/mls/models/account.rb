@@ -43,18 +43,9 @@ class MLS::Account < MLS::Resource
   attr_writer :favorites
 
   def update
-    MLS.put('/account', to_hash) do |code, response|
-      case code
-      when 200
-        MLS::Account::Parser.update(self, response.body)
-        true
-      when 400
-        MLS::Account::Parser.update(self, response.body)
-        false
-      else
-        MLS.handle_response(response)
-        raise "shouldn't get here...."
-      end
+    MLS.put('/account', to_hash, 400) do |response, code|
+      MLS::Account::Parser.update(self, response.body)
+      code == 200
     end
   end
   
@@ -149,37 +140,21 @@ class MLS::Account < MLS::Resource
     end
 
     def reset_password!(email)
-      MLS.put('/account/reset_password', {:email => email}) do |code, response|
-        case code
-        when 400
-          @errors = MLS.parse(response.body)[:errors]
-          return false
-        else
-          MLS.handle_response(response)
-          return true
-        end
+      MLS.put('/account/reset_password', {:email => email}, 400) do |response, code|
+        MLS::Account::Parser.update(self, response.body)
+        code == 200
       end
     end
 
     def update_password!(params_hash)
-      response = MLS.put('/account/update_password', params_hash)
-      MLS::Account::Parser.parse(response)
-    rescue MLS::Exception::BadRequest => response
-      @errors = MLS.parse(response.message)
-      return false
+      MLS.put('/account/update_password', params_hash, 400) do |response, code|
+        MLS::Account::Parser.parse(response.body)
+      end
     end
 
     def search(terms)
-      results = nil
-      MLS.get('/account/search', :query => terms) do |code, response|
-        case code
-        when 200
-          results = MLS::Account::Parser.parse_collection(response.body)
-        else
-          MLS.handle_response(response)
-        end
-      end
-      results
+      response = MLS.get('/account/search', :query => terms)
+      MLS::Account::Parser.parse_collection(response.body)
     end
 
   end
