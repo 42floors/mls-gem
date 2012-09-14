@@ -12,6 +12,7 @@ require 'factory_girl'
 require 'fakeweb'
 
 CACHE = {}
+MLS_HOST = 'http://localhost:4000/api'
 FactoryGirl.find_definitions
 
 MLS.url = 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:4000'#ENV["MLS_TEST_URL"]
@@ -30,5 +31,16 @@ class ::Test::Unit::TestCase
         flunk "No implementation provided for #{name}"
       end
     end
+  end
+end
+
+def mock_response(method=:get, code='200', body='')
+  FakeWeb.register_uri(method, "http://mls.test/test", :status => [code, "Filler"], :body => body)
+  uri = URI.parse("http://mls.test/test")
+  case method
+  when :get
+    Net::HTTP.get_response(uri)
+  when :post
+    Net::HTTP.post_form(uri)
   end
 end

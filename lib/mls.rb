@@ -86,7 +86,7 @@ class MLS
   # Paramaters::
   #
   # * +url+ - The +url+ on the server to Post to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. So to post to <tt>"/api/account"</tt>
+  #   be prefixed with <tt>"/api"</tt>. So to post to <tt>"/api/accounts"</tt>
   #   you only need to pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the POST
   #   Body.
@@ -118,6 +118,7 @@ class MLS
   #  MLS.post('/404', nil, 404) # => #<Net::HTTP::Response>
   #
   #  # this will still raise an exception if the response_code is not valid
+  #  # and the block will not be called
   #  MLS.post('/act') do |response, response_code|
   #    # ...
   #  end
