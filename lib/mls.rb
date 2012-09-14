@@ -67,6 +67,63 @@ class MLS
     headers.each { |k, v| req[k] = v }
   end
   
+  # Gets to +url+ on the MLS Server. Automatically includes any headers returned
+  # by the MLS#headers function.
+  #
+  # Paramaters::
+  #
+  # * +url+ - The +url+ on the server to Get to. This url will automatically
+  #   be prefixed with <tt>"/api"</tt>. To get to <tt>"/api/accounts"</tt>
+  #   pass <tt>"/accounts"</tt> as +url+
+  # * +params+ - A Hash or Ruby Object that responds to #to_param. The result 
+  #   of this method is appended on the URL as query params
+  # * +valid_response_codes+ - An Array of HTTP response codes that should be
+  #   considered accepable and not raise exceptions. For example If you don't
+  #   want a MLS::Exception::NotFound to be raised when a GET request returns
+  #   a 404 pass in 404, and the response body will be returned if the status
+  #   code is a 404 as it does if the status code is in the 200..299 rage. Status
+  #   codes in the 200..299 range are *always* considred acceptable
+  #
+  # Return Value::
+  #
+  #  Returns the return value of the <tt>&block</tt> if given, otherwise the response
+  #  object
+  #
+  # Examples:
+  #
+  #  #!ruby
+  #  MLS.get('/example') # => #<Net::HTTP::Response>
+  #
+  #  MLS.get('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #
+  #  MLS.get('/404') # => raises MLS::Exception::NotFound
+  #
+  #  MLS.get('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #
+  #  MLS.get('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #
+  #  MLS.get('/404', nil, 404) # => #<Net::HTTP::Response>
+  #
+  #  # this will still raise an exception if the response_code is not valid
+  #  # and the block will not be called
+  #  MLS.get('/act') do |response, response_code|
+  #    # ...
+  #  end
+  def get(url, params={}, *valid_response_codes, &block)
+    params ||= {}
+    
+    req = Net::HTTP::Get.new("/api#{url}?" + params.to_param)
+    add_headers(req)
+
+    response = connection.request(req)
+    handle_response(response, valid_response_codes)
+    if block_given?
+      yield(response, response.code.to_i)
+    else
+      response
+    end
+  end
+  
   # Puts to +url+ on the MLS Server. Automatically includes any headers returned
   # by the MLS#headers function.
   #
@@ -240,18 +297,6 @@ class MLS
       yield(response, response.code.to_i)
     else
       response
-    end
-  end
-  
-  def get(url, params={}) # TODO: testme
-    url = "/api#{url}?" + params.to_param
-    req = Net::HTTP::Get.new(url)
-    add_headers(req)
-    response = connection.request(req)
-    if block_given?
-      yield(response.code.to_i, response)
-    else
-      handle_response(response)
     end
   end
 
