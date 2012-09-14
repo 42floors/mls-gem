@@ -28,8 +28,54 @@ class TestMLS < ::Test::Unit::TestCase
     assert mls.respond_to?(:default_logger)
   end
 
-  def test_class_methods
-    assert MLS.respond_to?(:parse)
+  test 'handle_response raises BadRequest on 400' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["400", "BadRequest"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::BadRequest){ MLS.handle_response(response) }
+  end
+    
+  test 'handle_response raises Unauthorized on 401' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["401", "Unauthorized"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::Unauthorized){ MLS.handle_response(response) }
+  end
+    
+  test 'handle_response raises NotFound on 404' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["404", "Not Found"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::NotFound){ MLS.handle_response(response) }
+  end
+
+  test 'handle_response raises NotFound on 410' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["410", "Not Found"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::NotFound){ MLS.handle_response(response) }
+  end
+
+  test 'handle_response raises ApiVersionUnsupported on 422' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["422", "Unsupported"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::ApiVersionUnsupported){ MLS.handle_response(response) }
+  end
+  
+  test 'handle_response raises ServiceUnavailable on 503' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["503", "Error"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception::ServiceUnavailable){ MLS.handle_response(response) }
+  end
+  
+  test 'handle_response raises Exception on 350, 450, & 550' do
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["350", "Error"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception){ MLS.handle_response(response) }
+
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["450", "Error"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception){ MLS.handle_response(response) }
+
+    FakeWeb.register_uri(:get, "http://mls.test/test", :status => ["550", "Error"])
+    response = Net::HTTP.get_response(URI.parse("http://mls.test/test"))
+    assert_raises(MLS::Exception){ MLS.handle_response(response) }
   end
   
 end

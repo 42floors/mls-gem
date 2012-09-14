@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'turn'
   s.add_development_dependency 'faker'
   s.add_development_dependency 'factory_girl'
+  s.add_development_dependency 'fakeweb'
 
   # Runtime
   s.add_runtime_dependency 'activesupport'

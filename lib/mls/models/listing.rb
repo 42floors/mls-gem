@@ -61,8 +61,8 @@ class MLS::Listing < MLS::Resource
   property :printers,                     Boolean,  :default => false
   property :furniture_available,          Boolean,  :default => false
   
-  property :created_at,                   DateTime
-  property :updated_at,                   DateTime
+  property :created_at,                   DateTime,  :serialize => :false
+  property :updated_at,                   DateTime,  :serialize => :false
   property :leased_on,                    DateTime
   
   property :avatar_digest,                String,   :serialize => false
@@ -83,20 +83,40 @@ class MLS::Listing < MLS::Resource
   def leased?
     !leased_on.nil?
   end
+  
+  # Creates a tour request for the listing.
+  #
+  # Paramaters::
+  #
+  # * +name+ - Name of the User requesting the tour
+  # * +email+ - Email of the User requesting the tour
+  # * +info+ - A optional +Hash+ of *company* info. Valid keys are:
+  #   * +:message+ - Overrides the default message on the email sent to the broker
+  #   * +:company+ - The name of the company that is interested in the space
+  #   * +:population+ - The current number of employees at the company
+  #   * +:funding+ - Amount of money the company has raised if a startup
+  #   * +:move_in_date+ - Approxamite time the user is looking to move into a space (YYYY-MM-DD)
+  #
+  # Examples:
+  #
+  #  #!ruby
+  #  listing = MLS::Listing.find(@id)
+  #  info => {:company => 'name', :population => 10, :funding => 'string', :move_id => '2012-09-12'}
+  #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::TourRequest>
+  #  
+  #  listing.request_tour('', 'emai', info) # => #<MLS::TourRequest> will have errors on account
+  def request_tour(name, email, info={})
+    params = {:account => {:name => name, :email => email}, :info => info}
+    MLS.post("/listings/#{id}/tour_requests", params, 400) do |response|
+      return MLS::TourRequest::Parser.parse(response.body)
+    end
+  end
+  
 
   def create
-    MLS.post('/listings', :listing => to_hash) do |code, response|
-      case code
-      when 201
-        MLS::Listing::Parser.update(self, response.body)
-        true
-      when 400
-        MLS::Listing::Parser.update(self, response.body)
-        false
-      else
-        MLS.handle_response(response)
-        raise "HTTP Error: #{code}"
-      end
+    MLS.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
+      raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
+      MLS::Listing::Parser.update(self, response.body)
     end
   end
 

@@ -70,5 +70,124 @@ class TestListing < ::Test::Unit::TestCase
   def test_class_methods
     assert MLS::Listing.respond_to?(:find)
   end
+  
+  test '#request_tour for email without an account' do
+    @listing = FactoryGirl.create(:listing)
+    @name = Faker::Name.name
+    @email = Faker::Internet.email
+    tr = @listing.request_tour(@name, @email)
+
+
+    assert_equal({}, tr.errors)
+    assert_equal({}, tr.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr.id
+  end
+  
+  test '#request_tour for email on a ghost account' do
+    @account = FactoryGirl.create(:ghost_account)
+    @listing = FactoryGirl.create(:listing)
+    
+    tr = @listing.request_tour(@account.name, @account.email)
+    assert_equal({}, tr.errors)
+    assert_equal({}, tr.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr.id
+  end
+  
+  test '#request_tour for email on an account' do
+    @account = FactoryGirl.create(:account)
+    @listing = FactoryGirl.create(:listing)
+
+    tr = @listing.request_tour(@account.name, @account.email)
+    assert_equal({}, tr.errors)
+    assert_equal({}, tr.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr.id
+  end
+  
+  test '#request_tour for an non-existant listing' do
+    @listing = FactoryGirl.build(:listing, :id => 94332)
+    
+    assert_raises(MLS::Exception::NotFound) do
+      @listing.request_tour(Faker::Name.name, Faker::Internet.email)
+    end
+  end
+  
+  test '#request_tour without and account name' do
+    @listing = FactoryGirl.create(:listing)
+    
+    tr = @listing.request_tour('', Faker::Internet.email)
+    assert !tr.id
+    assert_equal({:name => ["can't be blank"]}, tr.account.errors)
+    
+    tr = @listing.request_tour(nil, Faker::Internet.email)
+    assert !tr.id
+    assert_equal({:name => ["can't be blank"]}, tr.account.errors)
+  end
+  
+  test '#request_tour without an account email' do
+    @listing = FactoryGirl.create(:listing)
+    
+    tr = @listing.request_tour(Faker::Name.name, '')
+    assert !tr.id
+    assert_equal({:email => ["can't be blank", "is invalid"]}, tr.account.errors)
+    
+    tr = @listing.request_tour(Faker::Name.name, nil)
+    assert !tr.id
+    # assert !tr.persisted? #TODO move to persisted being based of id?
+    assert_equal({:email => ["can't be blank", "is invalid"]}, tr.account.errors)
+  end
+  
+  test '#request_tour with an account email' do
+    @account = FactoryGirl.create(:account)
+    @listing = FactoryGirl.create(:listing)
+    
+    tr = @listing.request_tour('', @account.email) # TODO should this try to set the name of the account?
+    assert_equal({}, tr.errors)
+    assert_equal({}, tr.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr.id
+    assert tr.persisted?
+  end
+  
+  test '#request_tour multiple times for a listing' do
+    @account = FactoryGirl.create(:account)
+    @listing = FactoryGirl.create(:listing)
+    
+    tr1 = @listing.request_tour(@account.name, @account.email)
+    assert_equal({}, tr1.errors) # TODO should errors be here for account?
+    assert_equal({}, tr1.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr1.persisted?
+      
+    tr2 = @listing.request_tour(@account.name, @account.email)
+    assert_equal({}, tr2.errors)
+    assert_equal({}, tr2.account.errors)
+    # TODO assert_equal({}, tr.listing.errors)
+    assert tr2.persisted?
+    
+    assert_not_equal tr1.id, tr2.id
+  end
+  
+  test '#request_tour with optional info' do
+    @listing = FactoryGirl.create(:listing)
+    
+    info = {:company => '42Floors', :population => 10, :funding => 'string thing', :move_in_date => '2012-09-12'}
+    tr = @listing.request_tour(Faker::Name.name, Faker::Internet.email, info)
+
+    assert tr.id
+    assert_equal '42Floors', info[:company]
+    assert_equal 10, info[:population]
+    assert_equal 'string thing', info[:funding]
+    assert_equal '2012-09-12', info[:move_in_date]
+    
+    tr = @listing.request_tour('', nil, info)
+    assert !tr.id
+    assert_equal '42Floors', info[:company]
+    assert_equal 10, info[:population]
+    assert_equal 'string thing', info[:funding]
+    assert_equal '2012-09-12', info[:move_in_date]
+  end
 
 end

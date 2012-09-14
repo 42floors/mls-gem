@@ -58,19 +58,14 @@ class MLS::Account < MLS::Resource
     end
   end
   
+  # Save the Account to the MLS. @errors will be set on the account if there
+  # are any errors. @persisted will also be set to +true+ if the Account was
+  # succesfully created
   def create
-    MLS.post('/account', to_hash) do |code, response|
-      case code
-      when 201
-        MLS::Account::Parser.update(self, response.body)
-        @persisted = true
-      when 400
-        MLS::Account::Parser.update(self, response.body)
-        false
-      else
-        MLS.handle_response(response)
-        raise "shouldn't get here...."
-      end
+    MLS.post('/account', to_hash, 400) do |response, code|
+      raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
+      MLS::Account::Parser.update(self, response.body)
+      @persisted = true
     end
   end
 

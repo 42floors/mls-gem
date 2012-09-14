@@ -13,4 +13,3 @@ FactoryGirl.define do
     longitude     { Kernel.rand((-180.0)..(180.0)) }
   end
 end
-

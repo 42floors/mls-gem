@@ -1,6 +1,9 @@
 class MLS::Exception < Exception
 end
 
+class MLS::Exception::UnexpectedResponse < MLS::Exception
+end
+
 class MLS::Exception::BadRequest < MLS::Exception
 end
 
