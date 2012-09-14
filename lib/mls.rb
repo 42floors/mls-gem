@@ -122,7 +122,7 @@ class MLS
   #  MLS.post('/act') do |response, response_code|
   #    # ...
   #  end
-  def post(url, body={}, *valid_response_codes, &block) # TODO: testme
+  def post(url, body={}, *valid_response_codes, &block)
     body ||= {}
     
     req = Net::HTTP::Post.new("/api#{url}")
@@ -139,19 +139,64 @@ class MLS
     end
   end
 
-  def delete(url, body={}) # TODO: testme
+  # Post to +url+ on the MLS Server. Automatically includes any headers returned
+  # by the MLS#headers function.
+  #
+  # Paramaters::
+  #
+  # * +url+ - The +url+ on the server to Post to. This url will automatically
+  #   be prefixed with <tt>"/api"</tt>. So to delete to <tt>"/api/accounts"</tt>
+  #   you only need to pass <tt>"/accounts"</tt> as +url+
+  # * +body+ - A Ruby object which is converted into JSON and added in the DELETE
+  #   Body.
+  # * +valid_response_codes+ - An Array of HTTP response codes that should be
+  #   considered accepable and not raise exceptions. For example If you don't
+  #   want a MLS::Exception::NotFound to be raised when a POST request returns
+  #   a 404 pass in 404, and the response body will be returned if the status
+  #   code is a 404 as it does if the status code is in the 200..299 rage. Status
+  #   codes in the 200..299 range are *always* considred acceptable
+  #
+  # Return Value::
+  #
+  #  Returns the return value of the <tt>&block</tt> if given, otherwise the
+  #  response object
+  #
+  # Examples:
+  #
+  #  #!ruby
+  #  MLS.delete('/example') # => #<Net::HTTP::Response>
+  #
+  #  MLS.delete('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #
+  #  MLS.delete('/404') # => raises MLS::Exception::NotFound
+  #
+  #  MLS.delete('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #
+  #  MLS.delete('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #
+  #  MLS.delete('/404', nil, 404) # => #<Net::HTTP::Response>
+  #
+  #  # this will still raise an exception if the response_code is not valid
+  #  # and the block will not be called
+  #  MLS.delete('/act') do |response, response_code|
+  #    # ...
+  #  end
+  def delete(url, body={}, *valid_response_codes, &block) # TODO: testme
+    body ||= {}
+    
     req = Net::HTTP::Delete.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
     add_headers(req)
     
     response = connection.request(req)
+    handle_response(response, valid_response_codes)
     if block_given?
-      yield(response.code.to_i, response)
+      yield(response, response.code.to_i)
     else
-      handle_response(response)
+      response
     end
   end
-
+  
   def get(url, params={}) # TODO: testme
     url = "/api#{url}?" + params.to_param
     req = Net::HTTP::Get.new(url)

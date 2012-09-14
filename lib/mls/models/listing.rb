@@ -145,27 +145,20 @@ class MLS::Listing < MLS::Resource
     hash
   end
 
-  def import
+  def import #TODO test me
     result = :failure
-    MLS.post('/import', :listing => to_hash) do |code, response|
+    MLS.post('/import', {:listing => to_hash}, 400) do |code, response|
       case code
       when 200
         result = :duplicate
-        MLS::Listing::Parser.update(self, response.body)
       when 201
         result = :created
-        MLS::Listing::Parser.update(self, response.body)
       when 202
         result = :updated
-        MLS::Listing::Parser.update(self, response.body)
-        true
-      when 400
-        MLS::Listing::Parser.update(self, response.body)
-        false
       else
-        MLS.handle_response(response)
-        raise "HTTP Error: #{code}"
+        MLS.handle_response(response, 200, 201, 202, 400)
       end
+      MLS::Listing::Parser.update(self, response.body)
     end
     result
   end
