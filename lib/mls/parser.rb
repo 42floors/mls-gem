@@ -45,7 +45,7 @@ class MLS::Parser
   end
   
   def method_missing(method, *args, &block)
-    object.__send__(method, *args, &block)
+    object.__send__(method, *args, &block) if object.methods.include?(method)
   end  
   
   def extract_attributes(data)
