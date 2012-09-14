@@ -3,6 +3,7 @@ class MLS::Address < MLS::Resource
   property :id, Fixnum,   :serialize => :if_present
   property :name, String, :serialize => :false
   property :slug, String,   :serialize => :if_present
+  property :slug_deprecated, String,   :serialize => :if_present
   
   property :latitude, Decimal
   property :longitude, Decimal
