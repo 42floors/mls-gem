@@ -28,6 +28,61 @@ class TestMLS < ::Test::Unit::TestCase
     assert mls.respond_to?(:default_logger)
   end
   
+  # MLS.put =================================================================
+      
+  test '#put' do
+    FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put')
+    response = MLS.put('/test')
+    assert_equal 'put', response.body
+  end
+  
+  test '#put with a body' do
+    FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put')
+    response = MLS.put('/test', :key => 'value')
+    
+    assert_equal '{"key":"value"}', FakeWeb.last_request.body    
+  end
+  
+  test '#put to 404 raises MLS::Exception::NotFound' do
+    FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+    
+    assert_raises(MLS::Exception::NotFound) { MLS.put('/test') }
+  end
+  
+  test '#put to 404 doesnt raise NotFound if in valid_response_codes' do
+    assert_nothing_raised {
+      FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+      MLS.put('/test', nil, 404)
+
+      FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+      MLS.put('/test', nil, 400..499)
+      
+      FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+      MLS.put('/test', nil, 300..399, 404)
+      
+      FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+      MLS.put('/test', nil, 404, 300..399)
+      
+      FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['404', ''])
+      MLS.put('/test', nil, [300..399, 404])
+    }
+  end
+  
+  test '#put with block' do
+    FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put')
+    MLS.put('/test') do |response|
+      assert_equal 'put', response.body
+    end
+
+    # make sure block is not called when not in valid_response_codes
+    FakeWeb.register_uri(:put, "#{MLS_HOST}/test", :body => 'put', :status => ['401', ''])
+    assert_raises(MLS::Exception::Unauthorized) {
+      MLS.put('/test') do |response|
+        raise MLS::Exception, 'Should not get here'
+      end
+    }
+  end
+  
   # MLS.post =================================================================
       
   test '#post' do

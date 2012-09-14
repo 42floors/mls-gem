@@ -155,8 +155,9 @@ class MLS::Listing < MLS::Resource
         result = :created
       when 202
         result = :updated
+      when 400
       else
-        MLS.handle_response(response, 200, 201, 202, 400)
+        raise MLS::Exception::UnexpectedResponse, code
       end
       MLS::Listing::Parser.update(self, response.body)
     end
