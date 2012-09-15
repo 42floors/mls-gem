@@ -1,12 +1,25 @@
 module MLS::Model
 
-  def self.extended(model)
+  def self.extended(model) #:nodoc:
     model.instance_variable_set(:@properties, {})
     model.instance_variable_set(:@associations, {})
   end
 
-  def create(attrs={})
-    model = self.new(attrs)
+  # Creates an object and saves it to the MLS. The resulting object is returned
+  # whether or no the object was saved successfully to the MLS or not.
+  #
+  # ==== Examples
+  #  #!ruby
+  #  # Create a single new object
+  #  User.create(:first_name => 'Jamie')
+  #  
+  #  # Create a single object and pass it into a block to set other attributes.
+  #  User.create(:first_name => 'Jamie') do |u|
+  #    u.is_admin = false
+  #  end
+  def create(attributes={}, &block) # TODO: testme
+    model = self.new(attributes)
+    yield(model) if block_given?
     model.save
     model
   end
