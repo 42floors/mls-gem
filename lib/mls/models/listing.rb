@@ -151,6 +151,7 @@ class MLS::Listing < MLS::Resource
       when 202
         result = :updated
       when 400
+        result = :failure
       else
         raise MLS::Exception::UnexpectedResponse, code
       end
