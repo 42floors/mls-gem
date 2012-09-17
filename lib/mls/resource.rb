@@ -38,14 +38,6 @@ class MLS::Resource
   def create!
     create || raise(MLS::Exception::RecordInvalid)
   end
-  
-  def update!
-    update || raise(MLS::Exception::RecordInvalid)
-  end
-
-  def create!
-    create || raise(MLS::Exception::RecordInvalid)
-  end
 
   def ==(other)
     self.class == other.class && properties_for_comparison == other.properties_for_comparison

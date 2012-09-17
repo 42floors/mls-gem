@@ -58,6 +58,7 @@ class MLS::Account < MLS::Resource
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
       MLS::Account::Parser.update(self, response.body)
       @persisted = true
+      code == 201
     end
   end
 
