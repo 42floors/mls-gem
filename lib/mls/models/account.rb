@@ -13,6 +13,7 @@ class MLS::Account < MLS::Resource
   property :password_confirmation,   String,   :serialize => :if_present
   property :perishable_token,        String
   property :perishable_token_set_at, String
+  property :ghost,                   Boolean,  :serialize => false, :default => false
   
   property :phone,                   String
   property :system_phone,            String
