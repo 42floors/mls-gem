@@ -76,33 +76,19 @@ class MLS::Account < MLS::Resource
     favorites.include?(listing)
   end
   
-  def favorite(listing) # TODO: fixme and test me
+  def favorite(listing) # TODO: test me, i don't work on failures
     params_hash = {:id => listing.is_a?(MLS::Listing) ? listing.id : listing }
-    MLS.post('/account/favorites', params_hash) do |code, response|
-      case code
-      when 400
-        @errors = MLS.parse(response.body)[:errors]
-        return false
-      else
-        MLS.handle_response(response)
-        @favorites = nil
-        return true
-      end
+    MLS.post('/account/favorites', params_hash) do |response, code|
+      @favorites = nil
+      true
     end
   end
 
-  def unfavorite(listing_id)
+  def unfavorite(listing_id) # TODO: test me, i don't work on failures
     listing_id = listing_id.is_a?(MLS::Listing) ? listing_id.id : listing_id
-    MLS.delete("/account/favorites/#{listing_id}") do |code, response|
-      case code
-      when 400
-        @errors = MLS.parse(response.body)[:errors]
-        return false
-      else
-        MLS.handle_response(response)
-        @favorites = nil
-        return true
-      end
+    MLS.delete("/account/favorites/#{listing_id}") do |response, code|
+      @favorites = nil
+      true
     end
   end
 

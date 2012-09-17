@@ -26,4 +26,5 @@ class TestResource < ::Test::Unit::TestCase
     assert resource.respond_to?(:to_key)
   end
 
+  test 'save returns true || false'
 end
