@@ -139,6 +139,10 @@ class MLS::Listing < MLS::Resource
     hash[:photo_ids] = photos.map(&:id) if photos
     hash
   end
+  
+  def to_param
+    [address.state, address.city, address.name, id.to_s].map(&:parameterize).join('/')
+  end
 
   def import #TODO test me
     result = :failure

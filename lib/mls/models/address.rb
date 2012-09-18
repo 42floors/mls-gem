@@ -52,6 +52,10 @@ class MLS::Address < MLS::Resource
     "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
   end
 
+  def to_param
+    [address.state, address.city, address.name].map(&:parameterize).join('/')
+  end
+
   class << self
     
     def query(q)
