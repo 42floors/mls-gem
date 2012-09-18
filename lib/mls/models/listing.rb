@@ -107,7 +107,7 @@ class MLS::Listing < MLS::Resource
   #  listing.request_tour('', 'emai', info) # => #<MLS::TourRequest> will have errors on account
   def request_tour(name, email, info={})
     params = {:account => {:name => name, :email => email}, :info => info}
-    MLS.post("/listings/#{id}/tour_requests", params, 400) do |response|
+    MLS.post("/listings/#{id}/tour_requests", params, 400) do |response, code|
       return MLS::TourRequest::Parser.parse(response.body)
     end
   end
@@ -122,7 +122,7 @@ class MLS::Listing < MLS::Resource
 
   def save
     return create unless id
-    MLS.put("/listings/#{id}", {:listing => to_hash}, 400) do |code, response|
+    MLS.put("/listings/#{id}", {:listing => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
         MLS::Listing::Parser.update(self, response.body)
         code == 200      
@@ -142,7 +142,7 @@ class MLS::Listing < MLS::Resource
 
   def import #TODO test me
     result = :failure
-    MLS.post('/import', {:listing => to_hash}, 400) do |code, response|
+    MLS.post('/import', {:listing => to_hash}, 400) do |response, code|
       case code
       when 200
         result = :duplicate
