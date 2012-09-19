@@ -53,7 +53,7 @@ class MLS::Address < MLS::Resource
   end
 
   def to_param
-    [address.state, address.city, address.name].map(&:parameterize).join('/')
+    [state, city, name].map(&:parameterize).join('/')
   end
 
   class << self
