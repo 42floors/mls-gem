@@ -164,6 +164,10 @@ class MLS::Listing < MLS::Resource
     result
   end
 
+  def url
+    "#{address.url}/listings/#{id}"
+  end
+
   class << self
 
     def find(id)

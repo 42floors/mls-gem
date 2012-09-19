@@ -56,6 +56,22 @@ class MLS::Address < MLS::Resource
     [state, city, name].map(&:parameterize).join('/')
   end
 
+  def url
+    if defined? Rails
+      case Rails.env
+      when "production"
+        host = "42floors.com"
+      when "staging"
+        host = "staging.42floors.com"
+      when "development","test"
+        host = "spire.dev"
+      end
+    else
+      host = "42floors.com"
+    end
+    "http://#{host}/#{slug}"
+  end
+
   class << self
     
     def query(q)
