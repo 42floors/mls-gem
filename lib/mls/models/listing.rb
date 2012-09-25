@@ -175,14 +175,19 @@ class MLS::Listing < MLS::Resource
       MLS::Listing::Parser.parse(response.body)
     end
 
-    def all(filters = {})
-      response = MLS.get('/listings', :filter => filters)
+    def all(filters = {}, limit = nil, order = nil)
+      response = MLS.get('/listings', :filters => filters, :limit => limit, :order => order)
       MLS::Listing::Parser.parse_collection(response.body)
     end
 
     def import(attrs)
       model = self.new(attrs)
       {:status => model.import, :model => model}
+    end
+
+    def calculate(filters = {}, operation = nil, column = nil, group = nil)
+      response = MLS.get("/listings/calculate", :filters => filters, :operation => operation, :column => column, :group => group)
+      MLS::Parser.extract_attributes(response.body)[:listings]
     end
 
   end
