@@ -165,7 +165,7 @@ class MLS::Listing < MLS::Resource
   end
 
   def url
-    "#{address.url}/listings/#{id}"
+    "#{address.url}/#{id}"
   end
 
   class << self
