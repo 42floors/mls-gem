@@ -89,7 +89,7 @@ class MLS::Address < MLS::Resource
       MLS::Address::Parser.parse(response.body)
     end
 
-    # currently supported options are :include && :where
+    # currently supported options are :include, :where, :limit, :offset
     def all(options={})
       response = MLS.get('/addresses', options)
       MLS::Address::Parser.parse_collection(response.body)
