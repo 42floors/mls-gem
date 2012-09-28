@@ -44,6 +44,7 @@ class MLS::Listing < MLS::Resource
   property :conference_rooms,             Fixnum
   property :bathrooms,                    Fixnum
   property :desks,                        Fixnum
+  property :other_rooms,                  Fixnum
   
   property :kitchen,                      Boolean,  :default => false
   property :showers,                      Boolean,  :default => false
@@ -60,6 +61,17 @@ class MLS::Listing < MLS::Resource
   property :recent_space_improvements,    Boolean,  :default => false
   property :printers,                     Boolean,  :default => false
   property :furniture_available,          Boolean,  :default => false
+
+  property :kitchenette,                  Boolean,  :default => false
+  property :natural_light,                Boolean,  :default => false
+  property :high_ceilings,                Boolean,  :default => false
+
+  property :shared_kitchen,               Boolean,  :default => false
+  property :shared_bike_storage,          Boolean,  :default => false
+  property :parking_available,            Boolean,  :default => false
+  property :shared_bathrooms,             Boolean,  :default => false
+  property :shared_showers,               Boolean,  :default => false
+
   
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
