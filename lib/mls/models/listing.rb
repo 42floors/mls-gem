@@ -17,6 +17,7 @@ class MLS::Listing < MLS::Resource
   property :flyer_url,                    String, :serialize => false
     
   property :name,                         String
+  property :non_address_display_name,     String,  :serialize => :false
   property :kind,                         String,   :default => 'lease'
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
@@ -32,6 +33,8 @@ class MLS::Listing < MLS::Resource
   property :rate_units,                   String,   :default => 'ft^2/month'
   property :rate_per_month,               Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_year,                Decimal,  :serialize => :false
+  property :total_rate_per_month,         Decimal,  :serialize => :false 
+  property :total_rate_per_year,          Decimal,  :serialize => :false
   property :tenant_improvements,          String,   :serialize => :if_present
   property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
