@@ -32,6 +32,8 @@ class MLS::Listing < MLS::Resource
   property :rate_units,                   String,   :default => 'ft^2/month'
   property :rate_per_month,               Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_year,                Decimal,  :serialize => :false
+  property :total_rate_per_month,         Decimal,  :serialize => :false 
+  property :total_rate_per_year,          Decimal,  :serialize => :false
   property :tenant_improvements,          String,   :serialize => :if_present
   property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
@@ -95,6 +97,21 @@ class MLS::Listing < MLS::Resource
   def leased?
     !leased_on.nil?
   end
+  
+  def space_name
+    return name if !name.nil?
+    
+    case space_type
+    when 'unit'
+      "Unit #{unit || 'Lease'}"
+    when 'building'
+      "Entire Building"
+    when 'floor'
+      "Floor #{floor || 'Lease'}"
+    end
+  end
+
+  
   
   # Creates a tour request for the listing.
   #
