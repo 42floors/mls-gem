@@ -17,7 +17,6 @@ class MLS::Listing < MLS::Resource
   property :flyer_url,                    String, :serialize => false
     
   property :name,                         String
-  property :non_address_display_name,     String,  :serialize => :false
   property :kind,                         String,   :default => 'lease'
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
@@ -86,6 +85,21 @@ class MLS::Listing < MLS::Resource
   def leased?
     !leased_on.nil?
   end
+  
+  def space_name
+    return name if !name.nil?
+    
+    case space_type
+    when 'unit'
+      "Unit #{unit || 'Lease'}"
+    when 'building'
+      "Entire Building"
+    when 'floor'
+      "Floor #{floor || 'Lease'}"
+    end
+  end
+
+  
   
   # Creates a tour request for the listing.
   #
