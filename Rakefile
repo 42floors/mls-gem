@@ -12,8 +12,8 @@ task :c => :console
 Rake::TestTask.new do |t|
     t.libs << 'lib' << 'test'
     t.test_files = FileList['test/units/**/test*.rb']
-    t.warning = true
-    t.verbose = true
+    #t.warning = true
+    #t.verbose = true
 end
 
 Rake::RDocTask.new do |rd|
