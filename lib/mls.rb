@@ -401,6 +401,7 @@ require 'mls/properties/boolean'
 require 'mls/properties/decimal'
 require 'mls/properties/datetime'
 require 'mls/properties/string'
+require 'mls/properties/hash'
 
 # Models
 require 'mls/model'
@@ -410,3 +411,4 @@ require 'mls/models/address'
 require 'mls/models/photo'
 require 'mls/models/tour_request'
 require 'mls/models/flyer'
+require 'mls/models/area'
