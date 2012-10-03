@@ -46,7 +46,6 @@ class MLS::Listing < MLS::Resource
   property :conference_rooms,             Fixnum
   property :bathrooms,                    Fixnum
   property :desks,                        Fixnum
-  property :other_rooms,                  Fixnum
   
   property :kitchen,                      Boolean,  :default => false
   property :showers,                      Boolean,  :default => false
