@@ -5,7 +5,7 @@ Listings provided by 42Floors.com.
 
 *home*  - https://mls.42floors.com
 
-*docs* - http://devcenter.42floors.com
+*docs* - The best way to get this is to run `rake docs`. We plan to upload this
 
 *bugs* - https://github.com/42floors/mls/issues
 
@@ -18,7 +18,7 @@ Listings provided by 42Floors.com.
 == Configuration
 
 The Gem needs to be configured with your API key and URL to connect to the
-42Floors MLS. You can get your API key at http://mls.42floors.com.
+42Floors MLS. For now, ask us to provide you with an API key.
 
   #!ruby
   require 'mls'
