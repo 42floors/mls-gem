@@ -7,8 +7,7 @@ class MLS::TourRequest < MLS::Resource
   property :message,                      String
   property :company,                      String
   property :population,                   String
-  property :funding,                      String
-  property :move_in_date,                 String
+  property :growing,                      Boolean
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
 

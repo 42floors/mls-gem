@@ -117,14 +117,15 @@ class MLS::Listing < MLS::Resource
   #
   # Paramaters::
   #
-  # * +name+ - Name of the User requesting the tour
-  # * +email+ - Email of the User requesting the tour
+  # * +account+ - A +Hash+ of the user account. Valid keys are:
+  #   * +:name+ - Name of the User requesting the tour (Required)
+  #   * +:email+ - Email of the User requesting the tour (Required)
+  #   * +:phone+ - Phone of the User requesting the tour
   # * +info+ - A optional +Hash+ of *company* info. Valid keys are:
   #   * +:message+ - Overrides the default message on the email sent to the broker
   #   * +:company+ - The name of the company that is interested in the space
   #   * +:population+ - The current number of employees at the company
-  #   * +:funding+ - Amount of money the company has raised if a startup
-  #   * +:move_in_date+ - Approxamite time the user is looking to move into a space (YYYY-MM-DD)
+  #   * +:growing+ - A boolean of weather or not the company is expecting to grow
   #
   # Examples:
   #
@@ -134,8 +135,8 @@ class MLS::Listing < MLS::Resource
   #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::TourRequest>
   #  
   #  listing.request_tour('', 'emai', info) # => #<MLS::TourRequest> will have errors on account
-  def request_tour(name, email, info={})
-    params = {:account => {:name => name, :email => email}, :tour => info}
+  def request_tour(account, tour={})
+    params = {:account => account, :tour => tour}
     MLS.post("/listings/#{id}/tour_requests", params, 400) do |response, code|
       return MLS::TourRequest::Parser.parse(response.body)
     end
