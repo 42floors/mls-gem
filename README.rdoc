@@ -5,7 +5,7 @@ Listings provided by 42Floors.com.
 
 *home*  - https://mls.42floors.com
 
-*docs* - The best way to get this is to run `rake docs`. We plan to upload this
+*docs* - http://docs.42floors.com
 
 *bugs* - https://github.com/42floors/mls/issues
 
