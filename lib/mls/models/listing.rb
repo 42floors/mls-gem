@@ -5,6 +5,8 @@ class MLS::Listing < MLS::Resource
   LEASE_TYPES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross', 'Triple Net', 'Modified Net']
   RATE_UNITS = ['ft^2/year', 'ft^2/month', 'desk/month']
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
+  SOURCE_TYPES = %w(website flyer)
+  CHANNELS = %w(excavator mls staircase broker_dashboard)
   
   property :id,                           Fixnum,   :serialize => :false
   property :address_id,                   Fixnum,   :serialize => :false
@@ -15,6 +17,8 @@ class MLS::Listing < MLS::Resource
   property :source,                       String
   property :source_url,                   String
   property :flyer_url,                    String, :serialize => false
+  property :source_type,                  String, :serialize => :if_present
+  property :channel,                      String, :serialize => :if_present
     
   property :name,                         String
   property :kind,                         String,   :default => 'lease'
