@@ -52,6 +52,12 @@ class MLS::Address < MLS::Resource
     "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
   end
 
+  def to_hash
+    hash = super
+    hash[:photo_ids] = photos.map(&:id) if photos
+    hash
+  end
+
   def to_param
     [state, city, name].map(&:parameterize).join('/')
   end
@@ -115,6 +121,8 @@ class MLS::Address::Parser < MLS::Parser
   end
 
   def photos=(photos)
-    @object.photos = photos.map {|d| MLS::Photo.new({:digest => d})}
+    @object.photos = photos.map do |p|
+      MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
+    end
   end
 end

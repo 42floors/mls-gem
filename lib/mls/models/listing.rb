@@ -201,6 +201,10 @@ class MLS::Listing < MLS::Resource
     "#{address.url}/#{id}"
   end
 
+  def all_photos
+    photos + address.photos
+  end
+
   class << self
 
     def find(id)
