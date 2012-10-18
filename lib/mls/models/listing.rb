@@ -106,11 +106,23 @@ class MLS::Listing < MLS::Resource
     
     case space_type
     when 'unit'
-      "Unit #{unit || 'Lease'}"
+      if unit 
+        "Unit #{unit}"
+      elsif floor
+        "#{floor.ordinalize} Floor"
+      else
+        "Unit Lease"
+      end
     when 'building'
       "Entire Building"
     when 'floor'
-      "Floor #{floor || 'Lease'}"
+      if floor
+        "#{floor.ordinalize} Floor"
+      elsif unit 
+        "Unit #{unit}"
+      else
+        "Floor Lease"
+      end
     end
   end
 
