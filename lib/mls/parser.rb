@@ -18,9 +18,7 @@ class MLS::Parser
   end
   
   def update_attributes(attributes)
-    attributes.each do |k,v|
-      self.send("#{k}=".to_sym, v)
-    end
+    attributes.each {|k,v| self.send("#{k}=".to_sym, v) } if attributes
   end
   
   def self.parse(data)
