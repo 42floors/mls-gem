@@ -186,7 +186,7 @@ class MLS::Listing < MLS::Resource
   end
   
   def to_param
-    [address.state, address.city, address.name, id.to_s].map(&:parameterize).join('/')
+    "#{address.to_param}/#{id}"
   end
 
   def import #TODO test me

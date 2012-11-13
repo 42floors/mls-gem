@@ -65,7 +65,7 @@ class MLS::Address < MLS::Resource
   end
 
   def to_param
-    [state, city, name].map(&:parameterize).join('/')
+    [state, city, "#{street_number} #{street}"].map(&:parameterize).join('/')
   end
 
   def url
