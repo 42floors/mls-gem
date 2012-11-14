@@ -37,6 +37,8 @@ class MLS::Address < MLS::Resource
   property :import_listings_count, Fixnum, :serialize => :false
   property :active_listings_count, Fixnum, :serialize => :false
 
+  property :avatar_digest, String,   :serialize => false
+
   attr_accessor :listings, :listing_kinds, :photos
 
   # should include an optional use address or no_image image
@@ -49,7 +51,11 @@ class MLS::Address < MLS::Resource
       :fov => 120
     }
 
-    "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
+    if avatar_digest
+      "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+    else
+      "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
+    end
   end
 
   def to_hash
