@@ -224,7 +224,7 @@ class MLS::Listing < MLS::Resource
       MLS::Listing::Parser.parse(response.body)
     end
 
-    def all(filters = {}, limit = nil, order = nil)
+    def all(filters = {}, limit = nil, order = 'listings.id')
       response = MLS.get('/listings', :filters => filters, :limit => limit, :order => order)
       MLS::Listing::Parser.parse_collection(response.body)
     end
