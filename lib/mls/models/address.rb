@@ -24,7 +24,6 @@ class MLS::Address < MLS::Resource
   property :year_built, Fixnum
   property :total_size, Fixnum
   property :floors, Fixnum
-  property :internet_speed, Decimal
   property :parking_garage, Boolean
   property :lobby_attendant, Boolean
   property :gym, Boolean
