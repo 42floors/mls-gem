@@ -16,7 +16,6 @@ class MLS::Listing < MLS::Resource
   property :hidden,                       Boolean,  :default => false
   property :source,                       String
   property :source_url,                   String
-  property :flyer_url,                    String, :serialize => false
   property :source_type,                  String, :serialize => :if_present
   property :channel,                      String, :serialize => :if_present
     
@@ -83,7 +82,7 @@ class MLS::Listing < MLS::Resource
   property :leased_on,                    DateTime
   
   property :avatar_digest,                String,   :serialize => false
-  attr_accessor :address, :agents, :account, :photos#, :address_attributes, :agents_attributes, :photo_ids
+  attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan
 
   def avatar(size='150x100', protocol='http')
     if avatar_digest
@@ -250,6 +249,16 @@ class MLS::Listing::Parser < MLS::Parser
     @object.photos = photos.map do |p|
       MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
     end
+  end
+
+  def floor_plan=(floor_plan)
+    @object.floor_plan = MLS::PDF.new(:digest => floor_plan[:digest], :id => floor_plan[:id].to_i,
+      :file_url => floor_plan[:file_url], :type => :floor_plan)
+  end
+
+  def flyer=(flyer)
+    @object.flyer = MLS::PDF.new(:digest => flyer[:digest], :id => flyer[:id].to_i,
+      :file_url => flyer[:file_url], :type => :flyer)
   end
    
   def address=(address)
