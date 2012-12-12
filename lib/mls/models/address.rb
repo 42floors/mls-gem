@@ -24,9 +24,19 @@ class MLS::Address < MLS::Resource
   property :year_built, Fixnum
   property :total_size, Fixnum
   property :floors, Fixnum
-  property :parking_garage, Boolean
+
   property :lobby_attendant, Boolean
   property :gym, Boolean
+
+  property :common_bike_storage, Boolean
+  property :common_kitchen, Boolean
+  property :common_showers, Boolean
+  property :onsite_parking, Boolean
+  property :bikes_allowed, Boolean
+  property :dog_friendly, Boolean
+  property :common_bathrooms, Boolean
+  property :onsite_security_guard, Boolean
+
   property :leed_certification, String
   
   # Counter caches
@@ -87,6 +97,10 @@ class MLS::Address < MLS::Resource
       host = "42floors.com"
     end
     "http://#{host}/#{slug}"
+  end
+
+  def amenities
+    MLS.address_amenities
   end
 
   class << self

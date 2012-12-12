@@ -50,32 +50,14 @@ class MLS::Listing < MLS::Resource
   property :bathrooms,                    Fixnum
   property :desks,                        Fixnum
   
-  property :kitchen,                      Boolean,  :default => false
-  property :showers,                      Boolean,  :default => false
-  property :bike_rack,                    Boolean,  :default => false
-  property :bikes_allowed,                Boolean,  :default => false
-  property :server_room,                  Boolean,  :default => false
-  property :reception_area,               Boolean,  :default => false
-  property :turnkey,                      Boolean,  :default => false
-  property :patio,                        Boolean,  :default => false
-  property :copy_room,                    Boolean,  :default => false
-  property :dog_friendly,                 Boolean,  :default => false
-  property :cabling,                      Boolean,  :default => false
-  property :ready_to_move_in,             Boolean,  :default => false
-  property :recent_space_improvements,    Boolean,  :default => false
-  property :printers,                     Boolean,  :default => false
-  property :furniture_available,          Boolean,  :default => false
-
-  property :kitchenette,                  Boolean,  :default => false
-  property :natural_light,                Boolean,  :default => false
-  property :high_ceilings,                Boolean,  :default => false
-
-  property :shared_kitchen,               Boolean,  :default => false
-  property :shared_bike_storage,          Boolean,  :default => false
-  property :parking_available,            Boolean,  :default => false
-  property :shared_bathrooms,             Boolean,  :default => false
-  property :shared_showers,               Boolean,  :default => false
-
+  property :kitchen,                      Boolean
+  property :showers,                      Boolean
+  property :patio,                        Boolean
+  property :reception_area,               Boolean
+  property :ready_to_move_in,             Boolean
+  property :furniture_available,          Boolean
+  property :natural_light,                Boolean
+  property :high_ceilings,                Boolean
   
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
@@ -83,6 +65,7 @@ class MLS::Listing < MLS::Resource
   
   property :avatar_digest,                String,   :serialize => false
   attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan
+  attr_writer :amenities
 
   def avatar(size='150x100', protocol='http')
     if avatar_digest
@@ -214,6 +197,10 @@ class MLS::Listing < MLS::Resource
 
   def all_photos
     photos + address.photos
+  end
+
+  def amenities
+    MLS.listing_amenities
   end
 
   class << self

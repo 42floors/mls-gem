@@ -24,7 +24,7 @@ class MLS
   API_VERSION = '0.1.0'
 
   attr_reader :url
-  attr_writer :asset_host
+  attr_writer :asset_host, :listing_amenities, :address_amenities
   attr_accessor :api_key, :auth_key, :logger
 
   # Sets the API Token and Host of the MLS Server
@@ -51,6 +51,16 @@ class MLS
   # otherwise it queries the MLS for this configuration.
   def asset_host # TODO: testme
     @asset_host ||= get('/asset_host').body
+  end
+
+  def listing_amenities
+    @listing_amenities ||= Yajl::Parser.new(:symbolize_keys => true)
+      .parse(MLS.get('/listings/amenities').body)
+  end
+
+  def address_amenities
+    @address_amenities ||= Yajl::Parser.new(:symbolize_keys => true)
+      .parse(MLS.get('/addresses/amenities').body)
   end
 
   def headers # TODO: testme
