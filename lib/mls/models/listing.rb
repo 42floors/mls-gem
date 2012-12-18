@@ -37,8 +37,6 @@ class MLS::Listing < MLS::Resource
   property :rate_per_year,                Decimal,  :serialize => :false
   property :total_rate_per_month,         Decimal,  :serialize => :false 
   property :total_rate_per_year,          Decimal,  :serialize => :false
-  property :tenant_improvements,          String,   :serialize => :if_present
-  property :nnn_expenses,                 Decimal
   property :sublease_expiration,          DateTime
 
   property :available_on,                 DateTime
@@ -48,7 +46,6 @@ class MLS::Listing < MLS::Resource
   property :offices,                      Fixnum
   property :conference_rooms,             Fixnum
   property :bathrooms,                    Fixnum
-  property :desks,                        Fixnum
   
   property :kitchen,                      Boolean
   property :showers,                      Boolean
