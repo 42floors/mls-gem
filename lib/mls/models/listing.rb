@@ -13,7 +13,7 @@ class MLS::Listing < MLS::Resource
   property :use_id,                       Fixnum
   property :use,                          String,   :serialize => :if_present
   property :account_id,                   Fixnum
-  property :hidden,                       Boolean,  :default => false
+  property :hidden,                       Boolean,  :default => false, :serialize => false
   property :source,                       String
   property :source_url,                   String
   property :source_type,                  String, :serialize => :if_present

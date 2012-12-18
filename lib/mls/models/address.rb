@@ -67,6 +67,17 @@ class MLS::Address < MLS::Resource
     end
   end
 
+  def save
+    MLS.put("/addresses/#{id}", {:address => to_hash}, 400) do |response, code|
+      if code == 200 || code == 400
+        MLS::Address::Parser.update(self, response.body)
+        code == 200      
+      else
+        raise MLS::Exception::UnexpectedResponse, code
+      end
+    end
+  end
+
   def to_hash
     hash = super
     hash[:photo_ids] = photos.map(&:id) if photos
