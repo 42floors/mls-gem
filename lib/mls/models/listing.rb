@@ -1,9 +1,10 @@
 class MLS::Listing < MLS::Resource
-  
+
+  STATES = %w(processing listed leased expired)
   KINDS = %w(lease sublease coworking)
   SPACE_TYPES = %w(unit floor building)
   LEASE_TYPES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross', 'Triple Net', 'Modified Net']
-  RATE_UNITS = ['ft^2/year', 'ft^2/month', 'desk/month']
+  RATE_UNITS = ['ft^2/year', 'ft^2/month', 'month', 'year', 'desk/month']
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
   SOURCE_TYPES = %w(website flyer)
   CHANNELS = %w(excavator mls staircase broker_dashboard)
@@ -13,7 +14,7 @@ class MLS::Listing < MLS::Resource
   property :use_id,                       Fixnum
   property :use,                          String,   :serialize => :if_present
   property :account_id,                   Fixnum
-  property :hidden,                       Boolean,  :default => false, :serialize => false
+  property :private,                      Boolean,  :default => false, :serialize => false
   property :source,                       String
   property :source_url,                   String
   property :source_type,                  String, :serialize => :if_present
@@ -21,6 +22,7 @@ class MLS::Listing < MLS::Resource
     
   property :name,                         String
   property :kind,                         String,   :default => 'lease'
+  property :state,                        String,   :default => 'listed'
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
   property :floor,                        Fixnum
