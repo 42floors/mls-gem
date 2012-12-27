@@ -3,15 +3,19 @@ require 'restclient'
 class MLS::Flyer < MLS::Resource
 
   property :id, Fixnum
-  property :subject_id, Fixnum
-  property :subject_type, String
-  property :created_at, DateTime
-  property :updated_at, DateTime
-  property :file_content_type, String
+  property :digest, String
+  property :avatar_digest, String
   property :file_name, String
   property :file_size, Fixnum
-  property :url, String
-
+  
+  def url(protocol='http')
+    "#{protocol}://#{MLS.asset_host}/flyers/#{digest}/#{file_name}"
+  end
+  
+  def avatar(size='150x100', protocol='http')
+    "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+  end
+  
   def self.create(attrs)
     attrs[:file].rewind
     url = MLS.url.dup

@@ -243,8 +243,7 @@ class MLS::Listing::Parser < MLS::Parser
   end
 
   def flyer=(flyer)
-    @object.flyer = MLS::PDF.new(:digest => flyer[:digest], :id => flyer[:id].to_i,
-      :file_url => flyer[:file_url], :type => :flyer)
+    @object.flyer = MLS::Flyer::Parser.build(flyer)
   end
    
   def address=(address)
