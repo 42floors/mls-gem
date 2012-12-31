@@ -48,7 +48,7 @@ class MLS::Address < MLS::Resource
 
   property :avatar_digest, String,   :serialize => false
 
-  attr_accessor :listings, :listing_kinds, :photos
+  attr_accessor :listings, :listing_kinds, :photos, :videos
 
   # should include an optional use address or no_image image
   def avatar(size='100x200', protocol='http')
@@ -81,6 +81,7 @@ class MLS::Address < MLS::Resource
   def to_hash
     hash = super
     hash[:photo_ids] = photos.map(&:id) if photos
+    hash[:videos_attributes] = videos.map(&:to_hash) if videos
     hash
   end
 
@@ -112,6 +113,12 @@ class MLS::Address < MLS::Resource
 
   def amenities
     MLS.address_amenities
+  end
+
+  def find_listings(space_available, floor, unit)
+    response = MLS.get("/addresses/#{id}/find_listings", 
+      :floor => floor, :unit => unit, :space_available => space_available)
+    MLS::Listing::Parser.parse_collection(response.body)
   end
 
   class << self
@@ -159,6 +166,12 @@ class MLS::Address::Parser < MLS::Parser
   def photos=(photos)
     @object.photos = photos.map do |p|
       MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
+    end
+  end
+
+  def videos=(videos)
+    @object.videos = videos.map do |video|
+      MLS::Video::Parser.build(video)
     end
   end
 end

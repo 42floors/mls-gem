@@ -65,7 +65,7 @@ class MLS::Listing < MLS::Resource
   property :flyer_id,                     Fixnum,    :serialize => :if_present
   
   property :avatar_digest,                String,   :serialize => false
-  attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan
+  attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan, :videos
   attr_writer :amenities
 
   def avatar(size='150x100', protocol='http')
@@ -164,6 +164,7 @@ class MLS::Listing < MLS::Resource
     hash[:address_attributes] = address.to_hash if address
     hash[:agents_attributes] = agents.inject({}) { |acc, x| acc[acc.length] = x.to_hash; acc } if agents
     hash[:photo_ids] = photos.map(&:id) if photos
+    hash[:videos_attributes] = videos.map(&:to_hash) if videos
     hash
   end
   
@@ -199,6 +200,10 @@ class MLS::Listing < MLS::Resource
     photos + address.photos
   end
 
+  def all_videos
+    videos + address.videos
+  end
+
   def amenities
     MLS.listing_amenities
   end
@@ -207,6 +212,7 @@ class MLS::Listing < MLS::Resource
 
     def find(id)
       response = MLS.get("/listings/#{id}")
+      puts response.body
       MLS::Listing::Parser.parse(response.body)
     end
 
@@ -235,6 +241,12 @@ class MLS::Listing::Parser < MLS::Parser
   def photos=(photos)
     @object.photos = photos.map do |p|
       MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
+    end
+  end
+
+  def videos=(videos)
+    @object.videos = videos.map do |video|
+      MLS::Video::Parser.build(video)
     end
   end
 
