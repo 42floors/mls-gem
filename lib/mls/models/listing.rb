@@ -62,6 +62,8 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime,  :serialize => :false
   property :leased_on,                    DateTime
   
+  property :flyer_id,                     Fixnum,    :serialize => :if_present
+  
   property :avatar_digest,                String,   :serialize => false
   attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan
   attr_writer :amenities
