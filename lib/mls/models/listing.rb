@@ -3,7 +3,7 @@ class MLS::Listing < MLS::Resource
   STATES = %w(processing listed leased expired)
   KINDS = %w(lease sublease coworking)
   SPACE_TYPES = %w(unit floor building)
-  LEASE_TYPES = ['Full Service', 'NNN', 'Gross', 'Industrial Gross', 'Modified Gross', 'Triple Net', 'Modified Net']
+  LEASE_TERMS = ['Full Service', 'NNN', 'Modified Gross']
   RATE_UNITS = ['ft^2/year', 'ft^2/month', 'month', 'year', 'desk/month']
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
   SOURCE_TYPES = %w(website flyer)
@@ -32,7 +32,7 @@ class MLS::Listing < MLS::Resource
   property :maximum_contiguous_size,      Fixnum
   property :minimum_divisable_size,       Fixnum
 
-  property :lease_type,                   String
+  property :lease_terms,                  String
   property :rate,                         Decimal
   property :rate_units,                   String,   :default => 'ft^2/month'
   property :rate_per_month,               Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api

@@ -20,7 +20,7 @@ class TestListing < ::Test::Unit::TestCase
     assert listing.respond_to?(:total_size)
     assert listing.respond_to?(:maximum_contiguous_size)
     assert listing.respond_to?(:minimum_divisable_size)
-    assert listing.respond_to?(:lease_type)
+    assert listing.respond_to?(:lease_terms)
     assert listing.respond_to?(:rate)
     assert listing.respond_to?(:rate_units)
     assert listing.respond_to?(:rate_per_month)
