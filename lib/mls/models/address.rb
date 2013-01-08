@@ -48,7 +48,7 @@ class MLS::Address < MLS::Resource
 
   property :avatar_digest, String,   :serialize => false
 
-  attr_accessor :listings, :listing_kinds, :photos, :videos
+  attr_accessor :listings, :listing_types, :photos, :videos
 
   # should include an optional use address or no_image image
   def avatar(size='100x200', protocol='http')
@@ -159,8 +159,8 @@ class MLS::Address::Parser < MLS::Parser
     }
   end
 
-  def listing_kinds=(listing_kinds)
-    @object.listing_kinds = listing_kinds
+  def listing_types=(listing_types)
+    @object.listing_types = listing_types
   end
 
   def photos=(photos)

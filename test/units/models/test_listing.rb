@@ -12,7 +12,7 @@ class TestListing < ::Test::Unit::TestCase
     assert listing.respond_to?(:account_id)
     assert listing.respond_to?(:hidden)
     assert listing.respond_to?(:name)
-    assert listing.respond_to?(:kind)
+    assert listing.respond_to?(:type)
     assert listing.respond_to?(:space_type)
     assert listing.respond_to?(:unit)
     assert listing.respond_to?(:floor)

@@ -17,13 +17,13 @@ FactoryGirl.define do
     total_size { Kernel.rand(3000..900000) }
     maximum_contiguous_size { Kernel.rand(3000..900000) }
     minimum_divisable_size { Kernel.rand(3000..900000) }
-    kind 'lease'
+    type 'lease'
     #lease_terms { ::MLS::Listing::LEASE_TERMS.sample }
     space_type 'unit'
     rate { rand(15..300) }
     available_on { Time.now + (20 + rand(0..360).to_i).days }
     sublease_expiration { |l| l.sublease? ? (l.available_on + (30 + Kernel.rand(10..360)).days) : nil }
-    name { |l| l.kind == 'coworking' ? Faker::Name.name : nil }
+    name { |l| l.type == 'coworking_space' ? Faker::Name.name : nil }
   end
 end
 

@@ -1,7 +1,7 @@
 class MLS::Listing < MLS::Resource
 
   STATES = %w(processing listed leased expired)
-  KINDS = %w(lease sublease coworking)
+  TYPES = %w(lease sublease coworking_space)
   SPACE_TYPES = %w(unit floor building)
   LEASE_TERMS = ['Full Service', 'NNN', 'Modified Gross']
   RATE_UNITS = ['ft^2/year', 'ft^2/month', 'month', 'year', 'desk/month']
@@ -21,7 +21,7 @@ class MLS::Listing < MLS::Resource
   property :channel,                      String, :serialize => :if_present
     
   property :name,                         String
-  property :kind,                         String,   :default => 'lease'
+  property :type,                         String,   :default => 'lease'
   property :state,                        String,   :default => 'listed'
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
@@ -76,8 +76,14 @@ class MLS::Listing < MLS::Resource
     end
   end
   
+  def lease?
+    type == 'lease'
+  end
   def sublease?
-    kind == 'sublease'
+    type == 'sublease'
+  end
+  def coworking?
+    type == 'coworking_space'
   end
 
   def leased?
