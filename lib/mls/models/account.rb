@@ -145,6 +145,11 @@ class MLS::Account < MLS::Resource
       MLS::Account::Parser.parse_collection(response.body)
     end
 
+    def find(id)
+      response = MLS.get("/account/find", :id => id) 
+      MLS::Account::Parser.parse(response.body)
+    end
+
   end
   
 end

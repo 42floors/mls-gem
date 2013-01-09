@@ -13,12 +13,26 @@ class MLS::TourRequest < MLS::Resource
 
   attr_accessor :account, :listing
 
+  def claim(agent)
+    MLS.post("/tour_requests/#{id}/claim", {:agent_id => agent.id}) do |response, code|
+      if code == 200
+        true
+      else
+        false
+      end
+    end
+  end
+
   class << self
     def get_all_for_account
       response = MLS.get('/account/tour_requests')
       MLS::TourRequest::Parser.parse_collection(response.body)
     end
 
+    def find(id)
+      response = MLS.get("/tour_requests/#{id}")
+      MLS::TourRequest::Parser.parse(response.body)
+    end
   end
 end
 
