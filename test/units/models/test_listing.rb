@@ -7,7 +7,6 @@ class TestListing < ::Test::Unit::TestCase
 
     assert listing.respond_to?(:id)
     assert listing.respond_to?(:address_id)
-    assert listing.respond_to?(:use_id)
     assert listing.respond_to?(:use)
     assert listing.respond_to?(:account_id)
     assert listing.respond_to?(:hidden)

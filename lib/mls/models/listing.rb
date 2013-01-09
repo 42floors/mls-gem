@@ -11,7 +11,6 @@ class MLS::Listing < MLS::Resource
   
   property :id,                           Fixnum,   :serialize => :false
   property :address_id,                   Fixnum,   :serialize => :false
-  property :use_id,                       Fixnum
   property :use,                          String,   :serialize => :if_present
   property :account_id,                   Fixnum
   property :private,                      Boolean,  :default => false, :serialize => false
