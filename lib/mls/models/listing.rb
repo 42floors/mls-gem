@@ -64,7 +64,7 @@ class MLS::Listing < MLS::Resource
   property :flyer_id,                     Fixnum,    :serialize => :if_present
   
   property :avatar_digest,                String,   :serialize => false
-  attr_accessor :address, :agents, :account, :photos, :flyer, :floor_plan, :videos
+  attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
   attr_writer :amenities
 
   def avatar(size='150x100', protocol='http')
@@ -255,9 +255,8 @@ class MLS::Listing::Parser < MLS::Parser
     end
   end
 
-  def floor_plan=(floor_plan)
-    @object.floor_plan = MLS::PDF.new(:digest => floor_plan[:digest], :id => floor_plan[:id].to_i,
-      :file_url => floor_plan[:file_url], :type => :floor_plan)
+  def floorplan=(floorplan)
+    @object.floorplan = MLS::Floorplan::Parser.build(floorplan)
   end
 
   def flyer=(flyer)
