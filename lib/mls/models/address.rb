@@ -85,12 +85,6 @@ class MLS::Address < MLS::Resource
     hash
   end
 
-  def to_hash_for_listing
-    hash = to_hash
-    hash[:slug] = slug
-    hash
-  end
-
   def to_param
     [state, city, "#{street_number} #{street}"].map(&:parameterize).join('/')
   end
