@@ -12,7 +12,7 @@ class MLS::TourRequest < MLS::Resource
   property :status,                       String
   property :reasons_to_decline,           String,    :serialize => :if_present
 
-  property :random_token,                 String,    :serialize => :false
+  property :token,                 String,    :serialize => :false
 
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
@@ -20,24 +20,34 @@ class MLS::TourRequest < MLS::Resource
   attr_accessor :account, :listing
 
   def claim(agent)
-    MLS.post("/tour_requests/#{id}/claim", {:agent_id => agent.id}) do |response, code|
+    MLS.post("/tour_requests/#{token}/claim", {:agent_id => agent.id}) do |response, code|
       return code == 200
     end
   end
 
   def decline(agent, reasons=nil)
-    MLS.post("/tour_requests/#{id}/decline", 
+    MLS.post("/tour_requests/#{token}/decline", 
       {:agent_id => agent.id, :reasons_to_decline => reasons}) do |response, code|
       return code == 200
     end
   end
 
+  def mark_viewed(agent)
+    MLS.post("/tour_requests/#{token}/mark_viewed", {:agent_id => agent.id}) do |response, code|
+      return code == 200
+    end
+  end
+
+  def viewed?
+    status != "new"
+  end
+
   def claimed?
-    status == "CLAIMED"
+    status == "claimed"
   end
 
   def declined?
-    status == "DECLINED"
+    status == "declined"
   end
 
   class << self
@@ -46,8 +56,8 @@ class MLS::TourRequest < MLS::Resource
       MLS::TourRequest::Parser.parse_collection(response.body)
     end
 
-    def find(id)
-      response = MLS.get("/tour_requests/#{id}")
+    def find_by_token(token)
+      response = MLS.get("/tour_requests/#{token}")
       MLS::TourRequest::Parser.parse(response.body)
     end
   end
