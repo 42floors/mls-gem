@@ -12,12 +12,12 @@ class MLS::TourRequest < MLS::Resource
   property :status,                       String
   property :reasons_to_decline,           String,    :serialize => :if_present
 
-  property :token,                 String,    :serialize => :false
+  property :token,                        String,    :serialize => :false
 
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
 
-  attr_accessor :account, :listing
+  attr_accessor :account, :listing, :additional_features
 
   def claim(agent)
     MLS.post("/tour_requests/#{token}/claim", {:agent_id => agent.id}) do |response, code|
@@ -50,6 +50,12 @@ class MLS::TourRequest < MLS::Resource
     status == "declined"
   end
 
+  def to_hash
+    hash = super
+    hash[:additional_features_attributes] = additional_features.to_hash if additional_features
+    hash
+  end
+
   class << self
     def get_all_for_account
       response = MLS.get('/account/tour_requests')
@@ -58,7 +64,14 @@ class MLS::TourRequest < MLS::Resource
 
     def find_by_token(token)
       response = MLS.get("/tour_requests/#{token}")
+      puts response.body
       MLS::TourRequest::Parser.parse(response.body)
+    end
+
+    def create(listing_id, account, tour={})
+      params = {:account => account, :tour => tour}
+      response = MLS.post("/listings/#{listing_id}/tour_requests", params)
+      return MLS::TourRequest::Parser.parse(response.body)
     end
   end
 end

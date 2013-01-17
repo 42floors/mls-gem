@@ -139,9 +139,7 @@ class MLS::Listing < MLS::Resource
   #  
   #  listing.request_tour('', 'emai', info) # => #<MLS::TourRequest> will have errors on account
   def request_tour(account, tour={})
-    params = {:account => account, :tour => tour}
-    response = MLS.post("/listings/#{id}/tour_requests", params)
-    return MLS::TourRequest::Parser.parse(response.body)
+    MLS::TourRequest.create(id, account, tour)
   end
   
 
