@@ -165,7 +165,7 @@ class MLS::Listing < MLS::Resource
   def to_hash
     hash = super
     hash[:address_attributes] = address.to_hash if address
-    hash[:agents_attributes] = agents.inject({}) { |acc, x| acc[acc.length] = x.to_hash; acc } if agents
+    hash[:agents_attributes] = agents.inject([]) { |acc, x| acc << x.to_hash; acc } if agents
     hash[:photo_ids] = photos.map(&:id) if photos
     hash[:videos_attributes] = videos.map(&:to_hash) if videos
     hash
