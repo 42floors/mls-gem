@@ -361,7 +361,7 @@ class MLS
       when 503
         raise MLS::Exception::ServiceUnavailable, response.body
       when 300..599
-        raise MLS::Exception, "#{code}\n\n#{response.boyd}"
+        raise MLS::Exception, "#{code}\n\n#{response.body}"
       end
     end
     
