@@ -15,13 +15,13 @@ class MLS::Photo < MLS::Resource
     "#{protocol}://#{MLS.asset_host}/photos/#{style}/#{@digest}.jpg"
   end
 
-  def self.create(image_file)
-    image_file.rewind
+  def self.create(attrs)
+    attrs[:file].rewind
     url = MLS.url.dup
     url.user = nil
     url.path = "/api/photos"
-    response = RestClient.post(url.to_s, {:file => image_file}, MLS.headers)
-    image_file.close unless image_file.closed?
+    response = RestClient.post(url.to_s, {:file => attrs[:file]}, MLS.headers)
+    attrs[:file].close unless attrs[:file].closed?
 
     MLS::Photo::Parser.parse(response.body)
   end

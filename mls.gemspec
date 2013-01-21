@@ -3,8 +3,8 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "mls"
-  s.version     = '0.2.22'
-  s.authors     = ["James R. Bracy"]
+  s.version     = '0.2.23'
+  s.authors     = ["James R. Bracy", "Jon Bracy"]
   s.email       = ["james@42floors.com"]
   s.homepage    = "http://mls.42floors.com"
   s.summary     = %q{42Floors MLS Client}
