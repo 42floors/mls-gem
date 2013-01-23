@@ -86,7 +86,7 @@ class MLS::Listing < MLS::Resource
   end
 
   def leased?
-    !leased_on.nil?
+    state == 'leased'
   end
   
   def space_name
