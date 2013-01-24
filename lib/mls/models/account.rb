@@ -1,11 +1,7 @@
 class MLS::Account < MLS::Resource
   
-  ROLES = %w(user broker property_manager landlord analyst assistant other)
-  DEFAULTS = {:role => 'user'}
-
   property :id,                      Fixnum
-  property :type,                    String,   :default => 'User'
-  property :role,                    String,   :default => 'user'
+  property :type,                    String,   :default => 'Account'
   property :name,                    String
   property :title,                   String
   property :email,                   String
@@ -63,7 +59,7 @@ class MLS::Account < MLS::Resource
   end
 
   def agent?
-    role != 'user' && role != ''
+    type == 'Agent'
   end
 
   def favorites

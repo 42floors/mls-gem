@@ -18,7 +18,7 @@ class MLS::Listing < MLS::Resource
   property :source_url,                   String
   property :source_type,                  String, :serialize => :if_present
   property :channel,                      String, :serialize => :if_present
-    
+  
   property :name,                         String
   property :type,                         String,   :default => 'lease'
   property :state,                        String,   :default => 'listed'
@@ -26,11 +26,11 @@ class MLS::Listing < MLS::Resource
   property :unit,                         String
   property :floor,                        Fixnum
   property :comments,                     String
-    
+  
   property :total_size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
   property :minimum_divisable_size,       Fixnum
-
+  
   property :lease_terms,                  String
   property :rate,                         Decimal
   property :rate_units,                   String,   :default => '/sqft/mo'
@@ -62,6 +62,7 @@ class MLS::Listing < MLS::Resource
   property :leased_on,                    DateTime
   
   property :flyer_id,                     Fixnum,    :serialize => :if_present
+  property :floorplan_id                  Fixnum,    :serialize => :if_present
   
   property :avatar_digest,                String,   :serialize => false
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos

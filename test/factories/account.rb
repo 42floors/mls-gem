@@ -7,7 +7,7 @@ FactoryGirl.define do
   end
   
   factory :broker, :class => MLS::Account, :parent => :account do
-    role 'broker'
+    type 'Account'
   end
   
   factory :ghost_account, :class => MLS::Account do
