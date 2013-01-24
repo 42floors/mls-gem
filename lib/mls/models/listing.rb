@@ -62,7 +62,7 @@ class MLS::Listing < MLS::Resource
   property :leased_on,                    DateTime
   
   property :flyer_id,                     Fixnum,    :serialize => :if_present
-  property :floorplan_id                  Fixnum,    :serialize => :if_present
+  property :floorplan_id,                 Fixnum,    :serialize => :if_present
   
   property :avatar_digest,                String,   :serialize => false
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
