@@ -122,11 +122,6 @@ class MLS::Address < MLS::Resource
       MLS::Address::Parser.parse_collection(response.body)
     end
 
-    # Bounds is passed as 'n,e,s,w' or [n, e, s, w]
-    def box_cluster(bounds, zoom, where={})
-      MLS.get('/addresses/box_cluster', :bounds => bounds, :zoom => zoom, :where => where)
-    end
-
     def find(id)
       response = MLS.get("/addresses/#{id}")
       MLS::Address::Parser.parse(response.body)
