@@ -18,6 +18,7 @@ class MLS::Listing < MLS::Resource
   property :source_url,                   String
   property :source_type,                  String, :serialize => :if_present
   property :channel,                      String, :serialize => :if_present
+  property :photo_ids,                    Array,  :serialize => :if_present
   
   property :name,                         String
   property :type,                         String,   :default => 'lease'

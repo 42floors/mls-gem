@@ -412,6 +412,7 @@ require 'mls/properties/decimal'
 require 'mls/properties/datetime'
 require 'mls/properties/string'
 require 'mls/properties/hash'
+require 'mls/properties/array'
 
 # Models
 require 'mls/model'
