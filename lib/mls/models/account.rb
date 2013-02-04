@@ -1,37 +1,30 @@
 class MLS::Account < MLS::Resource
   
   property :id,                      Fixnum
-  property :type,                    String,   :default => 'Account'
+  property :type,                    String,  :default => 'Account'
   property :name,                    String
   property :title,                   String
   property :email,                   String
-  property :password,                String,   :serialize => :if_present
-  property :password_confirmation,   String,   :serialize => :if_present
-  property :perishable_token,        String
-  property :perishable_token_set_at, String
-  property :ghost,                   Boolean,  :serialize => false, :default => false
+  property :password,                String,  :serialize => :if_present
+  property :password_confirmation,   String,  :serialize => :if_present
+  property :perishable_token,        String,  :serialize => false
+  property :perishable_token_set_at, String,  :serialize => false
+  property :ghost,                   Boolean, :serialize => false, :default => false
   
   property :phone,                   String
-  property :system_phone,            String
+  property :system_phone,            String,  :serialize => false
   property :company,                 String
   property :license,                 String
   property :linkedin,                String
   property :twitter,                 String
   property :facebook,                String
   property :web,                     String
-  property :system_phone,            String
   
   property :city,                    String
   property :state,                   String
   property :country,                 String
   
-  property :auth_key,                String
-
-  property :funding,                 String
-  property :population,              String
-  property :growing,                 Boolean
-  property :move_in,                 String
-  property :extra_info,              String
+  property :auth_key,                String,  :serialize => false
 
   exclude_from_comparison :password, :password_confirmation
 
