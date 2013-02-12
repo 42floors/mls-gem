@@ -81,7 +81,7 @@ class MLS::Address < MLS::Resource
   def to_hash
     hash = super
     hash[:photo_ids] = photos.map(&:id) if photos
-    hash[:videos_attributes] = videos.map(&:to_hash) if videos
+    hash[:videos_attributes] = videos.map(&:to_hash) unless videos.blank?
     hash
   end
 
