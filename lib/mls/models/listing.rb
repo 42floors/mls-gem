@@ -217,12 +217,12 @@ class MLS::Listing < MLS::Resource
 
     def find(id)
       response = MLS.get("/listings/#{id}")
-      puts response.body
       MLS::Listing::Parser.parse(response.body)
     end
 
-    def all(filters = {}, limit = nil, order = 'listings.id')
-      response = MLS.get('/listings', :filters => filters, :limit => limit, :order => order)
+    # currently supported options are filters, page, per_page, offset, order 
+    def all(options={})
+      response = MLS.get('/listings', options)
       MLS::Listing::Parser.parse_collection(response.body)
     end
 
