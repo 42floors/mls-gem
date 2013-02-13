@@ -23,7 +23,7 @@ class MLS
 
   API_VERSION = '0.1.0'
 
-  attr_reader :url
+  attr_reader :url, :user_agent
   attr_writer :asset_host, :listing_amenities, :address_amenities
   attr_accessor :api_key, :auth_key, :logger
 
@@ -36,6 +36,12 @@ class MLS
     @api_key = CGI.unescape(@url.user)
     @host, @port = @url.host, @url.port
   end
+  
+  # Sets the user agent so that MLS can distinguish between multiple users
+  # with the same auth
+  def user_agent=(user_agent)
+    @user_agent = user_agent
+  end  
 
   def logger # TODO: testme
     @logger ||= default_logger
@@ -66,6 +72,7 @@ class MLS
   def headers # TODO: testme
     h = {
       'Content-Type' => 'application/json',
+      'User-Agent' => @user_agent,
       'X-42Floors-API-Version' => API_VERSION,
       'X-42Floors-API-Key' => api_key
     }
