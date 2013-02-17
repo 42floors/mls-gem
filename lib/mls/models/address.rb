@@ -154,9 +154,7 @@ class MLS::Address::Parser < MLS::Parser
   end
 
   def photos=(photos)
-    @object.photos = photos.map do |p|
-      MLS::Photo.new(:digest => p[:digest], :id => p[:id].to_i)
-    end
+    @object.photos = photos.map {|p| MLS::Photo::Parser.build(p)}
   end
 
   def videos=(videos)
