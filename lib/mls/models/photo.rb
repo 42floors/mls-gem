@@ -10,6 +10,7 @@ class MLS::Photo < MLS::Resource
   property :file_name, String
   property :file_size, Fixnum
   property :url_template, String
+  property :caption, String
 
   def url(style='large', protocol='http')
     "#{protocol}://#{MLS.asset_host}/photos/#{style}/#{@digest}.jpg"
