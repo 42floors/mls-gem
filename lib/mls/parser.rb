@@ -29,7 +29,7 @@ class MLS::Parser
   def self.build_collection(hash, options={})
     root = options[:collection_root_element] || collection_root_element
     collection = []
-    data[root].each do |attrs|
+    hash[root].each do |attrs|
       collection << build(attrs)
     end
     collection
