@@ -64,7 +64,6 @@ class MLS::TourRequest < MLS::Resource
 
     def find_by_token(token)
       response = MLS.get("/tour_requests/#{token}")
-      puts response.body
       MLS::TourRequest::Parser.parse(response.body)
     end
 

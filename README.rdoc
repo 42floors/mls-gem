@@ -30,6 +30,7 @@ environment and want the photos to load.
 
   #!ruby
   MLS.asset_host = "assets.42floors.com"
+  MLS.image_host = "images.42floors.com"
 
 == Bugs
 

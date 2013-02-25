@@ -51,7 +51,7 @@ class MLS::Address < MLS::Resource
   attr_accessor :listings, :listing_types, :photos, :videos
 
   # should include an optional use address or no_image image
-  def avatar(size='100x200', protocol='http')
+  def avatar(size='100x200#', protocol='http')
     params = {
       :size => size,
       :format => 'png',
@@ -61,7 +61,7 @@ class MLS::Address < MLS::Resource
     }
 
     if avatar_digest
-      "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
     else
       "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
     end

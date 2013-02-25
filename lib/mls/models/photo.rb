@@ -12,8 +12,8 @@ class MLS::Photo < MLS::Resource
   property :url_template, String
   property :caption, String
 
-  def url(style='large', protocol='http')
-    "#{protocol}://#{MLS.asset_host}/photos/#{style}/#{@digest}.jpg"
+  def url(style='700x467#', protocol='http')
+    "#{protocol}://#{MLS.image_host}/#{digest}.jpg?s=#{URI.escape(style)}"
   end
 
   def self.create(attrs)

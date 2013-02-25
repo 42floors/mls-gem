@@ -24,7 +24,7 @@ class MLS
   API_VERSION = '0.1.0'
 
   attr_reader :url, :user_agent
-  attr_writer :asset_host, :listing_amenities, :address_amenities
+  attr_writer :asset_host, :image_host, :listing_amenities, :address_amenities
   attr_accessor :api_key, :auth_key, :logger
 
   # Sets the API Token and Host of the MLS Server
@@ -57,6 +57,10 @@ class MLS
   # otherwise it queries the MLS for this configuration.
   def asset_host # TODO: testme
     @asset_host ||= get('/asset_host').body
+  end
+  
+  def image_host # TODO: testme
+    @asset_host ||= get('/image_host').body
   end
 
   def listing_amenities

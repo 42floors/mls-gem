@@ -5,8 +5,8 @@ class MLS::PDF < MLS::Resource
   property :file_url, String
   property :type, String
 
-  def url(style='large', protocol='http')
-    "#{protocol}://#{MLS.asset_host}/#{type}s/#{style}/#{@digest}.jpg"
+  def url(style='700x467#', protocol='http')
+    "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
   end
 end
 

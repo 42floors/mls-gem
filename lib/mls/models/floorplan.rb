@@ -12,8 +12,8 @@ class MLS::Floorplan < MLS::Resource
     "#{protocol}://#{MLS.asset_host}/floorplans/#{digest}/#{file_name}"
   end
   
-  def avatar(size='150x100', protocol='http')
-    "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+  def avatar(size='150x100#', protocol='http')
+    "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
   end
   
   def self.create(attrs)

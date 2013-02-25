@@ -69,9 +69,9 @@ class MLS::Listing < MLS::Resource
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
   attr_writer :amenities
 
-  def avatar(size='150x100', protocol='http')
+  def avatar(size='150x100#', protocol='http')
     if avatar_digest
-      "#{protocol}://#{MLS.asset_host}/photos/#{size}/#{avatar_digest}.jpg"
+      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
     else
       address.avatar(size, protocol)
     end
