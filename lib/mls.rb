@@ -60,7 +60,7 @@ class MLS
   end
   
   def image_host # TODO: testme
-    raw_image_host % (rand(4) + 1)
+    raw_image_host % (rand(4))
   end
   
   def raw_image_host
