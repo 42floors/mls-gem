@@ -60,8 +60,11 @@ class MLS
   end
   
   def image_host # TODO: testme
+    raw_image_host % (rand(4) + 1)
+  end
+  
+  def raw_image_host
     @image_host ||= get('/image_host').body
-    @image_host % rand(4) + 1
   end
 
   def listing_amenities
