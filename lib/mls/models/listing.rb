@@ -39,6 +39,7 @@ class MLS::Listing < MLS::Resource
   property :rate_per_sqft_per_year,       Decimal,  :serialize => :false
   property :monthly_rate,                 Decimal,  :serialize => :false 
   property :yearly_rate,                  Decimal,  :serialize => :false
+  property :forecast_monthly_rate,        Decimal,  :serialize => :false
   property :sublease_expiration,          DateTime
 
   property :available_on,                 DateTime
