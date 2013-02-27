@@ -63,6 +63,7 @@ class MLS::Address < MLS::Resource
     if avatar_digest
       "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
     else
+      params[:size] = params[:size].match(/\d+x\d+/)[0]
       "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
     end
   end
