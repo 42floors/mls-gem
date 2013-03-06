@@ -214,6 +214,11 @@ class MLS::Listing < MLS::Resource
     MLS.listing_amenities
   end
 
+  def similar 
+    response = MLS.get("/listings/#{self.id}/similar") # TODO: Number of listings?
+    MLS::Listing::Parser.parse_collection(response.body)
+  end
+
   class << self
 
     def find(id)
