@@ -69,7 +69,7 @@ class MLS::Listing < MLS::Resource
   property :avatar_digest,                String,   :serialize => false
   
   # Counter Caches
-  property :photos_count                  Fixnum, :serialize => :false
+  property :photos_count,                 Fixnum, :serialize => :false
   
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
   attr_writer :amenities
