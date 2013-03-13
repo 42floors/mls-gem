@@ -67,6 +67,10 @@ class MLS::Listing < MLS::Resource
   property :floorplan_id,                 Fixnum,    :serialize => :if_present
   
   property :avatar_digest,                String,   :serialize => false
+  
+  # Counter Caches
+  property :photos_count                  Fixnum, :serialize => :false
+  
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
   attr_writer :amenities
 
