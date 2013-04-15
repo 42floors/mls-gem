@@ -12,6 +12,7 @@ class MLS::Region < MLS::Resource
   property :slug,           String, :serialize => false
   property :geometry,       Hash,   :serialize => false
   property :envelope,       Hash,   :serialize => false
+  property :children,       Hash,   :serialize => false
   
   # Counter caches
   property :listings_count, Fixnum, :serialize => :false
