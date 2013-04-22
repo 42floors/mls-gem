@@ -36,7 +36,7 @@ class MLS::Parser
   end
   
   def self.parse_collection(data, options={})
-    build_collection(extract_attributes(data))
+    build_collection(extract_attributes(data), options)
   end
   
   def self.build(attributes)
