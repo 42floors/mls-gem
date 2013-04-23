@@ -13,17 +13,30 @@ class MLS::Region < MLS::Resource
   property :geometry,       Hash,   :serialize => false
   property :envelope,       Hash,   :serialize => false
   property :children,       Hash,   :serialize => false
-  
+
   # Counter caches
   property :listings_count, Fixnum, :serialize => :false
 
   class << self
-    
+
     def find(id)
       response = MLS.get("/regions/#{id}")
       MLS::Region::Parser.parse(response.body)
     end
-    
+
+  end
+
+  def bounds
+    return nil unless envelope
+    n, e, s, w = nil, nil, nil, nil
+    envelope[:coordinates][0].each do |c|
+      lon, lat = *c
+      n = lat if !n || lat > n
+      e = lon if !e || lon > e
+      s = lat if !s || lat < s
+      w = lon if !w || lon < w
+    end
+    [n, e, s, w]
   end
 
 end
