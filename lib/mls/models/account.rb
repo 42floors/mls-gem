@@ -51,6 +51,10 @@ class MLS::Account < MLS::Resource
     end
   end
 
+  def display_name
+    name || email
+  end
+
   def agent?
     type == 'Agent'
   end
