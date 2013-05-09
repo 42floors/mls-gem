@@ -63,6 +63,7 @@ class MLS::Listing < MLS::Resource
   
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
+  property :refreshed_at,                 DateTime,  :serialize => :false
   property :leased_on,                    DateTime
   
   property :flyer_id,                     Fixnum,    :serialize => :if_present
