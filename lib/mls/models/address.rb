@@ -48,6 +48,8 @@ class MLS::Address < MLS::Resource
 
   property :avatar_digest, String,   :serialize => false
 
+  property :verified_on, DateTime, :serialize => :false
+
   attr_accessor :listings, :listing_types, :photos, :videos
 
   # should include an optional use address or no_image image
