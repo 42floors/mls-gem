@@ -24,6 +24,9 @@ class MLS::Account < MLS::Resource
   property :state,                   String
   property :country,                 String
   
+  property :created_at,              DateTime,  :serialize => :false
+  property :updated_at,              DateTime,  :serialize => :false
+  
   property :auth_key,                String,  :serialize => false
 
   exclude_from_comparison :password, :password_confirmation
