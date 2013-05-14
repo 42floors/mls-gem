@@ -48,7 +48,7 @@ class MLS::Address < MLS::Resource
 
   property :avatar_digest, String,   :serialize => false
 
-  property :verified_on, DateTime, :serialize => :false
+  property :listings_latest_created_at, DateTime, :serialize => :false
 
   attr_accessor :listings, :listing_types, :photos, :videos
 
