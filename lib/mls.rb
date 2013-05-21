@@ -142,6 +142,8 @@ class MLS
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
+    
+    response.body.force_encoding(Encoding::UTF_8)
     if block_given?
       yield(response, response.code.to_i)
     else
