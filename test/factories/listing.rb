@@ -14,7 +14,7 @@ FactoryGirl.define do
     #agents_attributes  { {'0' => FactoryGirl.attributes_for(:broker)} }
 
     use 'Office'
-    total_size { Kernel.rand(3000..900000) }
+    size { Kernel.rand(3000..900000) }
     maximum_contiguous_size { Kernel.rand(3000..900000) }
     minimum_divisable_size { Kernel.rand(3000..900000) }
     type 'lease'

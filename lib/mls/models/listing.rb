@@ -28,7 +28,7 @@ class MLS::Listing < MLS::Resource
   property :floor,                        Fixnum
   property :comments,                     String
   
-  property :total_size,                   Fixnum
+  property :size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
   property :minimum_divisable_size,       Fixnum
   
