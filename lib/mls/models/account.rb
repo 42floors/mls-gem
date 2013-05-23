@@ -12,7 +12,6 @@ class MLS::Account < MLS::Resource
   property :ghost,                   Boolean, :serialize => false, :default => false
   
   property :phone,                   String
-  property :twilio_extension,        String,  :serialize => false
   property :company,                 String
   property :license,                 String
   property :linkedin,                String
