@@ -205,18 +205,19 @@ class MLS::Listing < MLS::Resource
     result
   end
 
-  def url
-    "#{address.url}/#{id}"
-  end
-
+  # TODO: Remove
   def all_photos
+    warn "Listing#all_photos is deprecated"
     photos + address.photos
   end
 
+  # TODO: Remove
   def all_videos
+    warn "Listing#all_videos is deprecated"
     videos + address.videos
   end
 
+  # TODO: Remove / What does this function do?
   def amenities
     MLS.listing_amenities
   end
