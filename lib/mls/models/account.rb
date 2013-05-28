@@ -36,7 +36,7 @@ class MLS::Account < MLS::Resource
   attr_writer :favorites
 
   def update
-    MLS.put('/account', to_hash, 400) do |response, code|
+    MLS.put('/account', {:account => to_hash}, 400) do |response, code|
       MLS::Account::Parser.update(self, response.body)
       code == 200
     end
