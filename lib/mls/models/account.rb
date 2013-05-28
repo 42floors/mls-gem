@@ -1,6 +1,6 @@
 class MLS::Account < MLS::Resource
   
-  property :id,                      Fixnum,  :serialize => false
+  property :id,                      Fixnum,  :serialize => :if_present
   property :type,                    String,  :default => 'Account'
   property :name,                    String,  :serialize => :if_present
   property :title,                   String,  :serialize => :if_present
