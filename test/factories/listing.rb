@@ -16,7 +16,7 @@ FactoryGirl.define do
     use 'Office'
     size { Kernel.rand(3000..900000) }
     maximum_contiguous_size { Kernel.rand(3000..900000) }
-    minimum_divisable_size { Kernel.rand(3000..900000) }
+    minimum_divisible_size { Kernel.rand(3000..900000) }
     type 'lease'
     #lease_terms { ::MLS::Listing::LEASE_TERMS.sample }
     space_type 'unit'

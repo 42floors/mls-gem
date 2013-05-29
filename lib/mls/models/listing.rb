@@ -30,7 +30,7 @@ class MLS::Listing < MLS::Resource
   
   property :size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
-  property :minimum_divisable_size,       Fixnum
+  property :minimum_divisible_size,       Fixnum
   
   property :lease_terms,                  String
   property :rate,                         Decimal
