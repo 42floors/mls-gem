@@ -12,7 +12,6 @@ class MLS::Account < MLS::Resource
   property :ghost,                   Boolean, :serialize => false, :default => false
   
   property :phone,                   String,  :serialize => :if_present
-  property :system_phone,            String,  :serialize => false
   property :company,                 String,  :serialize => :if_present
   property :license,                 String,  :serialize => :if_present
   property :linkedin,                String,  :serialize => :if_present
