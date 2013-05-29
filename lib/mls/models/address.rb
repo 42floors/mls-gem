@@ -22,7 +22,7 @@ class MLS::Address < MLS::Resource
   property :min_size, Fixnum, :serialize => :if_present
   property :comments, String
   property :year_built, Fixnum
-  property :total_size, Fixnum
+  property :size, Fixnum
   property :floors, Fixnum
 
   property :lobby_attendant, Boolean

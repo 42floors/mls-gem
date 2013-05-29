@@ -1,27 +1,27 @@
 class MLS::Account < MLS::Resource
   
-  property :id,                      Fixnum
+  property :id,                      Fixnum,  :serialize => :if_present
   property :type,                    String,  :default => 'Account'
-  property :name,                    String
-  property :title,                   String
-  property :email,                   String
+  property :name,                    String,  :serialize => :if_present
+  property :title,                   String,  :serialize => :if_present
+  property :email,                   String,  :serialize => :if_present
   property :password,                String,  :serialize => :if_present
   property :password_confirmation,   String,  :serialize => :if_present
   property :perishable_token,        String,  :serialize => false
   property :perishable_token_set_at, String,  :serialize => false
   property :ghost,                   Boolean, :serialize => false, :default => false
   
-  property :phone,                   String
-  property :company,                 String
-  property :license,                 String
-  property :linkedin,                String
-  property :twitter,                 String
-  property :facebook,                String
-  property :web,                     String
+  property :phone,                   String,  :serialize => :if_present
+  property :company,                 String,  :serialize => :if_present
+  property :license,                 String,  :serialize => :if_present
+  property :linkedin,                String,  :serialize => :if_present
+  property :twitter,                 String,  :serialize => :if_present
+  property :facebook,                String,  :serialize => :if_present
+  property :web,                     String,  :serialize => :if_present
   
-  property :city,                    String
-  property :state,                   String
-  property :country,                 String
+  property :city,                    String,  :serialize => :if_present
+  property :state,                   String,  :serialize => :if_present
+  property :country,                 String,  :serialize => :if_present
   
   property :created_at,              DateTime,  :serialize => :false
   property :updated_at,              DateTime,  :serialize => :false
@@ -35,7 +35,7 @@ class MLS::Account < MLS::Resource
   attr_writer :favorites
 
   def update
-    MLS.put('/account', to_hash, 400) do |response, code|
+    MLS.put('/account', {:account => to_hash}, 400) do |response, code|
       MLS::Account::Parser.update(self, response.body)
       code == 200
     end
@@ -45,7 +45,7 @@ class MLS::Account < MLS::Resource
   # are any errors. @persisted will also be set to +true+ if the Account was
   # succesfully created
   def create
-    MLS.post('/account', to_hash, 400) do |response, code|
+    MLS.post('/account', {:account => to_hash}, 400) do |response, code|
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
       MLS::Account::Parser.update(self, response.body)
       @persisted = true
