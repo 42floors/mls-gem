@@ -1,6 +1,7 @@
+require 'bundler/setup'
 require "bundler/gem_tasks"
+Bundler.require(:development)
 require 'rake/testtask'
-require 'sdoc'
 require 'rdoc/task'
 
 task :console do
