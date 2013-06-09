@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'sdoc'
   s.add_development_dependency 'bundler'
-  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest', '4.7.4'
   s.add_development_dependency 'turn'
   s.add_development_dependency 'faker'
   s.add_development_dependency 'factory_girl'
