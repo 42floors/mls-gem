@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   # Developoment 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
+  s.add_development_dependency 'sdoc'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'turn'
