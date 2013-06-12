@@ -32,8 +32,8 @@ class MLS::TourRequest < MLS::Resource
     end
   end
 
-  def mark_viewed(agent)
-    MLS.post("/tour_requests/#{token}/mark_viewed", {:agent_id => agent.id}) do |response, code|
+  def view(agent)
+    MLS.post("/tour_requests/#{token}/view", {:agent_id => agent.id}) do |response, code|
       return code == 200
     end
   end
