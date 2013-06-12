@@ -4,6 +4,7 @@ class MLS::TourRequest < MLS::Resource
   property :id,                           Fixnum
   property :account_id,                   Fixnum
   property :listing_id,                   Fixnum
+  property :contact_id,                   Fixnum
   property :message,                      String
   property :company,                      String
   property :population,                   String
