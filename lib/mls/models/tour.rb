@@ -13,15 +13,15 @@ class MLS::TourRequest < MLS::Resource
   attr_accessor :client, :listing
 
   def claim(agent)
-    MLS.post("/tour_requests/#{token}/claim", {:agent_id => agent.id})
+    MLS.post("/tours/#{token}/claim", {:agent_id => agent.id})
   end
 
   def decline(comments=nil)
-    MLS.post("/tour_requests/#{token}/decline", {:agent_comments => reasons})
+    MLS.post("/tours/#{token}/decline", {:agent_comments => reasons})
   end
 
   def view
-    MLS.post("/tour_requests/#{token}/view")
+    MLS.post("/tours/#{token}/view")
   end
 
   def viewed?
@@ -38,18 +38,18 @@ class MLS::TourRequest < MLS::Resource
 
   class << self
     def get_all_for_account
-      response = MLS.get('/account/tour_requests')
+      response = MLS.get('/account/tours')
       MLS::TourRequest::Parser.parse_collection(response.body)
     end
 
     def find_by_token(token)
-      response = MLS.get("/tour_requests/#{token}")
+      response = MLS.get("/tours/#{token}")
       MLS::TourRequest::Parser.parse(response.body)
     end
 
     def create(listing_id, account, tour={})
       params = {:account => account, :tour => tour}
-      response = MLS.post("/listings/#{listing_id}/tour_requests", params)
+      response = MLS.post("/listings/#{listing_id}/tours", params)
       return MLS::TourRequest::Parser.parse(response.body)
     end
   end
