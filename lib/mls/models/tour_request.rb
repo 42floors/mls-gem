@@ -1,42 +1,27 @@
 class MLS::TourRequest < MLS::Resource
-  property :message, String
-
   property :id,                           Fixnum
-  property :account_id,                   Fixnum
-  property :listing_id,                   Fixnum
-  property :contact_id,                   Fixnum
-  property :message,                      String
-  property :company,                      String
-  property :population,                   String
-  property :growing,                      Boolean
-  property :updated_by_id,                Fixnum
   property :status,                       String
-  property :reasons_to_decline,           String,    :serialize => :if_present
-
+  property :client_id,                    Fixnum
+  property :agent_id,                     Fixnum
+  property :listing_id,                   Fixnum
+  property :comments,                     String
+  property :agent_comments,               String,    :serialize => :if_present
   property :token,                        String,    :serialize => :false
-
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
 
-  attr_accessor :account, :listing, :additional_features
+  attr_accessor :client, :listing
 
   def claim(agent)
-    MLS.post("/tour_requests/#{token}/claim", {:agent_id => agent.id}) do |response, code|
-      return code == 200
-    end
+    MLS.post("/tour_requests/#{token}/claim", {:agent_id => agent.id})
   end
 
-  def decline(agent, reasons=nil)
-    MLS.post("/tour_requests/#{token}/decline", 
-      {:agent_id => agent.id, :reasons_to_decline => reasons}) do |response, code|
-      return code == 200
-    end
+  def decline(comments=nil)
+    MLS.post("/tour_requests/#{token}/decline", {:agent_comments => reasons})
   end
 
-  def view(agent)
-    MLS.post("/tour_requests/#{token}/view", {:agent_id => agent.id}) do |response, code|
-      return code == 200
-    end
+  def view
+    MLS.post("/tour_requests/#{token}/view")
   end
 
   def viewed?
@@ -49,12 +34,6 @@ class MLS::TourRequest < MLS::Resource
 
   def declined?
     status == "declined"
-  end
-
-  def to_hash
-    hash = super
-    hash[:additional_features_attributes] = additional_features.to_hash if additional_features
-    hash
   end
 
   class << self
@@ -74,6 +53,7 @@ class MLS::TourRequest < MLS::Resource
       return MLS::TourRequest::Parser.parse(response.body)
     end
   end
+
 end
 
 class MLS::TourRequest::Parser < MLS::Parser
@@ -82,7 +62,8 @@ class MLS::TourRequest::Parser < MLS::Parser
     @object.listing = MLS::Listing::Parser.build(listing)
   end
   
-  def account=(account)
-    @object.account = MLS::Account::Parser.build(account)
+  def client=(account)
+    @object.client = MLS::Account::Parser.build(account)
   end
+
 end
