@@ -13,11 +13,13 @@ class MLS::Tour < MLS::Resource
   attr_accessor :client, :listing
 
   def claim(agent)
+    self.agent_id = agent.id
     MLS.post("/tours/#{token}/claim", {:agent_id => agent.id})
   end
 
-  def decline(comments=nil)
-    MLS.post("/tours/#{token}/decline", {:agent_comments => reasons})
+  def decline(notes=nil)
+    self.agent_comments = notes
+    MLS.post("/tours/#{token}/decline", {:agent_comments => notes})
   end
 
   def view
