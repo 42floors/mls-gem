@@ -1,4 +1,4 @@
-class MLS::TourRequest < MLS::Resource
+class MLS::Tour < MLS::Resource
   property :id,                           Fixnum
   property :status,                       String
   property :client_id,                    Fixnum
@@ -39,24 +39,24 @@ class MLS::TourRequest < MLS::Resource
   class << self
     def get_all_for_account
       response = MLS.get('/account/tours')
-      MLS::TourRequest::Parser.parse_collection(response.body)
+      MLS::Tour::Parser.parse_collection(response.body)
     end
 
     def find_by_token(token)
       response = MLS.get("/tours/#{token}")
-      MLS::TourRequest::Parser.parse(response.body)
+      MLS::Tour::Parser.parse(response.body)
     end
 
     def create(listing_id, account, tour={})
       params = {:account => account, :tour => tour}
       response = MLS.post("/listings/#{listing_id}/tours", params)
-      return MLS::TourRequest::Parser.parse(response.body)
+      return MLS::Tour::Parser.parse(response.body)
     end
   end
 
 end
 
-class MLS::TourRequest::Parser < MLS::Parser
+class MLS::Tour::Parser < MLS::Parser
   
   def listing=(listing)
     @object.listing = MLS::Listing::Parser.build(listing)

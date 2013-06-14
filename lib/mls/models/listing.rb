@@ -147,11 +147,11 @@ class MLS::Listing < MLS::Resource
   #  #!ruby
   #  listing = MLS::Listing.find(@id)
   #  info => {:company => 'name', :population => 10, :funding => 'string', :move_id => '2012-09-12'}
-  #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::TourRequest>
+  #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::Tour>
   #  
-  #  listing.request_tour('', 'emai', info) # => #<MLS::TourRequest> will have errors on account
+  #  listing.request_tour('', 'emai', info) # => #<MLS::Tour> will have errors on account
   def request_tour(account, tour={})
-    MLS::TourRequest.create(id, account, tour)
+    MLS::Tour.create(id, account, tour)
   end
   
 
