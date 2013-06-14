@@ -65,9 +65,13 @@ class MLS::Listing < MLS::Resource
   
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
-  property :touched_at,                 DateTime,  :serialize => :false
+  property :touched_at,                   DateTime,  :serialize => :false
   property :leased_on,                    DateTime
-  
+
+  property :awesome_score,                Fixnum
+  property :awesome_needs,                Array,  :serialize => :if_present                
+  property :awesome_label,                String
+
   property :flyer_id,                     Fixnum,    :serialize => :if_present
   property :floorplan_id,                 Fixnum,    :serialize => :if_present
   
