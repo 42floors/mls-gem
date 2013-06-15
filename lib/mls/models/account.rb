@@ -26,6 +26,8 @@ class MLS::Account < MLS::Resource
   property :created_at,              DateTime,  :serialize => :false
   property :updated_at,              DateTime,  :serialize => :false
   
+  property :listing_needs_counts,    Hash,    :serialize => :if_present
+
   property :auth_key,                String,  :serialize => false
 
   exclude_from_comparison :password, :password_confirmation
