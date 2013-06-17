@@ -26,8 +26,6 @@ class MLS::Account < MLS::Resource
   property :created_at,              DateTime,  :serialize => :false
   property :updated_at,              DateTime,  :serialize => :false
   
-  property :listing_needs_counts,    Hash,    :serialize => :if_present
-
   property :auth_key,                String,  :serialize => false
 
   exclude_from_comparison :password, :password_confirmation
@@ -68,7 +66,11 @@ class MLS::Account < MLS::Resource
     response = MLS.get('/account/favorites')
     @favorites = MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
-  
+
+  def agent_info
+    MLS.agent_info id
+  end
+
   def favorited?(listing)
     favorites.include?(listing)
   end

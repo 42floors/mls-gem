@@ -72,6 +72,11 @@ class MLS
       .parse(MLS.get('/listings/amenities').body)
   end
 
+  def agent_info(id)
+    @agent_info ||= Yajl::Parser.new(:symbolize_keys => true)
+      .parse(MLS.get("/agents/#{id}").body)
+  end
+
   def address_amenities
     @address_amenities ||= Yajl::Parser.new(:symbolize_keys => true)
       .parse(MLS.get('/addresses/amenities').body)
