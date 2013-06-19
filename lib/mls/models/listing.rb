@@ -35,6 +35,8 @@ class MLS::Listing < MLS::Resource
   property :lease_terms,                  String
   property :rate,                         Decimal
   property :rate_units,                   String,   :default => '/sqft/mo'
+  property :low_rate,                     Decimal,  :serialize => :false
+  property :high_rate,                    Decimal,  :serialize => :false
   property :rate_per_sqft_per_month,      Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_sqft_per_year,       Decimal,  :serialize => :false
   property :rate_per_month,               Decimal,  :serialize => :false 
