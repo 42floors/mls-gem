@@ -54,6 +54,7 @@ class MLS::Parser
   def extract_attributes(data)
     Yajl::Parser.new(:symbolize_keys => true).parse(data)
   end
+  
   def self.extract_attributes(data)
     Yajl::Parser.new(:symbolize_keys => true).parse(data)
   end

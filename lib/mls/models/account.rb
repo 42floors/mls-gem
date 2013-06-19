@@ -68,8 +68,8 @@ class MLS::Account < MLS::Resource
     @favorites = MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
 
-  def agent_info
-    MLS.agent_info id
+  def agent_profile
+    @agent_profile ||= MLS.agent_profile id
   end
 
   def favorited?(listing)
