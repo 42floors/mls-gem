@@ -9,7 +9,7 @@ class MLS::Flyer < MLS::Resource
   property :file_size, Fixnum
   
   def url(protocol='http')
-    "#{protocol}://#{MLS.asset_host}/flyers/#{digest}/#{file_name}"
+    "#{protocol}://#{MLS.asset_host}/flyers/#{digest}/compressed/#{file_name}"
   end
   
   def avatar(size='150x100#', protocol='http')
