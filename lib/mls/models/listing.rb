@@ -160,7 +160,7 @@ class MLS::Listing < MLS::Resource
     MLS::Tour.create(id, account, tour)
   end
   
-
+  
   def create
     MLS.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
