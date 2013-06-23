@@ -69,6 +69,7 @@ class MLS::Listing < MLS::Resource
   property :updated_at,                   DateTime,  :serialize => :false
   property :touched_at,                   DateTime,  :serialize => :false
   property :leased_on,                    DateTime
+  property :photography_requested_on,     DateTime,  :serialize => :false
 
   property :awesome_score,                Fixnum
   property :awesome_needs,                Array,  :serialize => :if_present                
