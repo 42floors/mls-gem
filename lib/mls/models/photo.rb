@@ -11,6 +11,7 @@ class MLS::Photo < MLS::Resource
   property :file_size, Fixnum
   property :url_template, String
   property :caption, String
+  property :similar_subject_id, Fixnum, :serialize => false
 
   def url(style='700x467#', protocol='http')
     "#{protocol}://#{MLS.image_host}/#{digest}.jpg?s=#{URI.escape(style)}"

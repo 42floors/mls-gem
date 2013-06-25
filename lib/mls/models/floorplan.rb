@@ -9,7 +9,7 @@ class MLS::Floorplan < MLS::Resource
   property :file_size, Fixnum
   
   def url(protocol='http')
-    "#{protocol}://#{MLS.asset_host}/floorplans/#{digest}/#{file_name}"
+    "#{protocol}://#{MLS.asset_host}/floorplans/#{digest}/compressed/#{file_name}"
   end
   
   def avatar(size='150x100#', protocol='http')

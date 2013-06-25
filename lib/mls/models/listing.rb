@@ -232,8 +232,7 @@ class MLS::Listing < MLS::Resource
   end
 
   def similar 
-    response = MLS.get("/listings/#{self.id}/similar") # TODO: Number of listings?
-    MLS::Listing::Parser.parse_collection(response.body)
+    [] # Similar Listings not supported for now
   end
 
   class << self
