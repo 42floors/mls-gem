@@ -35,6 +35,8 @@ class MLS::Listing < MLS::Resource
   property :lease_terms,                  String
   property :rate,                         Decimal
   property :rate_units,                   String,   :default => '/sqft/mo'
+  property :low_rate,                     Decimal,  :serialize => :false
+  property :high_rate,                    Decimal,  :serialize => :false
   property :rate_per_sqft_per_month,      Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_sqft_per_year,       Decimal,  :serialize => :false
   property :rate_per_month,               Decimal,  :serialize => :false 
@@ -65,9 +67,14 @@ class MLS::Listing < MLS::Resource
   
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
-  property :touched_at,                 DateTime,  :serialize => :false
+  property :touched_at,                   DateTime,  :serialize => :false
   property :leased_on,                    DateTime
-  
+  property :photography_requested_on,     DateTime,  :serialize => :false
+
+  property :awesome_score,                Fixnum
+  property :awesome_needs,                Array,  :serialize => :if_present                
+  property :awesome_label,                String
+
   property :flyer_id,                     Fixnum,    :serialize => :if_present
   property :floorplan_id,                 Fixnum,    :serialize => :if_present
   
@@ -154,7 +161,7 @@ class MLS::Listing < MLS::Resource
     MLS::Tour.create(id, account, tour)
   end
   
-
+  
   def create
     MLS.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)

@@ -5,3 +5,5 @@ pkg/*
 .rvmrc
 coverage
 doc
+*#*
+*~
