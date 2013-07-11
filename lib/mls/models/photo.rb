@@ -13,8 +13,13 @@ class MLS::Photo < MLS::Resource
   property :caption, String
   property :similar_subject_id, Fixnum, :serialize => false
 
-  def url(style='700x467#', protocol='http')
-    "#{protocol}://#{MLS.image_host}/#{digest}.jpg?s=#{URI.escape(style)}"
+  def url(style=nil, protocol='http')
+    result = "#{protocol}://#{MLS.image_host}/#{digest}.jpg"
+    if style
+      result = result + "?s=#{URI.escape(style)}"
+    end
+    
+    result
   end
 
   def self.create(attrs)
