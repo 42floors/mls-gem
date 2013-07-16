@@ -128,8 +128,7 @@ class MLS::Account < MLS::Resource
     end
 
     def reset_password!(email)
-      MLS.put('/account/reset_password', {:email => email}, 400) do |response, code|
-        MLS::Account::Parser.update(self, response.body)
+      MLS.put('/account/reset_password', {:email => email}, 400, 404) do |response, code|
         code == 200
       end
     end
