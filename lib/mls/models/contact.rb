@@ -1,4 +1,4 @@
-class MLS::Tour < MLS::Resource
+class MLS::Contact < MLS::Resource
   property :id,                           Fixnum
   property :status,                       String
   property :client_id,                    Fixnum
@@ -14,16 +14,16 @@ class MLS::Tour < MLS::Resource
 
   def claim(agent)
     self.agent_id = agent.id
-    MLS.post("/tours/#{token}/claim", {:agent_id => agent.id})
+    MLS.post("/contacts/#{token}/claim", {:agent_id => agent.id})
   end
 
   def decline(notes=nil)
     self.agent_comments = notes
-    MLS.post("/tours/#{token}/decline", {:agent_comments => notes})
+    MLS.post("/contacts/#{token}/decline", {:agent_comments => notes})
   end
 
   def view
-    MLS.post("/tours/#{token}/view")
+    MLS.post("/contacts/#{token}/view")
   end
 
   def viewed?
@@ -40,25 +40,25 @@ class MLS::Tour < MLS::Resource
 
   class << self
     def get_all_for_account
-      response = MLS.get('/account/tours')
-      MLS::Tour::Parser.parse_collection(response.body)
+      response = MLS.get('/account/contacts')
+      MLS::Contact::Parser.parse_collection(response.body)
     end
 
     def find_by_token(token)
-      response = MLS.get("/tours/#{token}")
-      MLS::Tour::Parser.parse(response.body)
+      response = MLS.get("/contacts/#{token}")
+      MLS::Contact::Parser.parse(response.body)
     end
 
-    def create(listing_id, account, tour={})
-      params = {:account => account, :tour => tour}
-      response = MLS.post("/listings/#{listing_id}/tours", params)
-      return MLS::Tour::Parser.parse(response.body)
+    def create(listing_id, account, contact={})
+      params = {:account => account, :contact => contact}
+      response = MLS.post("/listings/#{listing_id}/contacts", params)
+      return MLS::Contact::Parser.parse(response.body)
     end
   end
 
 end
 
-class MLS::Tour::Parser < MLS::Parser
+class MLS::Contact::Parser < MLS::Parser
   
   def listing=(listing)
     @object.listing = MLS::Listing::Parser.build(listing)

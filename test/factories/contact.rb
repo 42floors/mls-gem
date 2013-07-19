@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :tour, :class => MLS::Tour do
+  factory :contact, :class => MLS::Tour do
     message { Faker::Lorem.paragraph }
     company { Faker::Company.email }
     population { Kernel.rand(2..200) }
