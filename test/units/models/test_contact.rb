@@ -1,26 +1,26 @@
 require 'test_helper'
 
-class TestTour < ::Test::Unit::TestCase
+class TestContact < ::Test::Unit::TestCase
 
   # def test_properties
-  #   tr = MLS::Tour.new
+  #   tr = MLS::Contact.new
   # 
   #   assert tr.respond_to?(:message)
   # end
   # 
   # def test_attr_accessors
-  #   tr = MLS::Tour.new
+  #   tr = MLS::Contact.new
   # 
   #   assert tr.respond_to?(:listing)
   # end
   # 
   # def test_class_methods
-  #   assert MLS::Tour.respond_to?(:get_all_for_account)
-  #   assert MLS::Tour.respond_to?(:create)
+  #   assert MLS::Contact.respond_to?(:get_all_for_account)
+  #   assert MLS::Contact.respond_to?(:create)
   # end
   # 
   # def test_parser
-  #   assert defined?(MLS::Tour::Parser)
+  #   assert defined?(MLS::Contact::Parser)
   # end
 
   test 'it' do
