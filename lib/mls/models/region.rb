@@ -2,7 +2,7 @@ class MLS::Region < MLS::Resource
 
   property :id,             Fixnum, :serialize => :if_present
   property :name,           String, :serialize => false
-  property :proper_name     String, :serialize => :if_present
+  property :proper_name,    String, :serialize => :if_present
   property :common_name,    String, :serialize => :if_present
   property :description,    String, :serialize => :if_present
   property :code,           String, :serialize => :if_present
