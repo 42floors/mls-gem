@@ -32,7 +32,8 @@ class MLS::Listing < MLS::Resource
   property :size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
   property :minimum_divisible_size,       Fixnum
-  
+
+  property :amenities,                    Hash
   property :lease_terms,                  String
   property :rate,                         Decimal
   property :rate_units,                   String,   :default => '/sqft/mo'
@@ -85,7 +86,6 @@ class MLS::Listing < MLS::Resource
   property :photos_count,                 Fixnum, :serialize => :false
   
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos
-  attr_writer :amenities
 
   def avatar(size='150x100#', protocol='http')
     if avatar_digest
@@ -227,11 +227,6 @@ class MLS::Listing < MLS::Resource
     videos + address.videos
   end
 
-  # TODO: Remove / What does this function do?
-  def amenities
-    MLS.listing_amenities
-  end
-
   def similar 
     [] # Similar Listings not supported for now
   end
@@ -257,6 +252,10 @@ class MLS::Listing < MLS::Resource
     def calculate(filters = {}, operation = nil, column = nil, group = nil)
       response = MLS.get("/listings/calculate", :filters => filters, :operation => operation, :column => column, :group => group)
       MLS::Parser.extract_attributes(response.body)[:listings]
+    end
+
+    def amenities
+      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLS.get('/listings/amenities').body)
     end
 
   end

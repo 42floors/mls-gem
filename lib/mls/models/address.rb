@@ -108,10 +108,6 @@ class MLS::Address < MLS::Resource
     "http://#{host}/#{slug}"
   end
 
-  def amenities
-    MLS.address_amenities
-  end
-
   def find_listings(space_available, floor, unit)
     response = MLS.get("/addresses/#{id}/find_listings", 
       :floor => floor, :unit => unit, :space_available => space_available)
@@ -135,7 +131,11 @@ class MLS::Address < MLS::Resource
       response = MLS.get('/addresses', options)
       MLS::Address::Parser.parse_collection(response.body)
     end
-    
+
+    def amenities
+      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLS.get('/addresses/amenities').body)
+    end
+
   end
   
 end
