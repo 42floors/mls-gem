@@ -15,7 +15,7 @@ class TestListing < ::Test::Unit::TestCase
     assert listing.respond_to?(:space_type)
     assert listing.respond_to?(:unit)
     assert listing.respond_to?(:floor)
-    assert listing.respond_to?(:comments)
+    assert listing.respond_to?(:description)
     assert listing.respond_to?(:size)
     assert listing.respond_to?(:maximum_contiguous_size)
     assert listing.respond_to?(:minimum_divisible_size)

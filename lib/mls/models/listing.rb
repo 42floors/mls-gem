@@ -27,7 +27,7 @@ class MLS::Listing < MLS::Resource
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
   property :floor,                        Fixnum
-  property :comments,                     String
+  property :description,                  String
   
   property :size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
