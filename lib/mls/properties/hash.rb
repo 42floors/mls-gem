@@ -1,12 +1,7 @@
 class MLS::Property::Hash < MLS::Property
   
   def load(value) # from_json
-    case value
-    when Hash
-      value.with_indifferent_access
-    else
-      value
-    end
+    value && value.with_indifferent_access
   end
 
   def dump(value)
