@@ -24,6 +24,7 @@ class MLS::Listing < MLS::Resource
   property :name,                         String
   property :type,                         String,   :default => 'lease'
   property :state,                        String,   :default => 'listed'
+  property :visible,                      Boolean, :default => true
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
   property :floor,                        Fixnum
