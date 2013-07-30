@@ -4,7 +4,6 @@ class MLS::Region < MLS::Resource
   property :name,           String, :serialize => false
   property :proper_name,    String, :serialize => :if_present
   property :common_name,    String, :serialize => :if_present
-  property :description,    String, :serialize => :if_present
   property :code,           String, :serialize => :if_present
   property :type,           String, :serialize => :if_present
   property :source,         String, :serialize => :if_present
