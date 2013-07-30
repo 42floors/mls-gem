@@ -137,14 +137,14 @@ class MLS::Listing < MLS::Resource
 
   
   
-  # Creates a tour request for the listing.
+  # Creates a contact request for the listing.
   #
   # Paramaters::
   #
   # * +account+ - A +Hash+ of the user account. Valid keys are:
-  #   * +:name+ - Name of the User requesting the tour (Required)
-  #   * +:email+ - Email of the User requesting the tour (Required)
-  #   * +:phone+ - Phone of the User requesting the tour
+  #   * +:name+ - Name of the User requesting the contact (Required)
+  #   * +:email+ - Email of the User requesting the contact (Required)
+  #   * +:phone+ - Phone of the User requesting the contact
   # * +info+ - A optional +Hash+ of *company* info. Valid keys are:
   #   * +:message+ - Overrides the default message on the email sent to the broker
   #   * +:company+ - The name of the company that is interested in the space
@@ -156,11 +156,11 @@ class MLS::Listing < MLS::Resource
   #  #!ruby
   #  listing = MLS::Listing.find(@id)
   #  info => {:company => 'name', :population => 10, :funding => 'string', :move_id => '2012-09-12'}
-  #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::Tour>
+  #  listing.request_contact('name', 'email@address.com', info) # => #<MLS::Contact>
   #  
-  #  listing.request_tour('', 'emai', info) # => #<MLS::Tour> will have errors on account
-  def request_tour(account, tour={})
-    MLS::Tour.create(id, account, tour)
+  #  listing.request_contact('', 'emai', info) # => #<MLS::Contact> will have errors on account
+  def request_contact(account, contact={})
+    MLS::Contact.create(id, account, contact)
   end
   
   
