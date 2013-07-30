@@ -256,7 +256,7 @@ class MLS::Listing < MLS::Resource
     end
 
     def amenities
-      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLS.get('/listings/amenities').body)
+      @amenities ||= Yajl::Parser.new.parse(MLS.get('/listings/amenities').body).map(&:to_sym)
     end
 
   end
