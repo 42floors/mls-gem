@@ -28,6 +28,12 @@ class MLS::Account < MLS::Resource
   
   property :email_token,             String,  :serialize => false
   property :auth_key,                String,  :serialize => false
+  property :start_hours_of_operation, Fixnum,  :serialize => :if_present
+  property :end_hours_of_operation,   Fixnum,  :serialize => :if_present
+  property :days_of_operation,        String,  :serialize => :if_present
+  property :timezone,                 String,  :serialize => :if_present
+  property :lead_status,              String,  :serialize => :if_present
+  property :buyer_id,                 Fixnum,  :serialize => :if_present
 
   exclude_from_comparison :password, :password_confirmation
 
