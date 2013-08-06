@@ -25,17 +25,7 @@ class MLS::Address < MLS::Resource
   property :size, Fixnum
   property :floors, Fixnum
 
-  property :lobby_attendant, Boolean
-  property :gym, Boolean
-
-  property :common_bike_storage, Boolean
-  property :common_kitchen, Boolean
-  property :common_showers, Boolean
-  property :onsite_parking, Boolean
-  property :bikes_allowed, Boolean
-  property :dog_friendly, Boolean
-  property :common_bathrooms, Boolean
-  property :onsite_security_guard, Boolean
+  property :amenities,                    Hash
 
   property :leed_certification, String
   
