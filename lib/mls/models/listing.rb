@@ -216,18 +216,6 @@ class MLS::Listing < MLS::Resource
     result
   end
 
-  # TODO: Remove
-  def all_photos
-    warn "Listing#all_photos is deprecated"
-    photos + address.photos
-  end
-
-  # TODO: Remove
-  def all_videos
-    warn "Listing#all_videos is deprecated"
-    videos + address.videos
-  end
-
   def similar 
     [] # Similar Listings not supported for now
   end
