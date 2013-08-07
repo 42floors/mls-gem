@@ -11,7 +11,7 @@ class MLS::Photo < MLS::Resource
   property :file_size, Fixnum
   property :url_template, String
   property :caption, String
-  property :similar_subject_id, Fixnum, :serialize => false
+  property :subject_id, Fixnum
 
   def url(style=nil, protocol='http')
     result = "#{protocol}://#{MLS.image_host}/#{digest}.jpg"
