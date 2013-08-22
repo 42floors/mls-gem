@@ -1,6 +1,6 @@
-class MLS::Contact < MLS::Resource
+class MLS::Tour < MLS::Resource
   property :id,                           Fixnum
-  property :status,                       String
+  property :declined,                     Boolean
   property :client_id,                    Fixnum
   property :agent_id,                     Fixnum
   property :listing_id,                   Fixnum
@@ -12,53 +12,36 @@ class MLS::Contact < MLS::Resource
 
   attr_accessor :client, :listing
 
-  def claim(agent)
-    self.agent_id = agent.id
-    MLS.post("/contacts/#{token}/claim", {:agent_id => agent.id})
-  end
-
   def decline(notes=nil)
     self.agent_comments = notes
-    MLS.post("/contacts/#{token}/decline", {:agent_comments => notes})
-  end
-
-  def view
-    MLS.post("/contacts/#{token}/view")
-  end
-
-  def viewed?
-    status != "new"
-  end
-
-  def claimed?
-    status == "claimed"
+    MLS.post("/tours/#{token}/decline", {:agent_comments => notes})
   end
 
   def declined?
-    status == "declined"
+    declined
   end
 
   class << self
     def get_all_for_account
-      response = MLS.get('/account/contacts')
-      MLS::Contact::Parser.parse_collection(response.body)
+      response = MLS.get('/account/tours')
+      MLS::Tour::Parser.parse_collection(response.body)
     end
 
     def find_by_token(token)
-      response = MLS.get("/contacts/#{token}")
-      MLS::Contact::Parser.parse(response.body)
+      response = MLS.get("/tours/#{token}")
+      MLS::Tour::Parser.parse(response.body)
     end
 
-    def create(listing_id, account, contact={})
-      params = {:account => account, :contact => contact}
-      response = MLS.post("/listings/#{listing_id}/contacts", params)
-      return MLS::Contact::Parser.parse(response.body)
+    def create(listing_id, account, tour={})
+      params = {:account => account, :tour => tour}
+      response = MLS.post("/listings/#{listing_id}/tour", params)
+      return MLS::Tour::Parser.parse(response.body)
     end
   end
 
 end
 
-class MLS::Contact::Parser < MLS::Parser
+class MLS::Tour::Parser < MLS::Parser
   
   def listing=(listing)
     @object.listing = MLS::Listing::Parser.build(listing)
