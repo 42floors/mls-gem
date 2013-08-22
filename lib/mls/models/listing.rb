@@ -54,7 +54,7 @@ class MLS::Listing < MLS::Resource
   property :available_on,                 DateTime
   property :maximum_term_length,          Fixnum
   property :minimum_term_length,          Fixnum
-  property :term_length_units             String  :default => "years"
+  property :term_length_units             String,   :default => "years"
 
   property :offices,                      Fixnum
   property :conference_rooms,             Fixnum
