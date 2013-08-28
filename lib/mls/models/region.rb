@@ -26,6 +26,10 @@ class MLS::Region < MLS::Resource
 
   end
 
+  def name
+    common_name || proper_name
+  end
+
   def bounds
     return nil unless envelope
     n, e, s, w = nil, nil, nil, nil
