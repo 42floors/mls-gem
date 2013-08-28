@@ -1,6 +1,7 @@
 class MLS::Listing < MLS::Resource
 
-  STATES = %w(processing listed leased expired)
+  WORKFLOW_STATES = %w(visible processing invisible expired)
+  LEASE_STATES = %w(listed leased)
   TYPES = %w(lease sublease coworking_space)
   SPACE_TYPES = %w(unit floor building)
   LEASE_TERMS = ['Full Service', 'NNN', 'Modified Gross']
@@ -23,8 +24,8 @@ class MLS::Listing < MLS::Resource
   
   property :name,                         String
   property :type,                         String,   :default => 'lease'
-  property :state,                        String,   :default => 'listed'
-  property :visible,                      Boolean, :default => true
+  property :workflow_state,               String,   :default => 'visible'
+  property :lease_state,                  String,   :default => 'listed'
   property :space_type,                   String,   :default => 'unit'
   property :unit,                         String
   property :floor,                        Fixnum
