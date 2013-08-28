@@ -97,20 +97,35 @@ class MLS::Listing < MLS::Resource
       address.avatar(size, protocol)
     end
   end
-  
+
+  def processing?
+    workflow_state == 'processing'
+  end
+
+  def leased?
+    lease_state == 'leased'
+  end
+
+  def active?
+    lease_state == 'listed' && workflow_state == 'visible'
+  end
+
+  def inactive?
+    !self.active?
+  end
+
   def lease?
     type == 'lease'
   end
+
   def sublease?
     type == 'sublease'
   end
+
   def coworking?
     type == 'coworking_space'
   end
 
-  def leased?
-    state == 'leased'
-  end
   
   def space_name
     return name if !name.nil?
