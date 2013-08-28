@@ -22,8 +22,6 @@ class TestListing < ::Test::Unit::TestCase
     assert listing.respond_to?(:lease_terms)
     assert listing.respond_to?(:rate)
     assert listing.respond_to?(:rate_units)
-    assert listing.respond_to?(:rate_per_sqft_per_month)
-    assert listing.respond_to?(:rate_per_sqft_per_year)
     assert listing.respond_to?(:sublease_expiration)
     assert listing.respond_to?(:available_on)
     assert listing.respond_to?(:maximum_term_length)
@@ -177,6 +175,76 @@ class TestListing < ::Test::Unit::TestCase
     assert_equal 10, info[:population]
     assert_equal 'string thing', info[:funding]
     assert_equal '2012-09-12', info[:move_in_date]
+  end
+
+  def test_rate_per_sqft_per_month
+    listing = MLS::Listing.new(:rate => 10.5, :rate_units => '/sqft/mo', :size => 5)
+
+    assert_equal 10.5,  listing.rate
+    assert_equal 10.5,  listing.rate('/sqft/mo')
+    assert_equal 126,   listing.rate('/sqft/yr')
+    assert_equal 52.5,  listing.rate('/mo')
+    assert_equal 630,   listing.rate('/yr')
+    assert_equal 2100,   listing.rate('/desk/mo')
+    assert_raises RuntimeError do
+      listing.rate('/random')
+    end
+  end
+
+  def test_rate_per_sqft_per_year
+    listing = MLS::Listing.new(:rate => 126, :rate_units => '/sqft/yr', :size => 5)
+
+    assert_equal 10.5,  listing.rate
+    assert_equal 10.5,  listing.rate('/sqft/mo')
+    assert_equal 126,   listing.rate('/sqft/yr')
+    assert_equal 52.5,  listing.rate('/mo')
+    assert_equal 630, listing.rate('/yr')
+    assert_equal 2100,   listing.rate('/desk/mo')
+    assert_raises RuntimeError do
+      listing.rate('/random')
+    end
+  end
+
+  def test_rate_per_month
+    listing = MLS::Listing.new(:rate => 52.5, :rate_units => '/mo', :size => 5)
+
+    assert_equal 10.5,  listing.rate
+    assert_equal 10.5,  listing.rate('/sqft/mo')
+    assert_equal 126,   listing.rate('/sqft/yr')
+    assert_equal 52.5,  listing.rate('/mo')
+    assert_equal 630, listing.rate('/yr')
+    assert_equal 2100,   listing.rate('/desk/mo')
+    assert_raises RuntimeError do
+      listing.rate('/random')
+    end
+  end
+
+  def test_rate_per_year
+    listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
+
+    assert_equal 10.5,  listing.rate
+    assert_equal 10.5,  listing.rate('/sqft/mo')
+    assert_equal 126,   listing.rate('/sqft/yr')
+    assert_equal 52.5,  listing.rate('/mo')
+    assert_equal 630, listing.rate('/yr')
+    assert_equal 2100,   listing.rate('/desk/mo')
+    assert_raises RuntimeError do
+      listing.rate('/random')
+    end
+  end
+
+  def test_rate_per_desk_per_month
+    listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
+
+    assert_equal 10.5,  listing.rate
+    assert_equal 10.5,  listing.rate('/sqft/mo')
+    assert_equal 126,   listing.rate('/sqft/yr')
+    assert_equal 52.5,  listing.rate('/mo')
+    assert_equal 630, listing.rate('/yr')
+    assert_equal 2100,   listing.rate('/desk/mo')
+    assert_raises RuntimeError do
+      listing.rate('/random')
+    end
   end
 
 end

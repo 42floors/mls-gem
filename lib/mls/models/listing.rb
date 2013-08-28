@@ -41,10 +41,6 @@ class MLS::Listing < MLS::Resource
   property :rate_units,                   String,   :default => '/sqft/mo'
   property :low_rate,                     Decimal,  :serialize => :false
   property :high_rate,                    Decimal,  :serialize => :false
-  property :rate_per_sqft_per_month,      Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
-  property :rate_per_sqft_per_year,       Decimal,  :serialize => :false
-  property :rate_per_month,               Decimal,  :serialize => :false
-  property :rate_per_year,                Decimal,  :serialize => :false
   property :sublease_expiration,          DateTime
 
   property :forecast_rate_per_year,             Decimal,  :serialize => :false
@@ -152,8 +148,87 @@ class MLS::Listing < MLS::Resource
     end
   end
 
+  # TODO: remove /desk/mo conversions
+  def rate(units='/sqft/mo')
 
+    if rate_units == '/sqft/mo'
+      if units == '/sqft/mo'
+        @rate
+      elsif units == '/sqft/yr'
+        @rate * 12.0
+      elsif units == '/mo'
+        @rate * @size
+      elsif units == '/yr'
+        @rate * @size * 12.0
+      elsif units == '/desk/mo'
+        @rate * 200.0
+      else
+        raise "Invalid rate conversion (#{rate_units} => #{units})"
+      end
 
+    elsif rate_units == '/sqft/yr'
+      if units == '/sqft/mo'
+        @rate / 12.0
+      elsif units == '/sqft/yr'
+        @rate
+      elsif units == '/mo'
+        (@rate / 12.0) * @size
+      elsif units == '/yr'
+        @rate * @size
+      elsif units == '/desk/mo'
+        (@rate / 12.0) * 200.0
+      else
+        raise "Invalid rate conversion (#{rate_units} => #{units})"
+      end
+
+    elsif rate_units == '/mo'
+      if units == '/sqft/mo'
+        @rate / @size.to_f
+      elsif units == '/sqft/yr'
+        (@rate * 12) / @size.to_f
+      elsif units == '/mo'
+        @rate
+      elsif units == '/yr'
+        @rate * 12
+      elsif units == '/desk/mo'
+        (@rate / @size.to_f) * 200.0
+      else
+        raise "Invalid rate conversion (#{rate_units} => #{units})"
+      end
+
+    elsif rate_units == '/yr'
+      if units == '/sqft/mo'
+        (@rate / 12.0) / @size.to_f
+      elsif units == '/sqft/yr'
+        @rate / @size.to_f
+      elsif units == '/mo'
+        @rate / 12.0
+      elsif units == '/yr'
+        @rate
+      elsif units == '/desk/mo'
+        ((@rate / 12.0) / @size.to_f) * 200.0
+      else
+        raise "Invalid rate conversion (#{rate_units} => #{units})"
+      end
+
+    elsif rate_units == '/desk/mo'
+      if units == '/sqft/mo'
+        @rate / 200.0
+      elsif units == '/sqft/yr'
+        ((@rate / 200.0) * 12) / @size.to_f
+      elsif units == '/mo'
+        @rate
+      elsif units == '/yr'
+        @rate * 12
+      elsif units == '/desk/mo'
+        @rate
+      else
+        raise "Invalid rate conversion (#{rate_units} => #{units})"
+      end
+
+    end
+  end
+  
   # Creates a tour request for the listing.
   #
   # Paramaters::
