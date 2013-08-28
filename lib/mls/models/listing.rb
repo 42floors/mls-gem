@@ -148,6 +148,10 @@ class MLS::Listing < MLS::Resource
     end
   end
 
+  def rate?
+    !!@rate
+  end
+  
   # TODO: remove /desk/mo conversions
   def rate(units='/sqft/mo')
 
