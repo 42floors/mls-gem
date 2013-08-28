@@ -9,7 +9,7 @@ class MLS::Listing < MLS::Resource
   USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
   SOURCE_TYPES = %w(website flyer)
   CHANNELS = %w(excavator mls staircase broker_dashboard)
-  
+
   property :id,                           Fixnum,   :serialize => :false
   property :address_id,                   Fixnum,   :serialize => :false
   property :slug,                         String,   :serialize => :false
@@ -21,7 +21,7 @@ class MLS::Listing < MLS::Resource
   property :source_type,                  String, :serialize => :if_present
   property :channel,                      String, :serialize => :if_present
   property :photo_ids,                    Array,  :serialize => :if_present
-  
+
   property :name,                         String
   property :type,                         String,   :default => 'lease'
   property :workflow_state,               String,   :default => 'visible'
@@ -30,7 +30,7 @@ class MLS::Listing < MLS::Resource
   property :unit,                         String
   property :floor,                        Fixnum
   property :description,                  String
-  
+
   property :size,                   Fixnum
   property :maximum_contiguous_size,      Fixnum
   property :minimum_divisible_size,       Fixnum
@@ -43,10 +43,10 @@ class MLS::Listing < MLS::Resource
   property :high_rate,                    Decimal,  :serialize => :false
   property :rate_per_sqft_per_month,      Decimal,  :serialize => :false # need to make write methods for these that set rate to the according rate units. not accepted on api
   property :rate_per_sqft_per_year,       Decimal,  :serialize => :false
-  property :rate_per_month,               Decimal,  :serialize => :false 
+  property :rate_per_month,               Decimal,  :serialize => :false
   property :rate_per_year,                Decimal,  :serialize => :false
   property :sublease_expiration,          DateTime
-  
+
   property :forecast_rate_per_year,             Decimal,  :serialize => :false
   property :forecast_rate_per_month,            Decimal,  :serialize => :false
   property :forecast_rate_per_sqft_per_month,   Decimal,  :serialize => :false
@@ -60,7 +60,7 @@ class MLS::Listing < MLS::Resource
   property :offices,                      Fixnum
   property :conference_rooms,             Fixnum
   property :bathrooms,                    Fixnum
-  
+
   property :kitchen,                      Boolean
   property :showers,                      Boolean
   property :patio,                        Boolean
@@ -69,7 +69,7 @@ class MLS::Listing < MLS::Resource
   property :furniture_available,          Boolean
   property :natural_light,                Boolean
   property :high_ceilings,                Boolean
-  
+
   property :created_at,                   DateTime,  :serialize => :false
   property :updated_at,                   DateTime,  :serialize => :false
   property :touched_at,                   DateTime,  :serialize => :false
@@ -77,17 +77,17 @@ class MLS::Listing < MLS::Resource
   property :photography_requested_on,     DateTime,  :serialize => :false
 
   property :awesome_score,                Fixnum
-  property :awesome_needs,                Array,  :serialize => :if_present                
+  property :awesome_needs,                Array,  :serialize => :if_present
   property :awesome_label,                String
 
   property :flyer_id,                     Fixnum,    :serialize => :if_present
   property :floorplan_id,                 Fixnum,    :serialize => :if_present
-  
+
   property :avatar_digest,                String,   :serialize => false
-  
+
   # Counter Caches
   property :photos_count,                 Fixnum, :serialize => :false
-  
+
   attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos
 
   def avatar(size='150x100#', protocol='http')
@@ -126,13 +126,13 @@ class MLS::Listing < MLS::Resource
     type == 'coworking_space'
   end
 
-  
+
   def space_name
     return name if !name.nil?
-    
+
     case space_type
     when 'unit'
-      if unit 
+      if unit
         "Unit #{unit}"
       elsif floor
         "#{floor.ordinalize} Floor"
@@ -144,7 +144,7 @@ class MLS::Listing < MLS::Resource
     when 'floor'
       if floor
         "#{floor.ordinalize} Floor"
-      elsif unit 
+      elsif unit
         "Unit #{unit}"
       else
         "Floor Lease"
@@ -152,8 +152,8 @@ class MLS::Listing < MLS::Resource
     end
   end
 
-  
-  
+
+
   # Creates a tour request for the listing.
   #
   # Paramaters::
@@ -174,13 +174,13 @@ class MLS::Listing < MLS::Resource
   #  listing = MLS::Listing.find(@id)
   #  info => {:company => 'name', :population => 10, :funding => 'string', :move_id => '2012-09-12'}
   #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::Tour>
-  #  
+  #
   #  listing.request_tour('', 'emai', info) # => #<MLS::Tour> will have errors on account
   def request_tour(account, tour={})
     MLS::Tour.create(id, account, tour)
   end
-  
-  
+
+
   def create
     MLS.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
@@ -193,7 +193,7 @@ class MLS::Listing < MLS::Resource
     MLS.put("/listings/#{id}", {:listing => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
         MLS::Listing::Parser.update(self, response.body)
-        code == 200      
+        code == 200
       else
         raise MLS::Exception::UnexpectedResponse, code
       end
@@ -208,7 +208,7 @@ class MLS::Listing < MLS::Resource
     hash[:videos_attributes] = videos.map(&:to_hash) unless videos.blank?
     hash
   end
-  
+
   def to_param
     "#{address.to_param}/#{id}"
   end
@@ -233,7 +233,7 @@ class MLS::Listing < MLS::Resource
     result
   end
 
-  def similar 
+  def similar
     [] # Similar Listings not supported for now
   end
 
@@ -244,7 +244,7 @@ class MLS::Listing < MLS::Resource
       MLS::Listing::Parser.parse(response.body)
     end
 
-    # currently supported options are filters, page, per_page, offset, order 
+    # currently supported options are filters, page, per_page, offset, order
     def all(options={})
       response = MLS.get('/listings', options)
       MLS::Listing::Parser.parse_collection(response.body)
@@ -270,7 +270,7 @@ end
 
 
 class MLS::Listing::Parser < MLS::Parser
-  
+
   def photos=(photos)
     @object.photos = photos.map {|p| MLS::Photo::Parser.build(p)}
   end
@@ -292,13 +292,12 @@ class MLS::Listing::Parser < MLS::Parser
   def flyer=(flyer)
     @object.flyer = MLS::Flyer::Parser.build(flyer)
   end
-   
+
   def address=(address)
     @object.address = MLS::Address::Parser.build(address)
   end
-  
+
   def agents=(agents)
     @object.agents = agents.map {|a| MLS::Account::Parser.build(a) }
   end
-  
 end
