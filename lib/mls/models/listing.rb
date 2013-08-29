@@ -154,6 +154,7 @@ class MLS::Listing < MLS::Resource
   
   # TODO: remove /desk/mo conversions
   def rate(units='/sqft/mo')
+    return nil if !@rate
 
     price = if rate_units == '/sqft/mo'
       if units == '/sqft/mo'

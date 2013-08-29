@@ -257,5 +257,17 @@ class TestListing < ::Test::Unit::TestCase
     assert_equal 235, listing.rate('/yr')
     assert_equal 783.33,   listing.rate('/desk/mo')
   end
+  
+  def test_null_rate
+    listing = MLS::Listing.new(:rate => nil, :rate_units => '/yr', :size => 5)
+  
+    assert_equal nil,  listing.rate
+    assert_equal nil,  listing.rate('/sqft/mo')
+    assert_equal nil,   listing.rate('/sqft/yr')
+    assert_equal nil,  listing.rate('/mo')
+    assert_equal nil, listing.rate('/yr')
+    assert_equal nil,   listing.rate('/desk/mo')
+    assert_equal nil, listing.rate('/random')
+  end
 
 end
