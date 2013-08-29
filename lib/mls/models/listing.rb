@@ -155,7 +155,7 @@ class MLS::Listing < MLS::Resource
   # TODO: remove /desk/mo conversions
   def rate(units='/sqft/mo')
 
-    if rate_units == '/sqft/mo'
+    price = if rate_units == '/sqft/mo'
       if units == '/sqft/mo'
         @rate
       elsif units == '/sqft/yr'
@@ -176,7 +176,7 @@ class MLS::Listing < MLS::Resource
       elsif units == '/sqft/yr'
         @rate
       elsif units == '/mo'
-        (@rate / 12.0) * @size
+        (@rate * @size) / 12.0
       elsif units == '/yr'
         @rate * @size
       elsif units == '/desk/mo'
@@ -231,6 +231,8 @@ class MLS::Listing < MLS::Resource
       end
 
     end
+    
+    price.round(2)
   end
   
   # Creates a tour request for the listing.

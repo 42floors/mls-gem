@@ -4,7 +4,7 @@ class TestListing < ::Test::Unit::TestCase
 
   def test_properties
     listing = MLS::Listing.new
-
+  
     assert listing.respond_to?(:id)
     assert listing.respond_to?(:address_id)
     assert listing.respond_to?(:use)
@@ -40,20 +40,20 @@ class TestListing < ::Test::Unit::TestCase
     assert listing.respond_to?(:created_at)
     assert listing.respond_to?(:updated_at)
   end
-
+  
   def test_attr_accessors
     listing = MLS::Listing.new
-
+  
     assert listing.respond_to?(:address)
     assert listing.respond_to?(:agents)
   end
-
+  
   def test_instance_methods
     listing = MLS::Listing.new
-
+  
     assert listing.respond_to?(:photos)
   end
-
+  
   def test_class_methods
     assert MLS::Listing.respond_to?(:find)
   end
@@ -63,8 +63,8 @@ class TestListing < ::Test::Unit::TestCase
     @name = Faker::Name.name
     @email = Faker::Internet.email
     tr = @listing.request_tour(@name, @email)
-
-
+  
+  
     assert_equal({}, tr.errors)
     assert_equal({}, tr.account.errors)
     # TODO assert_equal({}, tr.listing.errors)
@@ -85,7 +85,7 @@ class TestListing < ::Test::Unit::TestCase
   test '#request_tour for email on an account' do
     @account = FactoryGirl.create(:account)
     @listing = FactoryGirl.create(:listing)
-
+  
     tr = @listing.request_tour(@account.name, @account.email)
     assert_equal({}, tr.errors)
     assert_equal({}, tr.account.errors)
@@ -162,7 +162,7 @@ class TestListing < ::Test::Unit::TestCase
     
     info = {:company => '42Floors', :population => 10, :funding => 'string thing', :move_in_date => '2012-09-12'}
     tr = @listing.request_tour(Faker::Name.name, Faker::Internet.email, info)
-
+  
     assert tr.id
     assert_equal '42Floors', info[:company]
     assert_equal 10, info[:population]
@@ -176,10 +176,10 @@ class TestListing < ::Test::Unit::TestCase
     assert_equal 'string thing', info[:funding]
     assert_equal '2012-09-12', info[:move_in_date]
   end
-
+  
   def test_rate_per_sqft_per_month
     listing = MLS::Listing.new(:rate => 10.5, :rate_units => '/sqft/mo', :size => 5)
-
+  
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
@@ -190,10 +190,10 @@ class TestListing < ::Test::Unit::TestCase
       listing.rate('/random')
     end
   end
-
+  
   def test_rate_per_sqft_per_year
     listing = MLS::Listing.new(:rate => 126, :rate_units => '/sqft/yr', :size => 5)
-
+  
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
@@ -204,10 +204,10 @@ class TestListing < ::Test::Unit::TestCase
       listing.rate('/random')
     end
   end
-
+  
   def test_rate_per_month
     listing = MLS::Listing.new(:rate => 52.5, :rate_units => '/mo', :size => 5)
-
+  
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
@@ -218,10 +218,10 @@ class TestListing < ::Test::Unit::TestCase
       listing.rate('/random')
     end
   end
-
+  
   def test_rate_per_year
     listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
-
+  
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
@@ -232,10 +232,10 @@ class TestListing < ::Test::Unit::TestCase
       listing.rate('/random')
     end
   end
-
+  
   def test_rate_per_desk_per_month
     listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
-
+  
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
@@ -245,6 +245,17 @@ class TestListing < ::Test::Unit::TestCase
     assert_raises RuntimeError do
       listing.rate('/random')
     end
+  end
+  
+  def test_rate_percision
+    listing = MLS::Listing.new(:rate => 47, :rate_units => '/sqft/yr', :size => 5)
+
+    assert_equal 3.92,  listing.rate
+    assert_equal 3.92,  listing.rate('/sqft/mo')
+    assert_equal 47,   listing.rate('/sqft/yr')
+    assert_equal 19.58,  listing.rate('/mo')
+    assert_equal 235, listing.rate('/yr')
+    assert_equal 783.33,   listing.rate('/desk/mo')
   end
 
 end
