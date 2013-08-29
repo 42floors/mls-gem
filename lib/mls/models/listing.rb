@@ -153,9 +153,10 @@ class MLS::Listing < MLS::Resource
   end
   
   # TODO: remove /desk/mo conversions
-  def rate(units='/sqft/mo')
+  def rate(units=nil)
     return nil if !@rate
-
+    units ||= rate_units
+    
     price = if rate_units == '/sqft/mo'
       if units == '/sqft/mo'
         @rate
@@ -220,7 +221,7 @@ class MLS::Listing < MLS::Resource
       if units == '/sqft/mo'
         @rate / 200.0
       elsif units == '/sqft/yr'
-        ((@rate / 200.0) * 12) / @size.to_f
+        (@rate * 12) / 200.0
       elsif units == '/mo'
         @rate
       elsif units == '/yr'

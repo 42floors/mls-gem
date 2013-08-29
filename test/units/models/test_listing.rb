@@ -194,7 +194,7 @@ class TestListing < ::Test::Unit::TestCase
   def test_rate_per_sqft_per_year
     listing = MLS::Listing.new(:rate => 126, :rate_units => '/sqft/yr', :size => 5)
   
-    assert_equal 10.5,  listing.rate
+    assert_equal 126,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
     assert_equal 52.5,  listing.rate('/mo')
@@ -208,7 +208,7 @@ class TestListing < ::Test::Unit::TestCase
   def test_rate_per_month
     listing = MLS::Listing.new(:rate => 52.5, :rate_units => '/mo', :size => 5)
   
-    assert_equal 10.5,  listing.rate
+    assert_equal 52.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
     assert_equal 52.5,  listing.rate('/mo')
@@ -222,7 +222,7 @@ class TestListing < ::Test::Unit::TestCase
   def test_rate_per_year
     listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
   
-    assert_equal 10.5,  listing.rate
+    assert_equal 630,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
     assert_equal 52.5,  listing.rate('/mo')
@@ -234,13 +234,13 @@ class TestListing < ::Test::Unit::TestCase
   end
   
   def test_rate_per_desk_per_month
-    listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
+    listing = MLS::Listing.new(:rate => 2100, :rate_units => '/desk/mo', :size => 5)
   
-    assert_equal 10.5,  listing.rate
+    assert_equal 2100,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
     assert_equal 126,   listing.rate('/sqft/yr')
-    assert_equal 52.5,  listing.rate('/mo')
-    assert_equal 630, listing.rate('/yr')
+    assert_equal 2100,  listing.rate('/mo')
+    assert_equal 25200, listing.rate('/yr')
     assert_equal 2100,   listing.rate('/desk/mo')
     assert_raises RuntimeError do
       listing.rate('/random')
@@ -250,7 +250,6 @@ class TestListing < ::Test::Unit::TestCase
   def test_rate_percision
     listing = MLS::Listing.new(:rate => 47, :rate_units => '/sqft/yr', :size => 5)
 
-    assert_equal 3.92,  listing.rate
     assert_equal 3.92,  listing.rate('/sqft/mo')
     assert_equal 47,   listing.rate('/sqft/yr')
     assert_equal 19.58,  listing.rate('/mo')
