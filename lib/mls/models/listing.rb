@@ -49,9 +49,8 @@ class MLS::Listing < MLS::Resource
   property :forecast_rate_per_sqft_per_year,    Decimal,  :serialize => :false
 
   property :available_on,                 DateTime
-  property :maximum_term_length,          Fixnum
-  property :minimum_term_length,          Fixnum
-  property :term_length_units,            String,   :default => 'years'
+  property :term,                         Fixnum
+  property :term_units,            String,   :default => 'years'
 
   property :offices,                      Fixnum
   property :conference_rooms,             Fixnum
