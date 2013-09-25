@@ -20,7 +20,7 @@ class MLS::Address < MLS::Resource
   property :max_rate_per_sqft_per_year, Decimal, :serialize => :false
   property :max_size, Fixnum, :serialize => :false
   property :min_size, Fixnum, :serialize => :false
-  property :comments, String
+  property :description, String
   property :year_built, Fixnum
   property :size, Fixnum
   property :floors, Fixnum
