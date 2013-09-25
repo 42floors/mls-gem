@@ -290,6 +290,7 @@ class MLS::Listing < MLS::Resource
   def to_hash
     hash = super
     hash[:address_attributes] = address.to_hash if address
+    hash[:spaces_attributes] = spaces.inject([]) { |acc, x| acc << x.to_hash; acc } if spaces
     hash[:agents_attributes] = agents.inject([]) { |acc, x| acc << x.to_hash; acc } if agents
     hash[:photo_ids] = photos.map(&:id) if photos
     hash[:videos_attributes] = videos.map(&:to_hash) unless videos.blank?
