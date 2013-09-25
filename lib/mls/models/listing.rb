@@ -52,7 +52,12 @@ class MLS::Listing < MLS::Resource
   property :term,                         Fixnum
   property :term_units,            String,   :default => 'years'
 
+  property :weekday_hours,                String
+  property :saturday_hours,               String
+  property :sunday_hours,                 String
+
   property :offices,                      Fixnum
+  property :desks,                        Fixnum
   property :conference_rooms,             Fixnum
   property :bathrooms,                    Fixnum
 
@@ -83,7 +88,7 @@ class MLS::Listing < MLS::Resource
   # Counter Caches
   property :photos_count,                 Fixnum, :serialize => :false
 
-  attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos
+  attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos, :spaces
 
   def avatar(size='150x100#', protocol='http')
     if avatar_digest
