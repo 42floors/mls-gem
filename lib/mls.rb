@@ -438,3 +438,6 @@ require 'mls/models/tour'
 require 'mls/models/flyer'
 require 'mls/models/floorplan'
 require 'mls/models/region'
+
+#factories
+require 'mls/factories_helper'
