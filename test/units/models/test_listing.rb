@@ -5,39 +5,11 @@ class TestListing < ::Test::Unit::TestCase
   def test_properties
     listing = MLS::Listing.new
 
-    assert listing.respond_to?(:id)
-    assert listing.respond_to?(:address_id)
-    assert listing.respond_to?(:use)
-    assert listing.respond_to?(:account_id)
-    assert listing.respond_to?(:hidden)
-    assert listing.respond_to?(:name)
-    assert listing.respond_to?(:type)
-    assert listing.respond_to?(:space_type)
-    assert listing.respond_to?(:unit)
-    assert listing.respond_to?(:floor)
-    assert listing.respond_to?(:description)
-    assert listing.respond_to?(:size)
-    assert listing.respond_to?(:maximum_contiguous_size)
-    assert listing.respond_to?(:minimum_divisible_size)
-    assert listing.respond_to?(:lease_terms)
-    assert listing.respond_to?(:rate)
-    assert listing.respond_to?(:rate_units)
-    assert listing.respond_to?(:sublease_expiration)
-    assert listing.respond_to?(:available_on)
-    assert listing.respond_to?(:term)
-    assert listing.respond_to?(:offices)
-    assert listing.respond_to?(:conference_rooms)
-    assert listing.respond_to?(:bathrooms)
-    assert listing.respond_to?(:kitchen)
-    assert listing.respond_to?(:showers)
-    assert listing.respond_to?(:bikes_allowed)
-    assert listing.respond_to?(:reception_area)
-    assert listing.respond_to?(:patio)
-    assert listing.respond_to?(:dog_friendly)
-    assert listing.respond_to?(:ready_to_move_in)
-    assert listing.respond_to?(:furniture_available)
-    assert listing.respond_to?(:created_at)
-    assert listing.respond_to?(:updated_at)
+    attributes = [:id, :address_id, :use, :account_id, :hidden, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :bikes_allowed, :reception_area, :patio, :dog_friendly, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
+
+    attributes.each do |attr|
+      assert listing.respond_to?(attr), "listing should respond to #{attr}"
+    end
   end
 
   def test_attr_accessors
