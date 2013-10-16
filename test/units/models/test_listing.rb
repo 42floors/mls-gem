@@ -5,10 +5,10 @@ class TestListing < ::Test::Unit::TestCase
   def test_properties
     listing = MLS::Listing.new
 
-    attributes = [:id, :address_id, :use, :account_id, :hidden, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :bikes_allowed, :reception_area, :patio, :dog_friendly, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
+    properties = [:id, :address_id, :use, :account_id, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
 
-    attributes.each do |attr|
-      assert listing.respond_to?(attr), "listing should respond to #{attr}"
+    properties.each do |property|
+      assert listing.respond_to?(property), "listing should respond to #{property}"
     end
   end
 
