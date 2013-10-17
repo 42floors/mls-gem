@@ -5,20 +5,11 @@ class TestAddress < ::Test::Unit::TestCase
   def test_properties
     address = MLS::Address.new
 
-    assert address.respond_to?(:id)
-    assert address.respond_to?(:name)
-    assert address.respond_to?(:slug)
-    assert address.respond_to?(:latitude)
-    assert address.respond_to?(:longitude)
-    assert address.respond_to?(:formatted_address)
-    assert address.respond_to?(:street_number)
-    assert address.respond_to?(:street)
-    assert address.respond_to?(:neighborhood)
-    assert address.respond_to?(:city)
-    assert address.respond_to?(:county)
-    assert address.respond_to?(:state)
-    assert address.respond_to?(:country)
-    assert address.respond_to?(:postal_code)
+    properties = [:id, :name, :slug, :latitude, :longitude, :formated_address, :streetnumber, :street, :neighbrhood, :city, :county, :state, :countr, :postalcode]
+
+    properties.each do |property|
+      assert address.respond_to?(property), "address should respond to #{property}"
+    end
   end
 
   def test_class_methods
