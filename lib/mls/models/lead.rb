@@ -2,6 +2,7 @@ class MLS::Lead < MLS::Resource
   property :id,                           Fixnum,   serialize: :false
   property :created_at,                   DateTime
   property :medium,                       String,   serialize: :false
+  property :status,                       String
   property :client_id,                    Fixnum
   property :listing_id,                   Fixnum
   property :lead_notifications,           Array
