@@ -25,4 +25,10 @@ FactoryGirl.define do
     password_confirmation 'admin_test'
   end
   
+  factory :ghost_account, :class => MLS::Account do
+    name                    { Faker::Name.name }
+    email                   { Faker::Internet.email }
+    password_required       { false } 
+  end
+
 end
