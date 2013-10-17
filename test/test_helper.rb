@@ -8,12 +8,10 @@ require 'mls'
 require 'turn'
 require 'faker'
 require 'test/unit'
-require 'factory_girl'
 require 'fakeweb'
 
 CACHE = {}
 MLS_HOST = ENV['MLS_URL'] || 'http://localhost:4000/api'
-FactoryGirl.find_definitions
 
 MLS.url = ENV["MLS_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:4000'#
 # MLS.auth_key = MLS::Account.authenticate('jonbracy@gmail.com', 'test').auth_key
