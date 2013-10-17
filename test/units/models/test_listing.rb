@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestListing < ::Test::Unit::TestCase
+class ListingTest < Test::Unit::TestCase
 
   def test_properties
     listing = MLS::Listing.new
