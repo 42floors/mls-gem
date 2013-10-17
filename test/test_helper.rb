@@ -10,6 +10,9 @@ require 'faker'
 require 'test/unit'
 require 'fakeweb'
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'../'))
+require 'lib/mls/factories_helper'
+
 CACHE = {}
 MLS_HOST = ENV['MLS_URL'] || 'http://localhost:4000/api'
 

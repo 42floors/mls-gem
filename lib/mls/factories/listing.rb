@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :listing, :class => MLS::Listing do
     before(:create) { |l|
-      Rails.cache.write('auth_key', MLS.auth_key)
+      CACHE['auth_key'] = MLS.auth_key
       MLS.auth_key = l.account.auth_key
     }
     after(:create) { |l|
-      MLS.auth_key = Rails.cache.read('auth_key')
+      MLS.auth_key = CACHE['auth_key']
     }
 
     association :account
