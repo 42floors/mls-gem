@@ -10,6 +10,51 @@ class LeadTest < Test::Unit::TestCase
     end
   end
 
+  test 'leads can be built' do
+    client = FactoryGirl.create(:account)
+    lead = MLS::Lead.new(medium: 'web', client_id: client.id )
+
+    assert lead
+    assert_equal 'web', lead.medium
+    assert_equal client.id, lead.client_id
+  end
+
+  test 'Lead parser creates lead from appropriate json' do
+    json_object = { lead:{
+      id: 3,
+      medium: 'web',
+      status: 'active',
+      client: {
+        id: 501,
+        name: "new lead client",
+        email: "newlead@company.com",
+        phone: "1-650-555-7777",
+        company: "Business Inc."
+      },
+      listing: {
+        id: 500,
+        size: 1000,
+        unit: 3,
+        address: {
+          formatted_address: "123 Main St, San Francisco, CA 94105"
+        }
+      },
+      lead_notifications: [ {
+          response: true,
+          response_at: 2.days.ago
+        }
+      ]
+    }}
+
+    json = json_object.to_json
+    lead = MLS::Lead::Parser.parse json
+
+    assert_instance_of MLS::Lead, lead
+    assert_equal 'web', lead.medium
+    assert_equal 501, lead.client.id
+    assert_equal 500, lead.listing.id
+  end
+
   test 'leads can be fetched' do
     agent = MLS::Account.find(4611)
     lead = MLS::Lead.search(agent).first

@@ -7,6 +7,8 @@ class MLS::Lead < MLS::Resource
   property :listing_id,                   Fixnum
   property :lead_notifications,           Array
 
+  attr_accessor :client, :listing
+
   class << self
     # find all the leads for a given agent
     def search(agent)
@@ -29,4 +31,11 @@ class MLS::Lead < MLS::Resource
 end
 
 class MLS::Lead::Parser < MLS::Parser
+  def client=(client)
+    @object.client = MLS::Account::Parser.build(client)
+  end
+
+  def listing=(listing)
+    @object.listing = MLS::Listing::Parser.build(listing)
+  end
 end
