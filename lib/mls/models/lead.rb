@@ -14,6 +14,18 @@ class MLS::Lead < MLS::Resource
       MLS::Lead::Parser.parse_collection(response.body)
     end
   end
+
+  def save
+    MLS.put("/leads/#{id}", {:lead => to_hash}, 400) do |response, code|
+      if code == 200 || code == 400
+        MLS::Lead::Parser.update(self, response.body)
+        code == 200
+      else
+        raise MLS::Exception::UnexpectedResponse, code
+      end
+    end
+  end
+
 end
 
 class MLS::Lead::Parser < MLS::Parser
