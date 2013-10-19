@@ -53,6 +53,7 @@ class LeadTest < Test::Unit::TestCase
     assert_equal 'web', lead.medium
     assert_equal 501, lead.client.id
     assert_equal 500, lead.listing.id
+    assert_equal "123 Main St, San Francisco, CA 94105", lead.listing.address.formatted_address
   end
 
   test 'leads can be fetched' do
