@@ -16,7 +16,7 @@ require 'lib/mls/factories_helper'
 CACHE = {}
 MLS_HOST = ENV['MLS_URL'] || 'http://localhost:4000/api'
 
-MLS.url = ENV["MLS_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:4000'#
+MLS.url = ENV["MLS_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:5000'#
 # MLS.auth_key = MLS::Account.authenticate('jonbracy@gmail.com', 'test').auth_key
 
 # File 'lib/active_support/testing/declarative.rb', somewhere in rails....
