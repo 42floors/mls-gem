@@ -3,6 +3,9 @@ class MLS::Brokerage < MLS::Resource
   property :id,       Fixnum,  :serialize => :if_present
   property :name,     String,  :serialize => :if_present
   property :admin_id, Fixnum,  :serialize => :if_present
+  property :slug,     String,  :serialize => false
+  property :palette,  Hash,    :serialize => :if_present
+  property :avatar_digest, String,   :serialize => false
 
   class << self
 
