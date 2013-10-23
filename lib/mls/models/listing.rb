@@ -343,11 +343,6 @@ class MLS::Listing < MLS::Resource
       {:status => model.import, :model => model}
     end
 
-    def calculate(filters = {}, operation = nil, column = nil, group = nil)
-      response = MLS.get("/listings/calculate", :filters => filters, :operation => operation, :column => column, :group => group)
-      MLS::Parser.extract_attributes(response.body)[:listings]
-    end
-
     def amenities
       @amenities ||= Yajl::Parser.new.parse(MLS.get('/listings/amenities').body).map(&:to_sym)
     end
