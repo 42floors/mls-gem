@@ -1,18 +1,18 @@
 class MLS::Region < MLS::Resource
 
-  property :id,             Fixnum, :serialize => :if_present
-  property :name,           String, :serialize => false
-  property :proper_name,    String, :serialize => :if_present
-  property :common_name,    String, :serialize => :if_present
-  property :code,           String, :serialize => :if_present
-  property :type,           String, :serialize => :if_present
-  property :source,         String, :serialize => :if_present
-  property :minimum_zoom,   Fixnum, :serialize => :if_present
-  property :maximum_zoom,   Fixnum, :serialize => :if_present
-  property :slug,           String, :serialize => false
-  property :geometry,       Hash,   :serialize => false
-  property :envelope,       Hash,   :serialize => false
-  property :children,       Hash,   :serialize => false
+  property :id,             Fixnum
+  property :name,           String
+  property :proper_name,    String
+  property :common_name,    String
+  property :code,           String
+  property :type,           String
+  property :source,         String
+  property :minimum_zoom,   Fixnum
+  property :maximum_zoom,   Fixnum
+  property :slug,           String
+  property :geometry,       Hash
+  property :envelope,       Hash
+  property :children,       Hash
 
   # Counter caches
   property :listings_count, Fixnum, :serialize => :false
