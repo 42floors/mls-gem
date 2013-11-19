@@ -15,7 +15,7 @@ class MLS::Region < MLS::Resource
   property :children,       Hash
 
   # Counter caches
-  property :listings_count, Fixnum, :serialize => :false
+  property :listings_count, Fixnum
 
   class << self
 
