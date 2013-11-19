@@ -24,6 +24,11 @@ class MLS::Region < MLS::Resource
       MLS::Region::Parser.parse(response.body)
     end
 
+    def all(options={})
+      response = MLS.get('/regions', options)
+      MLS::Region::Parser.parse_collection(response.body)
+    end
+
   end
 
   def name
