@@ -88,7 +88,7 @@ class MLS::Listing < MLS::Resource
   # Counter Caches
   property :photos_count,                 Fixnum, :serialize => :false
 
-  attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos, :spaces
+  attr_accessor :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos, :spaces, :primary_agent
 
   def avatar(size='150x100#', protocol='http')
     if avatar_digest
@@ -382,5 +382,9 @@ class MLS::Listing::Parser < MLS::Parser
 
   def agents=(agents)
     @object.agents = agents.map {|a| MLS::Account::Parser.build(a) }
+  end
+  
+  def primary_agent=(agent)
+    @object.primary_agent = MLS::Account::Parser.build(agent)
   end
 end
