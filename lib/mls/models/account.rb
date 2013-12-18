@@ -18,6 +18,8 @@ class MLS::Account < MLS::Resource
   property :twitter,                 String,  :serialize => :if_present
   property :facebook,                String,  :serialize => :if_present
   property :web,                     String,  :serialize => :if_present
+  property :direct_phone,            String,  :serialize => :if_present
+  property :direct_email,            String,  :serialize => :if_present
   
   property :city,                    String,  :serialize => :if_present
   property :state,                   String,  :serialize => :if_present
@@ -37,7 +39,7 @@ class MLS::Account < MLS::Resource
 
   exclude_from_comparison :password, :password_confirmation
 
-  attr_accessor :password_required
+  attr_accessor :password_required, :brokerage
 
   attr_writer :favorites
 
@@ -164,5 +166,8 @@ class MLS::Account::Parser < MLS::Parser
   def favorites=(favorites)
     @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
   end
-
+  
+  def brokerage=(brokerage)
+    @object.brokerage = MLS::Brokerage::Parser.build(brokerage)
+  end
 end
