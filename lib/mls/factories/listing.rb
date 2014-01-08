@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :listing, :class => MLS::Listing do
     before(:create) { |l|
-      MLS_GEM_CACHE['auth_key'] = MLS.auth_key
-      MLS.auth_key = l.account.auth_key
+      MLS_GEM_CACHE['auth_cookie'] = MLS.auth_cookie
+      MLS.auth_cookie = l.account.auth_cookie
     }
     after(:create) { |l|
-      MLS.auth_key = MLS_GEM_CACHE['auth_key']
+      MLS.auth_cookie = MLS_GEM_CACHE['auth_cookie']
     }
 
     association :account

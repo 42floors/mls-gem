@@ -12,10 +12,10 @@ class TestMLS < ::Test::Unit::TestCase
     assert mls.respond_to?(:url)
     assert mls.respond_to?(:url=)
     assert mls.respond_to?(:api_key)
-    assert mls.respond_to?(:auth_key)
+    assert mls.respond_to?(:auth_cookie)
     assert mls.respond_to?(:logger)
     assert mls.respond_to?(:connection)
-    assert mls.respond_to?(:add_headers)
+    assert mls.respond_to?(:prepare_request)
 
     assert mls.respond_to?(:put)
     assert mls.respond_to?(:post)

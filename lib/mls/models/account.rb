@@ -29,7 +29,7 @@ class MLS::Account < MLS::Resource
   attribute :updated_at,              DateTime,  :serialize => :false
 
   attribute :email_token,             String,  :serialize => false
-  attribute :auth_key,                String,  :serialize => false
+  attribute :auth_cookie,                String,  :serialize => false
   attribute :start_hours_of_operation, Fixnum,  :serialize => :if_present
   attribute :end_hours_of_operation,   Fixnum,  :serialize => :if_present
   attribute :days_of_operation,        String,  :serialize => :if_present
@@ -129,8 +129,12 @@ class MLS::Account < MLS::Resource
       email = attrs_or_email.is_a?(Hash) ? attrs_or_email[:email] : attrs_or_email
       password = attrs_or_email.is_a?(Hash) ? attrs_or_email[:password] : password
 
-      response = MLS.get('/account', {:email => email, :password => password})
-      MLS::Account::Parser.parse(response.body)
+      response = MLS.post('/login', {:email => email, :password => password})
+      MLS.auth_cookie = response['set-cookie']
+
+      account = MLS::Account::Parser.parse(response.body)
+      account.auth_cookie = MLS.auth_cookie
+      account
     rescue MLS::Exception::Unauthorized => response
       nil
     end

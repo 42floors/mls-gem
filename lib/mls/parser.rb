@@ -7,7 +7,7 @@ class MLS::Parser
   end
 
   def parse(data)
-    attributes = extract_attributes(data)[self.class.root_element]
+    attributes = extract_attributes(data)
     update_attributes(attributes)
     object
   end

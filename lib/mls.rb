@@ -25,7 +25,7 @@ class MLS
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :auth_key, :logger
+  attr_accessor :api_key, :auth_cookie, :logger
 
   # Sets the API Token and Host of the MLS Server
   #
@@ -73,18 +73,17 @@ class MLS
   end
 
   def headers # TODO: testme
-    h = {
+    {
       'Content-Type' => 'application/json',
       'User-Agent' => @user_agent,
       'X-42Floors-API-Version' => API_VERSION,
       'X-42Floors-API-Key' => api_key
     }
-    h['X-42Floors-API-Auth-Key'] = auth_key if auth_key
-    h
   end
 
-  def add_headers(req) # TODO: testme
+  def prepare_request(req) # TODO: testme
     headers.each { |k, v| req[k] = v }
+    req['Cookie'] = auth_cookie if auth_cookie
   end
 
   # Gets to +url+ on the MLS Server. Automatically includes any headers returned
@@ -133,7 +132,7 @@ class MLS
     params ||= {}
 
     req = Net::HTTP::Get.new("/api#{url}?" + params.to_param)
-    add_headers(req)
+    prepare_request(req)
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
@@ -193,7 +192,7 @@ class MLS
 
     req = Net::HTTP::Put.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
-    add_headers(req)
+    prepare_request(req)
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
@@ -252,7 +251,7 @@ class MLS
 
     req = Net::HTTP::Post.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
-    add_headers(req)
+    prepare_request(req)
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
@@ -311,7 +310,7 @@ class MLS
 
     req = Net::HTTP::Delete.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
-    add_headers(req)
+    prepare_request(req)
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
