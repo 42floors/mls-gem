@@ -1,4 +1,4 @@
-class MLS::Property::String < MLS::Property
+class MLS::Attribute::String < MLS::Attribute
 	
 	def load(value) # from_json
 		if value.nil?

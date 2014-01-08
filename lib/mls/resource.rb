@@ -40,30 +40,30 @@ class MLS::Resource
   end
 
   def ==(other)
-    self.class == other.class && properties_for_comparison == other.properties_for_comparison
+    self.class == other.class && attributes_for_comparison == other.attributes_for_comparison
   end
 
-  # Properties ===================================================================================================
+  # Attributes ===================================================================================================
   
-  def properties
-    self.class.properties
+  def attributes
+    self.class.attributes
   end
 
-  def properties_for_comparison
+  def attributes_for_comparison
     compare = {}
-    properties.reject{ |k, p| properties_excluded_from_comparison.include?(k) }.each do |k, p|
-      compare[k] = self.send(properties[k].name.to_sym)
+    attributes.reject{ |k, p| attributes_excluded_from_comparison.include?(k) }.each do |k, p|
+      compare[k] = self.send(attributes[k].name.to_sym)
     end
     compare
   end
 
-  def properties_excluded_from_comparison
-    self.class.properties_excluded_from_comparison
+  def attributes_excluded_from_comparison
+    self.class.attributes_excluded_from_comparison
   end
   
   def set_default_values
-    properties.each do |name, property|
-      self.send("#{name}=".to_sym, property.default) if property.default
+    attributes.each do |name, attribute|
+      self.send("#{name}=".to_sym, attribute.default) if attribute.default
     end
   end
 
@@ -76,14 +76,14 @@ class MLS::Resource
   def to_hash
     hash = {}
     
-    properties.each do |name, property|
-      serialize = property.options[:serialize]
+    attributes.each do |name, attribute|
+      serialize = attribute.options[:serialize]
       serialize = :always if serialize.nil?
       case serialize
       when :always
-        hash[name] = property.dump(self.send(name))
+        hash[name] = attribute.dump(self.send(name))
       when :if_present
-        hash[name] = property.dump(self.send(name)) if self.send(name)
+        hash[name] = attribute.dump(self.send(name)) if self.send(name)
       end
     end
     

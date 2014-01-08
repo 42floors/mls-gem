@@ -2,16 +2,16 @@ require 'restclient'
 
 class MLS::Photo < MLS::Resource
 
-  property :id, Fixnum
-  property :digest, String
-  property :created_at, DateTime
-  property :updated_at, DateTime
-  property :file_content_type, String
-  property :file_name, String
-  property :file_size, Fixnum
-  property :url_template, String
-  property :caption, String
-  property :subject_id, Fixnum
+  attribute :id, Fixnum
+  attribute :digest, String
+  attribute :created_at, DateTime
+  attribute :updated_at, DateTime
+  attribute :file_content_type, String
+  attribute :file_name, String
+  attribute :file_size, Fixnum
+  attribute :url_template, String
+  attribute :caption, String
+  attribute :subject_id, Fixnum
 
   def url(style=nil, protocol='http')
     result = "#{protocol}://#{MLS.image_host}/#{digest}.jpg"

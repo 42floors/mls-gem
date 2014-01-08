@@ -2,13 +2,13 @@ require 'test_helper'
 
 class ListingTest < Test::Unit::TestCase
 
-  def test_properties
+  def test_attributes
     listing = MLS::Listing.new
 
-    properties = [:id, :address_id, :use, :account_id, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
+    attributes = [:id, :address_id, :use, :account_id, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
 
-    properties.each do |property|
-      assert listing.respond_to?(property), "listing should respond to #{property}"
+    attributes.each do |attribute|
+      assert listing.respond_to?(attribute), "listing should respond to #{attribute}"
     end
   end
 

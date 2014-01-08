@@ -1,7 +1,7 @@
 module MLS::Model
 
   def self.extended(model) #:nodoc:
-    model.instance_variable_set(:@properties, {})
+    model.instance_variable_set(:@attributes, {})
     model.instance_variable_set(:@associations, {})
   end
 
@@ -24,34 +24,34 @@ module MLS::Model
     model
   end
 
-  # Properties ===================================================================================================
+  # Attributes ===================================================================================================
 
-  def property(name, type, options = {})
-    klass = MLS::Property.determine_class(type)
+  def attribute(name, type, options = {})
+    klass = MLS::Attribute.determine_class(type)
     raise NotImplementedError, "#{type} is not supported" unless klass
 
-    property = klass.new(name, options)
-    @properties[property.name] = property
-    @properties_excluded_from_comparison = []
+    attribute = klass.new(name, options)
+    @attributes[attribute.name] = attribute
+    @attributes_excluded_from_comparison = []
 
-    create_reader_for(property)
-    create_writer_for(property)
+    create_reader_for(attribute)
+    create_writer_for(attribute)
   end
 
-  def exclude_from_comparison(*properties)
-    @properties_excluded_from_comparison |= properties
+  def exclude_from_comparison(*attributes)
+    @attributes_excluded_from_comparison |= attributes
   end
 
-  def properties_excluded_from_comparison
-    @properties_excluded_from_comparison
+  def attributes_excluded_from_comparison
+    @attributes_excluded_from_comparison
   end
 
-  def properties
-    @properties
+  def attributes
+    @attributes
   end
 
-  def property_module
-    @property_module ||= begin
+  def attribute_module
+    @attribute_module ||= begin
       mod = Module.new
       class_eval do
         include mod
@@ -60,23 +60,23 @@ module MLS::Model
     end
   end
 
-  def create_reader_for(property)
-    reader_name             = property.name.to_s
+  def create_reader_for(attribute)
+    reader_name             = attribute.name.to_s
     boolean_reader_name     = "#{reader_name}?"
-    reader_visibility       = property.reader_visibility
-    instance_variable_name  = property.instance_variable_name
+    reader_visibility       = attribute.reader_visibility
+    instance_variable_name  = attribute.instance_variable_name
 
-    property_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
+    attribute_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
       #{reader_visibility}
       def #{reader_name}
         return #{instance_variable_name} if defined?(#{instance_variable_name})
-        property = properties[:#{reader_name}]
-        #{instance_variable_name} = property ? property.default : nil
+        attribute = attributes[:#{reader_name}]
+        #{instance_variable_name} = attribute ? attribute.default : nil
       end
     RUBY
 
-    if property.kind_of?(MLS::Property::Boolean)
-      property_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
+    if attribute.kind_of?(MLS::Attribute::Boolean)
+      attribute_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
         #{reader_visibility}
         def #{boolean_reader_name}
           #{reader_name}
@@ -85,17 +85,17 @@ module MLS::Model
     end
   end
 
-  def create_writer_for(property)
-    name                    = property.name
+  def create_writer_for(attribute)
+    name                    = attribute.name
     writer_name             = "#{name}="
-    writer_visibility       = property.writer_visibility
-    instance_variable_name  = property.instance_variable_name
+    writer_visibility       = attribute.writer_visibility
+    instance_variable_name  = attribute.instance_variable_name
 
-    property_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
+    attribute_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
       #{writer_visibility}
       def #{writer_name}(value)
-        property = self.class.properties[:#{name}]
-        #{instance_variable_name} = property.load(value)
+        attribute = self.class.attributes[:#{name}]
+        #{instance_variable_name} = attribute.load(value)
       end
     RUBY
   end

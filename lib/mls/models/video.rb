@@ -1,12 +1,12 @@
 class MLS::Video < MLS::Resource
-  property :id, Fixnum
-  property :vts_key, String
-  property :video_type, String
-  property :subject_type, String, :serialize => false
-  property :created_at, DateTime, :serialize => :if_present
-  property :updated_at, DateTime, :serialize => :if_present
+  attribute :id, Fixnum
+  attribute :vts_key, String
+  attribute :video_type, String
+  attribute :subject_type, String, :serialize => false
+  attribute :created_at, DateTime, :serialize => :if_present
+  attribute :updated_at, DateTime, :serialize => :if_present
 
-  property :photo_id, Fixnum, :serialize => :if_present
+  attribute :photo_id, Fixnum, :serialize => :if_present
 
   attr_accessor :photo
 end

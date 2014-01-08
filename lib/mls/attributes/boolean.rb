@@ -1,4 +1,4 @@
-class MLS::Property::Boolean < MLS::Property
+class MLS::Attribute::Boolean < MLS::Attribute
 	
 	def load(value) # from_json
 		value

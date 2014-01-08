@@ -10,83 +10,83 @@ class MLS::Listing < MLS::Resource
   SOURCE_TYPES = %w(website flyer)
   CHANNELS = %w(excavator mls staircase broker_dashboard)
 
-  property :id,                           Fixnum,   :serialize => :false
-  property :address_id,                   Fixnum,   :serialize => :false
-  property :slug,                         String,   :serialize => :false
-  property :use,                          String,   :serialize => :if_present
-  property :account_id,                   Fixnum
-  property :private,                      Boolean,  :default => false, :serialize => false
-  property :source,                       String
-  property :source_url,                   String
-  property :source_type,                  String, :serialize => :if_present
-  property :channel,                      String, :serialize => :if_present
-  property :photo_ids,                    Array,  :serialize => :if_present
+  attribute :id,                           Fixnum,   :serialize => :false
+  attribute :address_id,                   Fixnum,   :serialize => :false
+  attribute :slug,                         String,   :serialize => :false
+  attribute :use,                          String,   :serialize => :if_present
+  attribute :account_id,                   Fixnum
+  attribute :private,                      Boolean,  :default => false, :serialize => false
+  attribute :source,                       String
+  attribute :source_url,                   String
+  attribute :source_type,                  String, :serialize => :if_present
+  attribute :channel,                      String, :serialize => :if_present
+  attribute :photo_ids,                    Array,  :serialize => :if_present
 
-  property :name,                         String
-  property :type,                         String,   :default => 'lease'
-  property :workflow_state,               String,   :default => 'visible'
-  property :lease_state,                  String,   :default => 'listed'
-  property :space_type,                   String,   :default => 'unit'
-  property :unit,                         String
-  property :floor,                        Fixnum
-  property :description,                  String
+  attribute :name,                         String
+  attribute :type,                         String,   :default => 'lease'
+  attribute :workflow_state,               String,   :default => 'visible'
+  attribute :lease_state,                  String,   :default => 'listed'
+  attribute :space_type,                   String,   :default => 'unit'
+  attribute :unit,                         String
+  attribute :floor,                        Fixnum
+  attribute :description,                  String
 
-  property :size,                   Fixnum
-  property :maximum_contiguous_size,      Fixnum
-  property :minimum_divisible_size,       Fixnum
+  attribute :size,                   Fixnum
+  attribute :maximum_contiguous_size,      Fixnum
+  attribute :minimum_divisible_size,       Fixnum
 
-  property :amenities,                    Hash
-  property :lease_terms,                  String
-  property :rate,                         Decimal
-  property :rate_units,                   String,   :default => '/sqft/mo'
-  property :low_rate,                     Decimal,  :serialize => :false
-  property :high_rate,                    Decimal,  :serialize => :false
-  property :sublease_expiration,          DateTime
+  attribute :amenities,                    Hash
+  attribute :lease_terms,                  String
+  attribute :rate,                         Decimal
+  attribute :rate_units,                   String,   :default => '/sqft/mo'
+  attribute :low_rate,                     Decimal,  :serialize => :false
+  attribute :high_rate,                    Decimal,  :serialize => :false
+  attribute :sublease_expiration,          DateTime
 
-  property :forecast_rate_per_year,             Decimal,  :serialize => :false
-  property :forecast_rate_per_month,            Decimal,  :serialize => :false
-  property :forecast_rate_per_sqft_per_month,   Decimal,  :serialize => :false
-  property :forecast_rate_per_sqft_per_year,    Decimal,  :serialize => :false
+  attribute :forecast_rate_per_year,             Decimal,  :serialize => :false
+  attribute :forecast_rate_per_month,            Decimal,  :serialize => :false
+  attribute :forecast_rate_per_sqft_per_month,   Decimal,  :serialize => :false
+  attribute :forecast_rate_per_sqft_per_year,    Decimal,  :serialize => :false
 
-  property :available_on,                 DateTime
-  property :term,                         Fixnum
-  property :term_units,            String,   :default => 'years'
+  attribute :available_on,                 DateTime
+  attribute :term,                         Fixnum
+  attribute :term_units,            String,   :default => 'years'
 
-  property :weekday_hours,                String
-  property :saturday_hours,               String
-  property :sunday_hours,                 String
+  attribute :weekday_hours,                String
+  attribute :saturday_hours,               String
+  attribute :sunday_hours,                 String
 
-  property :offices,                      Fixnum
-  property :desks,                        Fixnum
-  property :conference_rooms,             Fixnum
-  property :bathrooms,                    Fixnum
+  attribute :offices,                      Fixnum
+  attribute :desks,                        Fixnum
+  attribute :conference_rooms,             Fixnum
+  attribute :bathrooms,                    Fixnum
 
-  property :kitchen,                      Boolean
-  property :showers,                      Boolean
-  property :patio,                        Boolean
-  property :reception_area,               Boolean
-  property :ready_to_move_in,             Boolean
-  property :furniture_available,          Boolean
-  property :natural_light,                Boolean
-  property :high_ceilings,                Boolean
+  attribute :kitchen,                      Boolean
+  attribute :showers,                      Boolean
+  attribute :patio,                        Boolean
+  attribute :reception_area,               Boolean
+  attribute :ready_to_move_in,             Boolean
+  attribute :furniture_available,          Boolean
+  attribute :natural_light,                Boolean
+  attribute :high_ceilings,                Boolean
 
-  property :created_at,                   DateTime,  :serialize => :false
-  property :updated_at,                   DateTime,  :serialize => :false
-  property :touched_at,                   DateTime,  :serialize => :false
-  property :leased_on,                    DateTime
-  property :photography_requested_on,     DateTime,  :serialize => :false
+  attribute :created_at,                   DateTime,  :serialize => :false
+  attribute :updated_at,                   DateTime,  :serialize => :false
+  attribute :touched_at,                   DateTime,  :serialize => :false
+  attribute :leased_on,                    DateTime
+  attribute :photography_requested_on,     DateTime,  :serialize => :false
 
-  property :awesome_score,                Fixnum
-  property :awesome_needs,                Array,  :serialize => :if_present
-  property :awesome_label,                String
+  attribute :awesome_score,                Fixnum
+  attribute :awesome_needs,                Array,  :serialize => :if_present
+  attribute :awesome_label,                String
 
-  property :flyer_id,                     Fixnum,    :serialize => :if_present
-  property :floorplan_id,                 Fixnum,    :serialize => :if_present
+  attribute :flyer_id,                     Fixnum,    :serialize => :if_present
+  attribute :floorplan_id,                 Fixnum,    :serialize => :if_present
 
-  property :avatar_digest,                String,   :serialize => false
+  attribute :avatar_digest,                String,   :serialize => false
 
   # Counter Caches
-  property :photos_count,                 Fixnum, :serialize => :false
+  attribute :photos_count,                 Fixnum, :serialize => :false
 
   attr_accessor :property, :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos, :spaces, :primary_agent
 

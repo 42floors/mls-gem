@@ -2,11 +2,11 @@ require 'restclient'
 
 class MLS::Floorplan < MLS::Resource
 
-  property :id, Fixnum
-  property :digest, String
-  property :avatar_digest, String
-  property :file_name, String
-  property :file_size, Fixnum
+  attribute :id, Fixnum
+  attribute :digest, String
+  attribute :avatar_digest, String
+  attribute :file_name, String
+  attribute :file_size, Fixnum
   
   def url(protocol='http')
     "#{protocol}://#{MLS.asset_host}/floorplans/#{digest}/compressed/#{file_name}"

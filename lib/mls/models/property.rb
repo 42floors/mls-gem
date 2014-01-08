@@ -1,27 +1,27 @@
 class MLS::Property < MLS::Resource
 
-  property :id, Fixnum,   :serialize => :false
-  property :name, String, :serialize => :false
-  property :slug, String,   :serialize => :false
+  attribute :id, Fixnum,   :serialize => :false
+  attribute :name, String, :serialize => :false
+  attribute :slug, String,   :serialize => :false
   
-  property :latitude, Decimal
-  property :longitude, Decimal
+  attribute :latitude, Decimal
+  attribute :longitude, Decimal
   
-  property :description, String
-  property :contructed, Fixnum
-  property :size, Fixnum
-  property :floors, Fixnum
-  property :leed_certification, String
-  property :style, String
-  property :height, Float
-  property :lot_size, Float
+  attribute :description, String
+  attribute :contructed, Fixnum
+  attribute :size, Fixnum
+  attribute :floors, Fixnum
+  attribute :leed_certification, String
+  attribute :style, String
+  attribute :height, Float
+  attribute :lot_size, Float
 
-  property :amenities, Hash
+  attribute :amenities, Hash
   
   # Counter caches
-  property :listings_count, Fixnum, :serialize => :false
+  attribute :listings_count, Fixnum, :serialize => :false
 
-  property :avatar_digest, String,   :serialize => false
+  attribute :avatar_digest, String,   :serialize => false
 
   attr_accessor :listings, :addresses, :photos, :videos
 

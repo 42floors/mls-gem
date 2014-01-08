@@ -1,14 +1,14 @@
 class MLS::Tour < MLS::Resource
-  property :id,                           Fixnum
-  property :declined,                     Boolean
-  property :client_id,                    Fixnum
-  property :agent_id,                     Fixnum
-  property :listing_id,                   Fixnum
-  property :comments,                     String
-  property :agent_comments,               String,    :serialize => :if_present
-  property :token,                        String,    :serialize => :false
-  property :created_at,                   DateTime,  :serialize => :false
-  property :updated_at,                   DateTime,  :serialize => :false
+  attribute :id,                           Fixnum
+  attribute :declined,                     Boolean
+  attribute :client_id,                    Fixnum
+  attribute :agent_id,                     Fixnum
+  attribute :listing_id,                   Fixnum
+  attribute :comments,                     String
+  attribute :agent_comments,               String,    :serialize => :if_present
+  attribute :token,                        String,    :serialize => :false
+  attribute :created_at,                   DateTime,  :serialize => :false
+  attribute :updated_at,                   DateTime,  :serialize => :false
 
   attr_accessor :client, :listing
 

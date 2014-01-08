@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TestTour < ::Test::Unit::TestCase
 
-  # def test_properties
+  # def test_attributes
   #   tr = MLS::Tour.new
   # 
   #   assert tr.respond_to?(:message)

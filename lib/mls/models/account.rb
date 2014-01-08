@@ -1,41 +1,41 @@
 class MLS::Account < MLS::Resource
   
-  property :id,                      Fixnum,  :serialize => :if_present
-  property :type,                    String,  :default => 'Account'
-  property :name,                    String,  :serialize => :if_present
-  property :title,                   String,  :serialize => :if_present
-  property :email,                   String,  :serialize => :if_present
-  property :password,                String,  :serialize => :if_present
-  property :password_confirmation,   String,  :serialize => :if_present
-  property :perishable_token,        String,  :serialize => false
-  property :perishable_token_set_at, String,  :serialize => false
-  property :ghost,                   Boolean, :serialize => false, :default => false
+  attribute :id,                      Fixnum,  :serialize => :if_present
+  attribute :type,                    String,  :default => 'Account'
+  attribute :name,                    String,  :serialize => :if_present
+  attribute :title,                   String,  :serialize => :if_present
+  attribute :email,                   String,  :serialize => :if_present
+  attribute :password,                String,  :serialize => :if_present
+  attribute :password_confirmation,   String,  :serialize => :if_present
+  attribute :perishable_token,        String,  :serialize => false
+  attribute :perishable_token_set_at, String,  :serialize => false
+  attribute :ghost,                   Boolean, :serialize => false, :default => false
   
-  property :phone,                   String,  :serialize => :if_present
-  property :company,                 String,  :serialize => :if_present
-  property :license,                 String,  :serialize => :if_present
-  property :linkedin,                String,  :serialize => :if_present
-  property :twitter,                 String,  :serialize => :if_present
-  property :facebook,                String,  :serialize => :if_present
-  property :web,                     String,  :serialize => :if_present
-  property :direct_phone,            String,  :serialize => :if_present
-  property :direct_email,            String,  :serialize => :if_present
+  attribute :phone,                   String,  :serialize => :if_present
+  attribute :company,                 String,  :serialize => :if_present
+  attribute :license,                 String,  :serialize => :if_present
+  attribute :linkedin,                String,  :serialize => :if_present
+  attribute :twitter,                 String,  :serialize => :if_present
+  attribute :facebook,                String,  :serialize => :if_present
+  attribute :web,                     String,  :serialize => :if_present
+  attribute :direct_phone,            String,  :serialize => :if_present
+  attribute :direct_email,            String,  :serialize => :if_present
   
-  property :city,                    String,  :serialize => :if_present
-  property :state,                   String,  :serialize => :if_present
-  property :country,                 String,  :serialize => :if_present
+  attribute :city,                    String,  :serialize => :if_present
+  attribute :state,                   String,  :serialize => :if_present
+  attribute :country,                 String,  :serialize => :if_present
   
-  property :created_at,              DateTime,  :serialize => :false
-  property :updated_at,              DateTime,  :serialize => :false
+  attribute :created_at,              DateTime,  :serialize => :false
+  attribute :updated_at,              DateTime,  :serialize => :false
   
-  property :email_token,             String,  :serialize => false
-  property :auth_key,                String,  :serialize => false
-  property :start_hours_of_operation, Fixnum,  :serialize => :if_present
-  property :end_hours_of_operation,   Fixnum,  :serialize => :if_present
-  property :days_of_operation,        String,  :serialize => :if_present
-  property :timezone,                 String,  :serialize => :if_present
-  property :lead_status,              String,  :serialize => :if_present
-  property :buyer_id,                 Fixnum,  :serialize => :if_present
+  attribute :email_token,             String,  :serialize => false
+  attribute :auth_key,                String,  :serialize => false
+  attribute :start_hours_of_operation, Fixnum,  :serialize => :if_present
+  attribute :end_hours_of_operation,   Fixnum,  :serialize => :if_present
+  attribute :days_of_operation,        String,  :serialize => :if_present
+  attribute :timezone,                 String,  :serialize => :if_present
+  attribute :lead_status,              String,  :serialize => :if_present
+  attribute :buyer_id,                 Fixnum,  :serialize => :if_present
 
   exclude_from_comparison :password, :password_confirmation
 

@@ -1,18 +1,18 @@
 class MLS::Address < MLS::Resource
 
-  property :id,           Fixnum,   :serialize => :false
-  property :property_id,  Fixnum,   :serialize => :false
-  property :slug,         String,   :serialize => :false
+  attribute :id,           Fixnum,   :serialize => :false
+  attribute :property_id,  Fixnum,   :serialize => :false
+  attribute :slug,         String,   :serialize => :false
   
-  property :formatted_address, String
-  property :street_number, String
-  property :street, String
-  property :neighborhood, String
-  property :city, String
-  property :county, String
-  property :state, String
-  property :country, String
-  property :postal_code, String
+  attribute :formatted_address, String
+  attribute :street_number, String
+  attribute :street, String
+  attribute :neighborhood, String
+  attribute :city, String
+  attribute :county, String
+  attribute :state, String
+  attribute :country, String
+  attribute :postal_code, String
   
   attr_accessor :property
   

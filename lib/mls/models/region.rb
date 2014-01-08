@@ -1,21 +1,21 @@
 class MLS::Region < MLS::Resource
 
-  property :id,             Fixnum
-  property :name,           String
-  property :proper_name,    String
-  property :common_name,    String
-  property :code,           String
-  property :type,           String
-  property :source,         String
-  property :minimum_zoom,   Fixnum
-  property :maximum_zoom,   Fixnum
-  property :slug,           String
-  property :geometry,       Hash
-  property :envelope,       Hash
-  property :children,       Hash
+  attribute :id,             Fixnum
+  attribute :name,           String
+  attribute :proper_name,    String
+  attribute :common_name,    String
+  attribute :code,           String
+  attribute :type,           String
+  attribute :source,         String
+  attribute :minimum_zoom,   Fixnum
+  attribute :maximum_zoom,   Fixnum
+  attribute :slug,           String
+  attribute :geometry,       Hash
+  attribute :envelope,       Hash
+  attribute :children,       Hash
 
   # Counter caches
-  property :listings_count, Fixnum
+  attribute :properties_count, Fixnum
 
   class << self
 

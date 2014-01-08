@@ -10,9 +10,9 @@ class TestModel < ::Test::Unit::TestCase
   def test_instance_methods
     model = MyModel.new
 
-    assert model.respond_to?(:property)
-    assert model.respond_to?(:properties)
-    assert model.respond_to?(:property_module)
+    assert model.respond_to?(:attribute)
+    assert model.respond_to?(:attributes)
+    assert model.respond_to?(:attribute_module)
     assert model.respond_to?(:create_reader_for)
     assert model.respond_to?(:create_writer_for)
     assert model.respond_to?(:model_name)

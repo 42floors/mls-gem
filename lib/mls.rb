@@ -416,15 +416,15 @@ require 'mls/errors'
 require 'mls/resource'
 require 'mls/parser'
 
-# Properties
-require 'mls/property'
-require 'mls/properties/fixnum'
-require 'mls/properties/boolean'
-require 'mls/properties/decimal'
-require 'mls/properties/datetime'
-require 'mls/properties/string'
-require 'mls/properties/hash'
-require 'mls/properties/array'
+# Attributes
+require 'mls/attribute'
+require 'mls/attributes/fixnum'
+require 'mls/attributes/boolean'
+require 'mls/attributes/decimal'
+require 'mls/attributes/datetime'
+require 'mls/attributes/string'
+require 'mls/attributes/hash'
+require 'mls/attributes/array'
 
 # Models
 require 'mls/model'

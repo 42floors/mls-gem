@@ -18,7 +18,7 @@ class TestResource < ::Test::Unit::TestCase
     assert resource.respond_to?(:persisted?)
     assert resource.respond_to?(:save)
 
-    assert resource.respond_to?(:properties)
+    assert resource.respond_to?(:attributes)
     assert resource.respond_to?(:set_default_values)
     assert resource.respond_to?(:update_attributes)
 
