@@ -1,11 +1,8 @@
 class MLS::Address < MLS::Resource
 
-  property :id, Fixnum,   :serialize => :false
-  property :name, String, :serialize => :false
-  property :slug, String,   :serialize => :false
-  
-  property :latitude, Decimal
-  property :longitude, Decimal
+  property :id,           Fixnum,   :serialize => :false
+  property :property_id,  Fixnum,   :serialize => :false
+  property :slug,         String,   :serialize => :false
   
   property :formatted_address, String
   property :street_number, String
@@ -16,50 +13,9 @@ class MLS::Address < MLS::Resource
   property :state, String
   property :country, String
   property :postal_code, String
-  property :min_rate_per_sqft_per_year, Decimal, :serialize => :false
-  property :max_rate_per_sqft_per_year, Decimal, :serialize => :false
-  property :max_size, Fixnum, :serialize => :false
-  property :min_size, Fixnum, :serialize => :false
-  property :description, String
-  property :year_built, Fixnum
-  property :size, Fixnum
-  property :floors, Fixnum
-
-  property :amenities,                    Hash
-
-  property :leed_certification, String
   
-  # Counter caches
-  property :listings_count, Fixnum, :serialize => :false
-  property :leased_listings_count, Fixnum, :serialize => :false
-  property :hidden_listings_count, Fixnum, :serialize => :false
-  property :import_listings_count, Fixnum, :serialize => :false
-  property :active_listings_count, Fixnum, :serialize => :false
-
-  property :avatar_digest, String,   :serialize => false
-
-  property :listings_latest_created_at, DateTime, :serialize => :false
-
-  attr_accessor :listings, :listing_types, :photos, :videos
-
-  # should include an optional use address or no_image image
-  def avatar(size='100x200#', protocol='http')
-    params = {
-      :size => size,
-      :format => 'png',
-      :sensor => false,
-      :location => [formatted_address],
-      :fov => 120
-    }
-
-    if avatar_digest
-      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
-    else
-      params[:size] = params[:size].match(/\d+x\d+/)[0]
-      "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
-    end
-  end
-
+  attr_accessor :property
+  
   def save
     MLS.put("/addresses/#{id}", {:address => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
@@ -71,45 +27,11 @@ class MLS::Address < MLS::Resource
     end
   end
 
-  def to_hash
-    hash = super
-    hash[:photo_ids] = photos.map(&:id) if photos
-    hash[:videos_attributes] = videos.map(&:to_hash) unless videos.blank?
-    hash
-  end
-
   def to_param
-    [state, city, "#{street_number} #{street}"].map(&:parameterize).join('/')
-  end
-
-  def url
-    if defined? Rails
-      case Rails.env
-      when "production"
-        host = "42floors.com"
-      when "staging"
-        host = "staging.42floors.com"
-      when "development","test"
-        host = "spire.dev"
-      end
-    else
-      host = "42floors.com"
-    end
-    "http://#{host}/#{slug}"
-  end
-
-  def find_listings(space_available, floor, unit)
-    response = MLS.get("/addresses/#{id}/find_listings", 
-      :floor => floor, :unit => unit, :space_available => space_available)
-    MLS::Listing::Parser.parse_collection(response.body)
+    slug
   end
 
   class << self
-    
-    def query(q)
-      response = MLS.get('/addresses/query', :query => q)
-      MLS::Address::Parser.parse_collection(response.body)
-    end
 
     def find(id)
       response = MLS.get("/addresses/#{id}")
@@ -122,36 +44,15 @@ class MLS::Address < MLS::Resource
       MLS::Address::Parser.parse_collection(response.body)
     end
 
-    def amenities
-      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLS.get('/addresses/amenities').body)
-    end
-
   end
   
 end
 
 
 class MLS::Address::Parser < MLS::Parser
-
-  def listings=(listings)
-    @object.listings = listings.map { |data|
-      listing = MLS::Listing::Parser.build(data)
-      listing.address = @object
-      listing
-    }
+  
+  def property=(property)
+    @object.property = MLS::Property::Parser.build(property)
   end
-
-  def listing_types=(listing_types)
-    @object.listing_types = listing_types
-  end
-
-  def photos=(photos)
-    @object.photos = photos.map {|p| MLS::Photo::Parser.build(p)}
-  end
-
-  def videos=(videos)
-    @object.videos = videos.map do |video|
-      MLS::Video::Parser.build(video)
-    end
-  end
+  
 end
