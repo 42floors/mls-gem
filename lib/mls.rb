@@ -36,12 +36,12 @@ class MLS
     @api_key = CGI.unescape(@url.user)
     @host, @port = @url.host, @url.port
   end
-  
+
   # Sets the user agent so that MLS can distinguish between multiple users
   # with the same auth
   def user_agent=(user_agent)
     @user_agent = user_agent
-  end  
+  end
 
   def logger # TODO: testme
     @logger ||= default_logger
@@ -58,11 +58,11 @@ class MLS
   def asset_host # TODO: testme
     @asset_host ||= get('/asset_host').body
   end
-  
+
   def image_host # TODO: testme
     raw_image_host % (rand(4))
   end
-  
+
   def raw_image_host
     @image_host ||= get('/image_host').body
   end
@@ -82,11 +82,11 @@ class MLS
     h['X-42Floors-API-Auth-Key'] = auth_key if auth_key
     h
   end
-  
+
   def add_headers(req) # TODO: testme
     headers.each { |k, v| req[k] = v }
   end
-  
+
   # Gets to +url+ on the MLS Server. Automatically includes any headers returned
   # by the MLS#headers function.
   #
@@ -95,7 +95,7 @@ class MLS
   # * +url+ - The +url+ on the server to Get to. This url will automatically
   #   be prefixed with <tt>"/api"</tt>. To get to <tt>"/api/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
-  # * +params+ - A Hash or Ruby Object that responds to #to_param. The result 
+  # * +params+ - A Hash or Ruby Object that responds to #to_param. The result
   #   of this method is appended on the URL as query params
   # * +valid_response_codes+ - An Array of HTTP response codes that should be
   #   considered accepable and not raise exceptions. For example If you don't
@@ -131,13 +131,13 @@ class MLS
   #  end
   def get(url, params={}, *valid_response_codes, &block)
     params ||= {}
-    
+
     req = Net::HTTP::Get.new("/api#{url}?" + params.to_param)
     add_headers(req)
 
     response = connection.request(req)
     handle_response(response, valid_response_codes)
-    
+
     response.body.force_encoding(Encoding::UTF_8)
     if block_given?
       yield(response, response.code.to_i)
@@ -145,7 +145,7 @@ class MLS
       response
     end
   end
-  
+
   # Puts to +url+ on the MLS Server. Automatically includes any headers returned
   # by the MLS#headers function.
   #
@@ -190,11 +190,11 @@ class MLS
   #  end
   def put(url, body={}, *valid_response_codes, &block)
     body ||= {}
-    
+
     req = Net::HTTP::Put.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
     add_headers(req)
-    
+
     response = connection.request(req)
     handle_response(response, valid_response_codes)
 
@@ -203,8 +203,8 @@ class MLS
     else
       response
     end
-  end  
-  
+  end
+
   # Posts to +url+ on the MLS Server. Automatically includes any headers returned
   # by the MLS#headers function.
   #
@@ -249,11 +249,11 @@ class MLS
   #  end
   def post(url, body={}, *valid_response_codes, &block)
     body ||= {}
-    
+
     req = Net::HTTP::Post.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
     add_headers(req)
-    
+
     response = connection.request(req)
     handle_response(response, valid_response_codes)
 
@@ -308,11 +308,11 @@ class MLS
   #  end
   def delete(url, body={}, *valid_response_codes, &block)
     body ||= {}
-    
+
     req = Net::HTTP::Delete.new("/api#{url}")
     req.body = Yajl::Encoder.encode(body)
     add_headers(req)
-    
+
     response = connection.request(req)
     handle_response(response, valid_response_codes)
     if block_given?
@@ -339,13 +339,13 @@ class MLS
   #
   #  #!ruby
   #  MLS.handle_response(<Net::HTTP::Response @code=200>) # => <Net::HTTP::Response @code=200>
-  #  
+  #
   #  MLS.handle_response(<Net::HTTP::Response @code=404>) # => raises MLS::Exception::NotFound
-  #  
+  #
   #  MLS.handle_response(<Net::HTTP::Response @code=500>) # => raises MLS::Exception
-  #  
+  #
   #  MLS.handle_response(<Net::HTTP::Response @code=404>, 404) # => <Net::HTTP::Response @code=404>
-  #  
+  #
   #  MLS.handle_response(<Net::HTTP::Response @code=500>, 404, 500) # => <Net::HTTP::Response @code=500>
   #
   #  MLS.handle_response(<Net::HTTP::Response @code=405>, 300, 400..499) # => <Net::HTTP::Response @code=405>
@@ -355,11 +355,11 @@ class MLS
     if response['X-42Floors-API-Version-Deprecated']
       logger.warn("DEPRECATION WARNING: API v#{API_VERSION} is being phased out")
     end
-    
+
     code = response.code.to_i
     valid_response_codes.flatten!
     valid_response_codes << (200..299)
-    
+
     if !valid_response_codes.detect{|i| i.is_a?(Range) ? i.include?(code) : i == code}
       case code
       when 400
@@ -376,16 +376,16 @@ class MLS
         raise MLS::Exception, code
       end
     end
-    
+
     response
   end
-  
+
   # Ping the MLS. If everything is configured and operating correctly <tt>"pong"</tt>
   # will be returned. Otherwise and MLS::Exception should be thrown.
   #
   #  #!ruby
   #  MLS.ping # => "pong"
-  #    
+  #
   #  MLS.ping # raises MLS::Exception::ServiceUnavailable if a 503 is returned
   def ping # TODO: testme
     get('/ping').body
@@ -405,7 +405,7 @@ class MLS
   def self.method_missing(method, *args, &block) #:nodoc:  # TODO: testme
     instance.__send__(method, *args, &block)
   end
-  
+
   def self.parse(json) # TODO: testme
     Yajl::Parser.new(:symbolize_keys => true).parse(json)
   end

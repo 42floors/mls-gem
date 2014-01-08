@@ -1,5 +1,5 @@
 class MLS::Account < MLS::Resource
-  
+
   attribute :id,                      Fixnum,  :serialize => :if_present
   attribute :type,                    String,  :default => 'Account'
   attribute :name,                    String,  :serialize => :if_present
@@ -10,7 +10,7 @@ class MLS::Account < MLS::Resource
   attribute :perishable_token,        String,  :serialize => false
   attribute :perishable_token_set_at, String,  :serialize => false
   attribute :ghost,                   Boolean, :serialize => false, :default => false
-  
+
   attribute :phone,                   String,  :serialize => :if_present
   attribute :company,                 String,  :serialize => :if_present
   attribute :license,                 String,  :serialize => :if_present
@@ -20,14 +20,14 @@ class MLS::Account < MLS::Resource
   attribute :web,                     String,  :serialize => :if_present
   attribute :direct_phone,            String,  :serialize => :if_present
   attribute :direct_email,            String,  :serialize => :if_present
-  
+
   attribute :city,                    String,  :serialize => :if_present
   attribute :state,                   String,  :serialize => :if_present
   attribute :country,                 String,  :serialize => :if_present
-  
+
   attribute :created_at,              DateTime,  :serialize => :false
   attribute :updated_at,              DateTime,  :serialize => :false
-  
+
   attribute :email_token,             String,  :serialize => false
   attribute :auth_key,                String,  :serialize => false
   attribute :start_hours_of_operation, Fixnum,  :serialize => :if_present
@@ -49,7 +49,7 @@ class MLS::Account < MLS::Resource
       code == 200
     end
   end
-  
+
   # Save the Account to the MLS. @errors will be set on the account if there
   # are any errors. @persisted will also be set to +true+ if the Account was
   # succesfully created
@@ -83,7 +83,7 @@ class MLS::Account < MLS::Resource
   def favorited?(listing)
     favorites.include?(listing)
   end
-  
+
   def favorite(listing) # TODO: test me, i don't work on failures
     params_hash = {:id => listing.is_a?(MLS::Listing) ? listing.id : listing }
     MLS.post('/account/favorites', params_hash) do |response, code|
@@ -105,14 +105,14 @@ class MLS::Account < MLS::Resource
     hash[:password_required] = password_required unless password_required.nil?
     hash
   end
-    
+
   class << self
 
     def current
       response = MLS.get('/account')
       MLS::Account::Parser.parse(response.body)
     end
-    
+
     # Authenticate and Account via <tt>email</tt> and <tt>password</tt>. Returns
     # the <tt>Account</tt> object if successfully authenticated. Returns <tt>nil</tt>
     # if the account could not be found, password was incorrect, or the account
@@ -121,14 +121,14 @@ class MLS::Account < MLS::Resource
     # ==== Examples
     #  #!ruby
     #  Account.authenticate(:email => 'jon@does.net', :password => 'opensesame') # => #<Account>
-    #    
+    #
     #  Account.authenticate('jon@does.net', 'opensesame') # => #<Account>
     #
     #  Account.authenticate('jon@does.net', 'wrong') # => nil
     def authenticate(attrs_or_email, password=nil)
       email = attrs_or_email.is_a?(Hash) ? attrs_or_email[:email] : attrs_or_email
       password = attrs_or_email.is_a?(Hash) ? attrs_or_email[:password] : password
-      
+
       response = MLS.get('/account', {:email => email, :password => password})
       MLS::Account::Parser.parse(response.body)
     rescue MLS::Exception::Unauthorized => response
@@ -153,12 +153,12 @@ class MLS::Account < MLS::Resource
     end
 
     def find(id)
-      response = MLS.get("/account/find", :id => id) 
+      response = MLS.get("/account/find", :id => id)
       MLS::Account::Parser.parse(response.body)
     end
 
   end
-  
+
 end
 
 class MLS::Account::Parser < MLS::Parser
@@ -166,7 +166,7 @@ class MLS::Account::Parser < MLS::Parser
   def favorites=(favorites)
     @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
   end
-  
+
   def brokerage=(brokerage)
     @object.brokerage = MLS::Brokerage::Parser.build(brokerage)
   end
