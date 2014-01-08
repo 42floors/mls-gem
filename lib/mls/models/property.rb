@@ -13,8 +13,8 @@ class MLS::Property < MLS::Resource
   attribute :floors, Fixnum
   attribute :leed_certification, String
   attribute :style, String
-  attribute :height, Float
-  attribute :lot_size, Float
+  attribute :height, Decimal
+  attribute :lot_size, Decimal
 
   attribute :amenities, Hash
   
@@ -46,7 +46,7 @@ class MLS::Property < MLS::Resource
   def save
     MLS.put("/properties/#{id}", {:address => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
-        MLS::Address::Parser.update(self, response.body)
+        MLS::Property::Parser.update(self, response.body)
         code == 200      
       else
         raise MLS::Exception::UnexpectedResponse, code
@@ -69,13 +69,13 @@ class MLS::Property < MLS::Resource
 
     def find(id)
       response = MLS.get("/properties/#{id}")
-      MLS::Address::Parser.parse(response.body)
+      MLS::Property::Parser.parse(response.body)
     end
 
     # currently supported options are :include, :where, :limit, :offset
     def all(options={})
       response = MLS.get('/properties', options)
-      MLS::Address::Parser.parse_collection(response.body)
+      MLS::Property::Parser.parse_collection(response.body)
     end
 
     def amenities
@@ -87,7 +87,7 @@ class MLS::Property < MLS::Resource
 end
 
 
-class MLS::Address::Parser < MLS::Parser
+class MLS::Property::Parser < MLS::Parser
 
   def listings=(listings)
     @object.listings = listings.map { |data|
@@ -108,6 +108,6 @@ class MLS::Address::Parser < MLS::Parser
   end
 
   def addresses=(addresses)
-    @object.addresses = addresses.map {|a| MLS::Address::Parser.build(addresses)}
+    @object.addresses = addresses.map {|a| MLS::Property::Parser.build(addresses)}
   end
 end
