@@ -9,7 +9,7 @@ class MLS::Property < MLS::Resource
   
   attribute :description, String
   attribute :neighborhood, String
-  attribute :contructed, Fixnum
+  attribute :constructed, Fixnum
   attribute :size, Fixnum
   attribute :floors, Fixnum
   attribute :leed_certification, String
