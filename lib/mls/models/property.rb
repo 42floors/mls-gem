@@ -8,6 +8,7 @@ class MLS::Property < MLS::Resource
   attribute :longitude, Decimal
   
   attribute :description, String
+  attribute :neighborhood, String
   attribute :contructed, Fixnum
   attribute :size, Fixnum
   attribute :floors, Fixnum
