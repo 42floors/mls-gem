@@ -44,7 +44,8 @@ class MLS::Account < MLS::Resource
   attr_writer :favorites
 
   def update
-    MLS.put('/account', {:account => to_hash}, 400) do |response, code|
+    raise "cannot update account without id" unless id
+    MLS.put("/accounts/#{id}", { :account => to_hash}, 400) do |response, code|
       MLS::Account::Parser.update(self, response.body)
       code == 200
     end
@@ -54,7 +55,7 @@ class MLS::Account < MLS::Resource
   # are any errors. @persisted will also be set to +true+ if the Account was
   # succesfully created
   def create
-    MLS.post('/account', {:account => to_hash}, 400) do |response, code|
+    MLS.post('/accounts', {:account => to_hash}, 400) do |response, code|
       raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
       MLS::Account::Parser.update(self, response.body)
       @persisted = true
