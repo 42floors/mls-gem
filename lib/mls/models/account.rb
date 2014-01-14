@@ -151,8 +151,8 @@ class MLS::Account < MLS::Resource
       end
     end
 
-    def find(id)
-      response = MLS.get("/accounts/#{id}")
+    def find(id, includes=[])
+      response = MLS.get("/accounts/#{id}", :include =>  includes)
       MLS::Account::Parser.parse(response.body)
     end
 
