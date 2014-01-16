@@ -143,7 +143,7 @@ class MLS::Account < MLS::Resource
     # URL is currently required to not have any query params in it
     def reset_password!(email, url)
       MLS.post('/account/password', {:email => email, :url => url}, 400, 404) do |response, code|
-        code == 200
+        code == 204
       end
     end
 
