@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
 
   # Runtime
   s.add_runtime_dependency 'activesupport'
-  s.add_runtime_dependency 'factory_girl'
   s.add_runtime_dependency 'yajl-ruby'
   s.add_runtime_dependency 'rest-client'
 

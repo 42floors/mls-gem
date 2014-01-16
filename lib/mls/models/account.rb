@@ -140,14 +140,15 @@ class MLS::Account < MLS::Resource
       nil
     end
 
-    def reset_password!(email)
-      MLS.put('/account/reset_password', {:email => email}, 400, 404) do |response, code|
+    # URL is currently required to not have any query params in it
+    def reset_password!(email, url)
+      MLS.post('/account/password', {:email => email, :url => url}, 400, 404) do |response, code|
         code == 200
       end
     end
 
-    def update_password!(params_hash)
-      MLS.put('/account/update_password', params_hash, 400) do |response, code|
+    def update_password!(token, password, password_confirmation)
+      MLS.put('/account/password', {:token => token, :password => password, :password_confirmation => password_confirmation}, 400) do |response, code|
         MLS::Account::Parser.parse(response.body)
       end
     end
