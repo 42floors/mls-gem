@@ -158,6 +158,11 @@ class MLS::Account < MLS::Resource
       MLS::Account::Parser.parse(response.body)
     end
 
+    def where(terms)
+      response = MLS.get('/accounts', :query => terms)
+      MLS::Account::Parser.parse_collection(response.body)
+    end
+
   end
 
 end
