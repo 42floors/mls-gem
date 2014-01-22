@@ -374,7 +374,7 @@ class MLS
       when 503
         raise MLS::Exception::ServiceUnavailable, response.body
       when 301
-        raise MLS::Exception::MovedPermanently, response
+        raise MLS::Exception::MovedPermanently, response['Location']
       when 300..599
         raise MLS::Exception, code
       end
