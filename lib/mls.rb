@@ -365,12 +365,16 @@ class MLS
         raise MLS::Exception::BadRequest, response.body
       when 401
         raise MLS::Exception::Unauthorized, response.body
-      when 404, 410
+      when 404
         raise MLS::Exception::NotFound
+      when 410
+        raise MLS::Exception::Gone
       when 422
         raise MLS::Exception::ApiVersionUnsupported, response.body
       when 503
         raise MLS::Exception::ServiceUnavailable, response.body
+      when 301
+        raise MLS::Exception::MovedPermanently
       when 300..599
         raise MLS::Exception, code
       end

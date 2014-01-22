@@ -13,6 +13,12 @@ end
 class MLS::Exception::NotFound < MLS::Exception
 end
 
+class MLS::Exception::Gone < MLS::Exception
+end
+
+class MLS::Exception::MovedPermanently
+end
+
 class MLS::Exception::ApiVersionUnsupported < MLS::Exception
 end
 
