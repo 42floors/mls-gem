@@ -16,7 +16,7 @@ end
 class MLS::Exception::Gone < MLS::Exception
 end
 
-class MLS::Exception::MovedPermanently
+class MLS::Exception::MovedPermanently < MLS::Exception
 end
 
 class MLS::Exception::ApiVersionUnsupported < MLS::Exception
