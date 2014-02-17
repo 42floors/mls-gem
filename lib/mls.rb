@@ -35,6 +35,7 @@ class MLS
     @url = URI.parse(uri)
     @api_key = CGI.unescape(@url.user)
     @host, @port = @url.host, @url.port
+    @ssl = (url.scheme == 'https')
   end
 
   # Sets the user agent so that MLS can distinguish between multiple users
@@ -50,7 +51,10 @@ class MLS
   # Returns the current connection to the MLS or if connection has been made
   # it returns a new connection
   def connection # TODO: testme
-    @connection ||= Net::HTTP.new(@host, @port)
+    return @connection if @connection
+    @connection = Net::HTTP.new(@host, @port)
+    @connection.use_ssl = @ssl
+    @connection
   end
 
   # provides the asset host, if asset_host is set then it is returned,
