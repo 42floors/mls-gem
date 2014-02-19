@@ -1,5 +1,7 @@
 class MLS::Brokerage < MLS::Resource
 
+  attr_accessor :avatar
+
   attribute :id,       Fixnum,  :serialize => :if_present
   attribute :name,     String,  :serialize => :if_present
   attribute :admin_id, Fixnum,  :serialize => :if_present
@@ -8,12 +10,6 @@ class MLS::Brokerage < MLS::Resource
   attribute :avatar_digest, String,   :serialize => false
 
   class << self
-    
-    def avatar(format='png', protocol='http')
-      if avatar_digest
-        "#{protocol}://assets.42floors.com/photos/original/#{avatar_digest}.png"
-      end
-    end
 
     def find(id)
       response = MLS.get("/brokerages/#{id}")
@@ -30,4 +26,7 @@ class MLS::Brokerage < MLS::Resource
 end
 
 class MLS::Brokerage::Parser < MLS::Parser
+  def avatar=(avatar)
+    @object.avatar = MLS::Photo::Parser.build(avatar)
+  end
 end
