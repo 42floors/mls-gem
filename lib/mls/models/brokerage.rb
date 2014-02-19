@@ -7,7 +7,6 @@ class MLS::Brokerage < MLS::Resource
   attribute :admin_id, Fixnum,  :serialize => :if_present
   attribute :slug,     String,  :serialize => false
   attribute :palette,  Hash,    :serialize => :if_present
-  attribute :avatar_digest, String,   :serialize => false
 
   class << self
 
