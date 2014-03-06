@@ -1,4 +1,4 @@
-class MLS::Attribute::DateTime < MLS::Attribute
+class MLSGem::Attribute::DateTime < MLSGem::Attribute
   
   def load(value) # from_json
     if value.is_a?(::String)

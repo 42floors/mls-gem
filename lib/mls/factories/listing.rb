@@ -1,11 +1,11 @@
 FactoryGirl.define do
-  factory :listing, :class => MLS::Listing do
+  factory :listing, :class => MLSGem::Listing do
     before(:create) { |l|
-      MLS_GEM_CACHE['auth_cookie'] = MLS.auth_cookie
-      MLS.auth_cookie = l.account.auth_cookie
+      MLSGem_GEM_CACHE['auth_cookie'] = MLSGem.auth_cookie
+      MLSGem.auth_cookie = l.account.auth_cookie
     }
     after(:create) { |l|
-      MLS.auth_cookie = MLS_GEM_CACHE['auth_cookie']
+      MLSGem.auth_cookie = MLSGem_GEM_CACHE['auth_cookie']
     }
 
     association :account
@@ -18,7 +18,7 @@ FactoryGirl.define do
     maximum_contiguous_size { Kernel.rand(3000..900000) }
     minimum_divisible_size { Kernel.rand(3000..900000) }
     type 'lease'
-    #lease_terms { ::MLS::Listing::LEASE_TERMS.sample }
+    #lease_terms { ::MLSGem::Listing::LEASE_TERMS.sample }
     space_type 'unit'
     rate { rand(15..300) }
     available_on { Time.now + (20 + rand(0..360).to_i).days }

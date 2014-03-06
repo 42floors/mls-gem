@@ -1,6 +1,6 @@
 require 'restclient'
 
-class MLS::Flyer < MLS::Resource
+class MLSGem::Flyer < MLSGem::Resource
 
   attribute :id, Fixnum
   attribute :digest, String
@@ -9,16 +9,16 @@ class MLS::Flyer < MLS::Resource
   attribute :file_size, Fixnum
   
   def url(protocol='http')
-    "#{protocol}://#{MLS.asset_host}/flyers/#{digest}/compressed/#{file_name}"
+    "#{protocol}://#{MLSGem.asset_host}/flyers/#{digest}/compressed/#{file_name}"
   end
   
   def avatar(size='150x100#', protocol='http')
-    "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
+    "#{protocol}://#{MLSGem.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
   end
   
   def self.create(attrs)
     attrs[:file].rewind
-    url = MLS.url.dup
+    url = MLSGem.url.dup
     url.user = nil
     url.path = "/api/flyers"
     
@@ -27,19 +27,19 @@ class MLS::Flyer < MLS::Resource
       attrs[:subject_type] = attrs[:subject].class.name.split("::").last
       attrs.delete(:subject)
     end
-    response = RestClient.post(url.to_s, {:flyer => attrs}, MLS.headers)
+    response = RestClient.post(url.to_s, {:flyer => attrs}, MLSGem.headers)
     attrs[:file].close unless attrs[:file].closed?
 
-    MLS::Flyer::Parser.parse(response.body)
+    MLSGem::Flyer::Parser.parse(response.body)
   end
   
   def self.find(id)
-    response = MLS.get("/flyers/#{id}")
-    MLS::Flyer::Parser.parse(response.body)
+    response = MLSGem.get("/flyers/#{id}")
+    MLSGem::Flyer::Parser.parse(response.body)
   end
   
 end
 
-class MLS::Flyer::Parser < MLS::Parser
+class MLSGem::Flyer::Parser < MLSGem::Parser
 
 end

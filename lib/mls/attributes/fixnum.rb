@@ -1,4 +1,4 @@
-class MLS::Attribute::Fixnum < ::MLS::Attribute
+class MLSGem::Attribute::Fixnum < ::MLSGem::Attribute
 	
 	def load(value) # from_json
 		if value.nil?

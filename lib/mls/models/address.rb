@@ -1,4 +1,4 @@
-class MLS::Address < MLS::Resource
+class MLSGem::Address < MLSGem::Resource
 
   attribute :id,           Fixnum,   :serialize => :false
   attribute :property_id,  Fixnum,   :serialize => :false
@@ -17,12 +17,12 @@ class MLS::Address < MLS::Resource
   attr_accessor :property
   
   def save
-    MLS.put("/addresses/#{id}", {:address => to_hash}, 400) do |response, code|
+    MLSGem.put("/addresses/#{id}", {:address => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
-        MLS::Address::Parser.update(self, response.body)
+        MLSGem::Address::Parser.update(self, response.body)
         code == 200      
       else
-        raise MLS::Exception::UnexpectedResponse, code
+        raise MLSGem::Exception::UnexpectedResponse, code
       end
     end
   end
@@ -34,14 +34,14 @@ class MLS::Address < MLS::Resource
   class << self
 
     def find(id)
-      response = MLS.get("/addresses/#{id}")
-      MLS::Address::Parser.parse(response.body)
+      response = MLSGem.get("/addresses/#{id}")
+      MLSGem::Address::Parser.parse(response.body)
     end
 
     # currently supported options are :include, :where, :limit, :offset
     def all(options={})
-      response = MLS.get('/addresses', options)
-      MLS::Address::Parser.parse_collection(response.body)
+      response = MLSGem.get('/addresses', options)
+      MLSGem::Address::Parser.parse_collection(response.body)
     end
 
   end
@@ -49,10 +49,10 @@ class MLS::Address < MLS::Resource
 end
 
 
-class MLS::Address::Parser < MLS::Parser
+class MLSGem::Address::Parser < MLSGem::Parser
   
   def property=(property)
-    @object.property = MLS::Property::Parser.build(property)
+    @object.property = MLSGem::Property::Parser.build(property)
   end
   
 end

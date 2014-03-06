@@ -1,4 +1,4 @@
-class MLS::Brokerage < MLS::Resource
+class MLSGem::Brokerage < MLSGem::Resource
 
   attr_accessor :avatar
 
@@ -11,21 +11,21 @@ class MLS::Brokerage < MLS::Resource
   class << self
 
     def find(id)
-      response = MLS.get("/brokerages/#{id}")
-      MLS::Brokerage::Parser.parse(response.body)
+      response = MLSGem.get("/brokerages/#{id}")
+      MLSGem::Brokerage::Parser.parse(response.body)
     end
 
     def all(options={})
-      response = MLS.get('/brokerages', options)
-      MLS::Brokerage::Parser.parse_collection(response.body)
+      response = MLSGem.get('/brokerages', options)
+      MLSGem::Brokerage::Parser.parse_collection(response.body)
     end
 
   end
 
 end
 
-class MLS::Brokerage::Parser < MLS::Parser
+class MLSGem::Brokerage::Parser < MLSGem::Parser
   def avatar=(avatar)
-    @object.avatar = MLS::Photo::Parser.build(avatar)
+    @object.avatar = MLSGem::Photo::Parser.build(avatar)
   end
 end

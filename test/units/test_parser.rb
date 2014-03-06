@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MyParser < MLS::Parser; end
+class MyParser < MLSGem::Parser; end
 
 class TestParser < ::Test::Unit::TestCase
 

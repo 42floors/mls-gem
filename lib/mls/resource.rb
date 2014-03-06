@@ -1,10 +1,10 @@
-class MLS::Resource
+class MLSGem::Resource
 
   attr_reader :persisted
   attr_accessor :errors
 
   def self.inherited(subclass)
-    subclass.extend(MLS::Model)
+    subclass.extend(MLSGem::Model)
   end
 
   def initialize(attributes = {}, persisted = false)
@@ -32,11 +32,11 @@ class MLS::Resource
   end
 
   def update!
-    update || raise(MLS::Exception::RecordInvalid)
+    update || raise(MLSGem::Exception::RecordInvalid)
   end
 
   def create!
-    create || raise(MLS::Exception::RecordInvalid)
+    create || raise(MLSGem::Exception::RecordInvalid)
   end
 
   def ==(other)

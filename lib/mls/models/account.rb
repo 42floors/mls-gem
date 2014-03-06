@@ -1,4 +1,4 @@
-class MLS::Account < MLS::Resource
+class MLSGem::Account < MLSGem::Resource
 
   attribute :id,                      Fixnum,  :serialize => :if_present
   attribute :type,                    String,  :default => 'Account'
@@ -45,19 +45,19 @@ class MLS::Account < MLS::Resource
 
   def update
     raise "cannot update account without id" unless id
-    MLS.put("/accounts/#{id}", { :account => to_hash}, 400) do |response, code|
-      MLS::Account::Parser.update(self, response.body)
+    MLSGem.put("/accounts/#{id}", { :account => to_hash}, 400) do |response, code|
+      MLSGem::Account::Parser.update(self, response.body)
       code == 200
     end
   end
 
-  # Save the Account to the MLS. @errors will be set on the account if there
+  # Save the Account to the MLSGem. @errors will be set on the account if there
   # are any errors. @persisted will also be set to +true+ if the Account was
   # succesfully created
   def create
-    MLS.post('/accounts', {:account => to_hash}, 400) do |response, code|
-      raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
-      MLS::Account::Parser.update(self, response.body)
+    MLSGem.post('/accounts', {:account => to_hash}, 400) do |response, code|
+      raise MLSGem::Exception::UnexpectedResponse if ![201, 400].include?(code)
+      MLSGem::Account::Parser.update(self, response.body)
       @persisted = true
       code == 201
     end
@@ -73,12 +73,12 @@ class MLS::Account < MLS::Resource
 
   def favorites
     return @favorites if @favorites
-    response = MLS.get('/account/favorites')
-    @favorites = MLS::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
+    response = MLSGem.get('/account/favorites')
+    @favorites = MLSGem::Listing::Parser.parse_collection(response.body, {:collection_root_element => :favorites})
   end
 
   def agent_profile
-    @agent_profile ||= MLS.agent_profile id
+    @agent_profile ||= MLSGem.agent_profile id
   end
 
   def favorited?(listing)
@@ -86,16 +86,16 @@ class MLS::Account < MLS::Resource
   end
 
   def favorite(listing) # TODO: test me, i don't work on failures
-    params_hash = {:id => listing.is_a?(MLS::Listing) ? listing.id : listing }
-    MLS.post('/account/favorites', params_hash) do |response, code|
+    params_hash = {:id => listing.is_a?(MLSGem::Listing) ? listing.id : listing }
+    MLSGem.post('/account/favorites', params_hash) do |response, code|
       @favorites = nil
       true
     end
   end
 
   def unfavorite(listing_id) # TODO: test me, i don't work on failures
-    listing_id = listing_id.is_a?(MLS::Listing) ? listing_id.id : listing_id
-    MLS.delete("/account/favorites/#{listing_id}") do |response, code|
+    listing_id = listing_id.is_a?(MLSGem::Listing) ? listing_id.id : listing_id
+    MLSGem.delete("/account/favorites/#{listing_id}") do |response, code|
       @favorites = nil
       true
     end
@@ -110,8 +110,8 @@ class MLS::Account < MLS::Resource
   class << self
 
     def current
-      response = MLS.get('/account')
-      MLS::Account::Parser.parse(response.body)
+      response = MLSGem.get('/account')
+      MLSGem::Account::Parser.parse(response.body)
     end
 
     # Authenticate and Account via <tt>email</tt> and <tt>password</tt>. Returns
@@ -130,50 +130,50 @@ class MLS::Account < MLS::Resource
       email = attrs_or_email.is_a?(Hash) ? attrs_or_email[:email] : attrs_or_email
       password = attrs_or_email.is_a?(Hash) ? attrs_or_email[:password] : password
 
-      response = MLS.post('/login', {:email => email, :password => password})
-      MLS.auth_cookie = response['set-cookie']
+      response = MLSGem.post('/login', {:email => email, :password => password})
+      MLSGem.auth_cookie = response['set-cookie']
 
-      account = MLS::Account::Parser.parse(response.body)
-      account.auth_cookie = MLS.auth_cookie
+      account = MLSGem::Account::Parser.parse(response.body)
+      account.auth_cookie = MLSGem.auth_cookie
       account
-    rescue MLS::Exception::Unauthorized => response
+    rescue MLSGem::Exception::Unauthorized => response
       nil
     end
 
     # URL is currently required to not have any query params in it
     def reset_password!(email, url)
-      MLS.post('/account/password', {:email => email, :url => url}, 400, 404) do |response, code|
+      MLSGem.post('/account/password', {:email => email, :url => url}, 400, 404) do |response, code|
         code == 204
       end
     end
 
     def update_password!(token, password, password_confirmation)
-      MLS.put('/account/password', {:token => token, :password => password, :password_confirmation => password_confirmation}, 400) do |response, code|
-        MLS::Account::Parser.parse(response.body)
+      MLSGem.put('/account/password', {:token => token, :password => password, :password_confirmation => password_confirmation}, 400) do |response, code|
+        MLSGem::Account::Parser.parse(response.body)
       end
     end
 
     def find(id, includes=[])
-      response = MLS.get("/accounts/#{id}", :include =>  includes)
-      MLS::Account::Parser.parse(response.body)
+      response = MLSGem.get("/accounts/#{id}", :include =>  includes)
+      MLSGem::Account::Parser.parse(response.body)
     end
 
     def where(terms)
-      response = MLS.get('/accounts', :where => terms)
-      MLS::Account::Parser.parse_collection(response.body)
+      response = MLSGem.get('/accounts', :where => terms)
+      MLSGem::Account::Parser.parse_collection(response.body)
     end
 
   end
 
 end
 
-class MLS::Account::Parser < MLS::Parser
+class MLSGem::Account::Parser < MLSGem::Parser
 
   def favorites=(favorites)
-    @object.favorites = favorites.map {|a| MLS::Listing::Parser.build(a) }
+    @object.favorites = favorites.map {|a| MLSGem::Listing::Parser.build(a) }
   end
 
   def brokerage=(brokerage)
-    @object.brokerage = MLS::Brokerage::Parser.build(brokerage)
+    @object.brokerage = MLSGem::Brokerage::Parser.build(brokerage)
   end
 end

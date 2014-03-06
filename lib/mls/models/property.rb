@@ -1,4 +1,4 @@
-class MLS::Property < MLS::Resource
+class MLSGem::Property < MLSGem::Resource
 
   attribute :id, Fixnum,   :serialize => :false
   attribute :name, String, :serialize => :false
@@ -37,7 +37,7 @@ class MLS::Property < MLS::Resource
     }
 
     if avatar_digest
-      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
+      "#{protocol}://#{MLSGem.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
     else
       params[:size] = params[:size].match(/\d+x\d+/)[0]
       "#{protocol}://maps.googleapis.com/maps/api/streetview?" + params.map{|k,v| k.to_s + '=' + URI.escape(v.to_s) }.join('&')
@@ -45,12 +45,12 @@ class MLS::Property < MLS::Resource
   end
 
   def save
-    MLS.put("/properties/#{id}", {:address => to_hash}, 400) do |response, code|
+    MLSGem.put("/properties/#{id}", {:address => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
-        MLS::Property::Parser.update(self, response.body)
+        MLSGem::Property::Parser.update(self, response.body)
         code == 200      
       else
-        raise MLS::Exception::UnexpectedResponse, code
+        raise MLSGem::Exception::UnexpectedResponse, code
       end
     end
   end
@@ -69,18 +69,18 @@ class MLS::Property < MLS::Resource
   class << self
 
     def find(id)
-      response = MLS.get("/properties/#{id}")
-      MLS::Property::Parser.parse(response.body)
+      response = MLSGem.get("/properties/#{id}")
+      MLSGem::Property::Parser.parse(response.body)
     end
 
     # currently supported options are :include, :where, :limit, :offset
     def all(options={})
-      response = MLS.get('/properties', options)
-      MLS::Property::Parser.parse_collection(response.body)
+      response = MLSGem.get('/properties', options)
+      MLSGem::Property::Parser.parse_collection(response.body)
     end
 
     def amenities
-      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLS.get('/properties/amenities').body)
+      @amenities ||= Yajl::Parser.new(:symbolize_keys => true).parse(MLSGem.get('/properties/amenities').body)
     end
 
   end
@@ -88,27 +88,27 @@ class MLS::Property < MLS::Resource
 end
 
 
-class MLS::Property::Parser < MLS::Parser
+class MLSGem::Property::Parser < MLSGem::Parser
 
   def listings=(listings)
     @object.listings = listings.map { |data|
-      listing = MLS::Listing::Parser.build(data)
+      listing = MLSGem::Listing::Parser.build(data)
       listing.address = @object
       listing
     }
   end
 
   def photos=(photos)
-    @object.photos = photos.map {|p| MLS::Photo::Parser.build(p)}
+    @object.photos = photos.map {|p| MLSGem::Photo::Parser.build(p)}
   end
 
   def videos=(videos)
     @object.videos = videos.map do |video|
-      MLS::Video::Parser.build(video)
+      MLSGem::Video::Parser.build(video)
     end
   end
 
   def addresses=(addresses)
-    @object.addresses = addresses.map {|a| MLS::Property::Parser.build(addresses)}
+    @object.addresses = addresses.map {|a| MLSGem::Property::Parser.build(addresses)}
   end
 end

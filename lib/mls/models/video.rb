@@ -1,4 +1,4 @@
-class MLS::Video < MLS::Resource
+class MLSGem::Video < MLSGem::Resource
   attribute :id, Fixnum
   attribute :vts_key, String
   attribute :video_type, String
@@ -11,8 +11,8 @@ class MLS::Video < MLS::Resource
   attr_accessor :photo
 end
 
-class MLS::Video::Parser < MLS::Parser
+class MLSGem::Video::Parser < MLSGem::Parser
   def photo=(photo)
-    @object.photo = MLS::Photo::Parser.build(photo)
+    @object.photo = MLSGem::Photo::Parser.build(photo)
   end
 end

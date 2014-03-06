@@ -1,12 +1,12 @@
 FactoryGirl.define do
-  factory :account, :class => MLS::Account do
+  factory :account, :class => MLSGem::Account do
     name { Faker::Name.name }
     email { Faker::Internet.email }
     password { 'test' }
     password_confirmation 'test'
   end
   
-  factory :agent, :class => MLS::Account do
+  factory :agent, :class => MLSGem::Account do
     phone                   { Faker::PhoneNumber.phone_number }
     company                 { Faker::Company.name }
     license                 '12123123123'
@@ -17,7 +17,7 @@ FactoryGirl.define do
     type                    'Agent'
   end
 
-  factory :admin, :class => MLS::Account do
+  factory :admin, :class => MLSGem::Account do
     name { Faker::Name.name }
     email { Faker::Internet.email }
     type {'Admin'}
@@ -25,7 +25,7 @@ FactoryGirl.define do
     password_confirmation 'admin_test'
   end
   
-  factory :ghost_account, :class => MLS::Account do
+  factory :ghost_account, :class => MLSGem::Account do
     name                    { Faker::Name.name }
     email                   { Faker::Internet.email }
     password_required       { false } 

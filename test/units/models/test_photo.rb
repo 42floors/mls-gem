@@ -4,7 +4,7 @@ class TestPhoto < ::Test::Unit::TestCase
 
 
   def test_create_photo
-    photo = MLS::Photo.create(TEST_IMAGE)
+    photo = MLSGem::Photo.create(TEST_IMAGE)
     assert photo.id
     assert photo.digest
   end

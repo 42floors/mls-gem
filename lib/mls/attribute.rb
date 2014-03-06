@@ -1,4 +1,4 @@
-class MLS::Attribute
+class MLSGem::Attribute
 	DEFAULT_OPTIONS = { :serialize => :always	}
 	
 	attr_reader :model, :name, :instance_variable_name, :options, :default
@@ -23,7 +23,7 @@ class MLS::Attribute
 	end
 
 	def self.determine_class(type)
-		return type if type < MLS::Attribute
+		return type if type < MLSGem::Attribute
 		find_class(::ActiveSupport::Inflector.demodulize(type))
 	end
 

@@ -3,7 +3,7 @@ require 'test_helper'
 class ListingTest < Test::Unit::TestCase
 
   def test_attributes
-    listing = MLS::Listing.new
+    listing = MLSGem::Listing.new
 
     attributes = [:id, :address_id, :use, :account_id, :name, :type, :space_type, :unit, :floor, :description, :size, :maximum_contiguous_size, :minimum_divisible_size, :lease_terms, :rate, :rate_units, :sublease_expiration, :available_on, :term, :offices, :conference_rooms, :bathrooms, :kitchen, :showers, :ready_to_move_in, :furniture_available, :created_at, :updated_at]
 
@@ -13,20 +13,20 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_attr_accessors
-    listing = MLS::Listing.new
+    listing = MLSGem::Listing.new
 
     assert listing.respond_to?(:address)
     assert listing.respond_to?(:agents)
   end
 
   def test_instance_methods
-    listing = MLS::Listing.new
+    listing = MLSGem::Listing.new
 
     assert listing.respond_to?(:photos)
   end
 
   def test_class_methods
-    assert MLS::Listing.respond_to?(:find)
+    assert MLSGem::Listing.respond_to?(:find)
   end
 
   test '#request_tour for email without an account' do
@@ -67,7 +67,7 @@ class ListingTest < Test::Unit::TestCase
   test '#request_tour for an non-existant listing' do
     @listing = FactoryGirl.build(:listing, :id => 94332)
 
-    assert_raises(MLS::Exception::NotFound) do
+    assert_raises(MLSGem::Exception::NotFound) do
       @listing.request_tour(Faker::Name.name, Faker::Internet.email)
     end
   end
@@ -149,7 +149,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_per_sqft_per_month
-    listing = MLS::Listing.new(:rate => 10.5, :rate_units => '/sqft/mo', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 10.5, :rate_units => '/sqft/mo', :size => 5)
 
     assert_equal 10.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
@@ -163,7 +163,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_per_sqft_per_year
-    listing = MLS::Listing.new(:rate => 126, :rate_units => '/sqft/yr', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 126, :rate_units => '/sqft/yr', :size => 5)
 
     assert_equal 126,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
@@ -177,7 +177,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_per_month
-    listing = MLS::Listing.new(:rate => 52.5, :rate_units => '/mo', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 52.5, :rate_units => '/mo', :size => 5)
 
     assert_equal 52.5,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
@@ -191,7 +191,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_per_year
-    listing = MLS::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 630, :rate_units => '/yr', :size => 5)
 
     assert_equal 630,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
@@ -205,7 +205,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_per_desk_per_month
-    listing = MLS::Listing.new(:rate => 2100, :rate_units => '/desk/mo', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 2100, :rate_units => '/desk/mo', :size => 5)
 
     assert_equal 2100,  listing.rate
     assert_equal 10.5,  listing.rate('/sqft/mo')
@@ -219,7 +219,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_rate_percision
-    listing = MLS::Listing.new(:rate => 47, :rate_units => '/sqft/yr', :size => 5)
+    listing = MLSGem::Listing.new(:rate => 47, :rate_units => '/sqft/yr', :size => 5)
 
     assert_equal 3.92,  listing.rate('/sqft/mo')
     assert_equal 47,   listing.rate('/sqft/yr')
@@ -229,7 +229,7 @@ class ListingTest < Test::Unit::TestCase
   end
 
   def test_null_rate
-    listing = MLS::Listing.new(:rate => nil, :rate_units => '/yr', :size => 5)
+    listing = MLSGem::Listing.new(:rate => nil, :rate_units => '/yr', :size => 5)
 
     assert_equal nil,  listing.rate
     assert_equal nil,  listing.rate('/sqft/mo')

@@ -16,9 +16,9 @@ end
 class Boolean #:nodoc:
 end
 
-# _MLS_ is a low-level API. It provides basic HTTP #get, #post, #put, and #delete
-# calls to the MLS. It can also provides basic error checking of responses.
-class MLS
+# _MLSGem_ is a low-level API. It provides basic HTTP #get, #post, #put, and #delete
+# calls to the MLSGem. It can also provides basic error checking of responses.
+class MLSGem
   include Singleton
 
   API_VERSION = '0.1.0'
@@ -27,10 +27,10 @@ class MLS
   attr_writer :asset_host, :image_host, :agent_profile
   attr_accessor :api_key, :auth_cookie, :logger
 
-  # Sets the API Token and Host of the MLS Server
+  # Sets the API Token and Host of the MLSGem Server
   #
   #  #!ruby
-  #  MLS.url = "https://mls.42floors.com/API_KEY"
+  #  MLSGem.url = "https://mls.42floors.com/API_KEY"
   def url=(uri) # TODO: testme
     @url = URI.parse(uri)
     @api_key = CGI.unescape(@url.user)
@@ -38,7 +38,7 @@ class MLS
     @ssl = (url.scheme == 'https')
   end
 
-  # Sets the user agent so that MLS can distinguish between multiple users
+  # Sets the user agent so that MLSGem can distinguish between multiple users
   # with the same auth
   def user_agent=(user_agent)
     @user_agent = user_agent
@@ -48,7 +48,7 @@ class MLS
     @logger ||= default_logger
   end
 
-  # Returns the current connection to the MLS or if connection has been made
+  # Returns the current connection to the MLSGem or if connection has been made
   # it returns a new connection
   def connection # TODO: testme
     return @connection if @connection
@@ -58,7 +58,7 @@ class MLS
   end
 
   # provides the asset host, if asset_host is set then it is returned,
-  # otherwise it queries the MLS for this configuration.
+  # otherwise it queries the MLSGem for this configuration.
   def asset_host # TODO: testme
     @asset_host ||= get('/asset_host').body
   end
@@ -73,7 +73,7 @@ class MLS
 
   def agent_profile(id)
     @agent_profile = Yajl::Parser.new(:symbolize_keys => true)
-      .parse(MLS.get("/agents/#{id}").body)
+      .parse(MLSGem.get("/agents/#{id}").body)
   end
 
   def headers # TODO: testme
@@ -90,8 +90,8 @@ class MLS
     req['Cookie'] = auth_cookie if auth_cookie
   end
 
-  # Gets to +url+ on the MLS Server. Automatically includes any headers returned
-  # by the MLS#headers function.
+  # Gets to +url+ on the MLSGem Server. Automatically includes any headers returned
+  # by the MLSGem#headers function.
   #
   # Paramaters::
   #
@@ -102,7 +102,7 @@ class MLS
   #   of this method is appended on the URL as query params
   # * +valid_response_codes+ - An Array of HTTP response codes that should be
   #   considered accepable and not raise exceptions. For example If you don't
-  #   want a MLS::Exception::NotFound to be raised when a GET request returns
+  #   want a MLSGem::Exception::NotFound to be raised when a GET request returns
   #   a 404 pass in 404, and the response body will be returned if the status
   #   code is a 404 as it does if the status code is in the 200..299 rage. Status
   #   codes in the 200..299 range are *always* considred acceptable
@@ -115,21 +115,21 @@ class MLS
   # Examples:
   #
   #  #!ruby
-  #  MLS.get('/example') # => #<Net::HTTP::Response>
+  #  MLSGem.get('/example') # => #<Net::HTTP::Response>
   #
-  #  MLS.get('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #  MLSGem.get('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
   #
-  #  MLS.get('/404') # => raises MLS::Exception::NotFound
+  #  MLSGem.get('/404') # => raises MLSGem::Exception::NotFound
   #
-  #  MLS.get('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #  MLSGem.get('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
   #
-  #  MLS.get('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #  MLSGem.get('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
   #
-  #  MLS.get('/404', nil, 404) # => #<Net::HTTP::Response>
+  #  MLSGem.get('/404', nil, 404) # => #<Net::HTTP::Response>
   #
   #  # this will still raise an exception if the response_code is not valid
   #  # and the block will not be called
-  #  MLS.get('/act') do |response, response_code|
+  #  MLSGem.get('/act') do |response, response_code|
   #    # ...
   #  end
   def get(url, params={}, *valid_response_codes, &block)
@@ -149,8 +149,8 @@ class MLS
     end
   end
 
-  # Puts to +url+ on the MLS Server. Automatically includes any headers returned
-  # by the MLS#headers function.
+  # Puts to +url+ on the MLSGem Server. Automatically includes any headers returned
+  # by the MLSGem#headers function.
   #
   # Paramaters::
   #
@@ -161,7 +161,7 @@ class MLS
   #   Body.
   # * +valid_response_codes+ - An Array of HTTP response codes that should be
   #   considered accepable and not raise exceptions. For example If you don't
-  #   want a MLS::Exception::NotFound to be raised when a PUT request returns
+  #   want a MLSGem::Exception::NotFound to be raised when a PUT request returns
   #   a 404 pass in 404, and the response body will be returned if the status
   #   code is a 404 as it does if the status code is in the 200..299 rage. Status
   #   codes in the 200..299 range are *always* considred acceptable
@@ -174,21 +174,21 @@ class MLS
   # Examples:
   #
   #  #!ruby
-  #  MLS.put('/example') # => #<Net::HTTP::Response>
+  #  MLSGem.put('/example') # => #<Net::HTTP::Response>
   #
-  #  MLS.put('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #  MLSGem.put('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
   #
-  #  MLS.put('/404') # => raises MLS::Exception::NotFound
+  #  MLSGem.put('/404') # => raises MLSGem::Exception::NotFound
   #
-  #  MLS.put('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #  MLSGem.put('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
   #
-  #  MLS.put('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #  MLSGem.put('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
   #
-  #  MLS.put('/404', nil, 404) # => #<Net::HTTP::Response>
+  #  MLSGem.put('/404', nil, 404) # => #<Net::HTTP::Response>
   #
   #  # this will still raise an exception if the response_code is not valid
   #  # and the block will not be called
-  #  MLS.put('/act') do |response, response_code|
+  #  MLSGem.put('/act') do |response, response_code|
   #    # ...
   #  end
   def put(url, body={}, *valid_response_codes, &block)
@@ -208,8 +208,8 @@ class MLS
     end
   end
 
-  # Posts to +url+ on the MLS Server. Automatically includes any headers returned
-  # by the MLS#headers function.
+  # Posts to +url+ on the MLSGem Server. Automatically includes any headers returned
+  # by the MLSGem#headers function.
   #
   # Paramaters::
   #
@@ -220,7 +220,7 @@ class MLS
   #   Body.
   # * +valid_response_codes+ - An Array of HTTP response codes that should be
   #   considered accepable and not raise exceptions. For example If you don't
-  #   want a MLS::Exception::NotFound to be raised when a POST request returns
+  #   want a MLSGem::Exception::NotFound to be raised when a POST request returns
   #   a 404 pass in 404, and the response body will be returned if the status
   #   code is a 404 as it does if the status code is in the 200..299 rage. Status
   #   codes in the 200..299 range are *always* considred acceptable
@@ -233,21 +233,21 @@ class MLS
   # Examples:
   #
   #  #!ruby
-  #  MLS.post('/example') # => #<Net::HTTP::Response>
+  #  MLSGem.post('/example') # => #<Net::HTTP::Response>
   #
-  #  MLS.post('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #  MLSGem.post('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
   #
-  #  MLS.post('/404') # => raises MLS::Exception::NotFound
+  #  MLSGem.post('/404') # => raises MLSGem::Exception::NotFound
   #
-  #  MLS.post('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #  MLSGem.post('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
   #
-  #  MLS.post('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #  MLSGem.post('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
   #
-  #  MLS.post('/404', nil, 404) # => #<Net::HTTP::Response>
+  #  MLSGem.post('/404', nil, 404) # => #<Net::HTTP::Response>
   #
   #  # this will still raise an exception if the response_code is not valid
   #  # and the block will not be called
-  #  MLS.post('/act') do |response, response_code|
+  #  MLSGem.post('/act') do |response, response_code|
   #    # ...
   #  end
   def post(url, body={}, *valid_response_codes, &block)
@@ -267,8 +267,8 @@ class MLS
     end
   end
 
-  # Deletes to +url+ on the MLS Server. Automatically includes any headers returned
-  # by the MLS#headers function.
+  # Deletes to +url+ on the MLSGem Server. Automatically includes any headers returned
+  # by the MLSGem#headers function.
   #
   # Paramaters::
   #
@@ -279,7 +279,7 @@ class MLS
   #   Body.
   # * +valid_response_codes+ - An Array of HTTP response codes that should be
   #   considered accepable and not raise exceptions. For example If you don't
-  #   want a MLS::Exception::NotFound to be raised when a POST request returns
+  #   want a MLSGem::Exception::NotFound to be raised when a POST request returns
   #   a 404 pass in 404, and the response body will be returned if the status
   #   code is a 404 as it does if the status code is in the 200..299 rage. Status
   #   codes in the 200..299 range are *always* considred acceptable
@@ -292,21 +292,21 @@ class MLS
   # Examples:
   #
   #  #!ruby
-  #  MLS.delete('/example') # => #<Net::HTTP::Response>
+  #  MLSGem.delete('/example') # => #<Net::HTTP::Response>
   #
-  #  MLS.delete('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
+  #  MLSGem.delete('/example', {:body => 'stuff'}) # => #<Net::HTTP::Response>
   #
-  #  MLS.delete('/404') # => raises MLS::Exception::NotFound
+  #  MLSGem.delete('/404') # => raises MLSGem::Exception::NotFound
   #
-  #  MLS.delete('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
+  #  MLSGem.delete('/404', nil, 404, 450..499) # => #<Net::HTTP::Response>
   #
-  #  MLS.delete('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
+  #  MLSGem.delete('/404', nil, [404, 450..499]) # => #<Net::HTTP::Response>
   #
-  #  MLS.delete('/404', nil, 404) # => #<Net::HTTP::Response>
+  #  MLSGem.delete('/404', nil, 404) # => #<Net::HTTP::Response>
   #
   #  # this will still raise an exception if the response_code is not valid
   #  # and the block will not be called
-  #  MLS.delete('/act') do |response, response_code|
+  #  MLSGem.delete('/act') do |response, response_code|
   #    # ...
   #  end
   def delete(url, body={}, *valid_response_codes, &block)
@@ -325,7 +325,7 @@ class MLS
     end
   end
 
-  # Raise an MLS::Exception based on the response_code, unless the response_code
+  # Raise an MLSGem::Exception based on the response_code, unless the response_code
   # is include in the valid_response_codes Array
   #
   # Paramaters::
@@ -341,19 +341,19 @@ class MLS
   # Examples:
   #
   #  #!ruby
-  #  MLS.handle_response(<Net::HTTP::Response @code=200>) # => <Net::HTTP::Response @code=200>
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=200>) # => <Net::HTTP::Response @code=200>
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=404>) # => raises MLS::Exception::NotFound
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=404>) # => raises MLSGem::Exception::NotFound
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=500>) # => raises MLS::Exception
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=500>) # => raises MLSGem::Exception
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=404>, 404) # => <Net::HTTP::Response @code=404>
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=404>, 404) # => <Net::HTTP::Response @code=404>
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=500>, 404, 500) # => <Net::HTTP::Response @code=500>
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=500>, 404, 500) # => <Net::HTTP::Response @code=500>
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=405>, 300, 400..499) # => <Net::HTTP::Response @code=405>
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=405>, 300, 400..499) # => <Net::HTTP::Response @code=405>
   #
-  #  MLS.handle_response(<Net::HTTP::Response @code=405>, [300, 400..499]) # => <Net::HTTP::Response @code=405>
+  #  MLSGem.handle_response(<Net::HTTP::Response @code=405>, [300, 400..499]) # => <Net::HTTP::Response @code=405>
   def handle_response(response, *valid_response_codes)
     if response['X-42Floors-API-Version-Deprecated']
       logger.warn("DEPRECATION WARNING: API v#{API_VERSION} is being phased out")
@@ -366,34 +366,34 @@ class MLS
     if !valid_response_codes.detect{|i| i.is_a?(Range) ? i.include?(code) : i == code}
       case code
       when 400
-        raise MLS::Exception::BadRequest, response.body
+        raise MLSGem::Exception::BadRequest, response.body
       when 401
-        raise MLS::Exception::Unauthorized, response.body
+        raise MLSGem::Exception::Unauthorized, response.body
       when 404
-        raise MLS::Exception::NotFound
+        raise MLSGem::Exception::NotFound
       when 410
-        raise MLS::Exception::Gone
+        raise MLSGem::Exception::Gone
       when 422
-        raise MLS::Exception::ApiVersionUnsupported, response.body
+        raise MLSGem::Exception::ApiVersionUnsupported, response.body
       when 503
-        raise MLS::Exception::ServiceUnavailable, response.body
+        raise MLSGem::Exception::ServiceUnavailable, response.body
       when 301
-        raise MLS::Exception::MovedPermanently, response.body
+        raise MLSGem::Exception::MovedPermanently, response.body
       when 300..599
-        raise MLS::Exception, code
+        raise MLSGem::Exception, code
       end
     end
 
     response
   end
 
-  # Ping the MLS. If everything is configured and operating correctly <tt>"pong"</tt>
-  # will be returned. Otherwise and MLS::Exception should be thrown.
+  # Ping the MLSGem. If everything is configured and operating correctly <tt>"pong"</tt>
+  # will be returned. Otherwise and MLSGem::Exception should be thrown.
   #
   #  #!ruby
-  #  MLS.ping # => "pong"
+  #  MLSGem.ping # => "pong"
   #
-  #  MLS.ping # raises MLS::Exception::ServiceUnavailable if a 503 is returned
+  #  MLSGem.ping # raises MLSGem::Exception::ServiceUnavailable if a 503 is returned
   def ping # TODO: testme
     get('/ping').body
   end

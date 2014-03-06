@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MyResource < MLS::Resource; end
+class MyResource < MLSGem::Resource; end
 
 class TestResource < ::Test::Unit::TestCase
 

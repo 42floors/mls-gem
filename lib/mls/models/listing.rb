@@ -1,4 +1,4 @@
-class MLS::Listing < MLS::Resource
+class MLSGem::Listing < MLSGem::Resource
 
   WORKFLOW_STATES = %w(visible processing invisible expired)
   LEASE_STATES = %w(listed leased)
@@ -92,7 +92,7 @@ class MLS::Listing < MLS::Resource
 
   def avatar(size='150x100#', protocol='http')
     if avatar_digest
-      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
+      "#{protocol}://#{MLSGem.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
     else
       address.avatar(size, protocol)
     end
@@ -258,31 +258,31 @@ class MLS::Listing < MLS::Resource
   # Examples:
   #
   #  #!ruby
-  #  listing = MLS::Listing.find(@id)
+  #  listing = MLSGem::Listing.find(@id)
   #  info => {:company => 'name', :population => 10, :funding => 'string', :move_id => '2012-09-12'}
-  #  listing.request_tour('name', 'email@address.com', info) # => #<MLS::Tour>
+  #  listing.request_tour('name', 'email@address.com', info) # => #<MLSGem::Tour>
   #
-  #  listing.request_tour('', 'emai', info) # => #<MLS::Tour> will have errors on account
+  #  listing.request_tour('', 'emai', info) # => #<MLSGem::Tour> will have errors on account
   def request_tour(account, tour={})
-    MLS::Tour.create(id, account, tour)
+    MLSGem::Tour.create(id, account, tour)
   end
 
 
   def create
-    MLS.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
-      raise MLS::Exception::UnexpectedResponse if ![201, 400].include?(code)
-      MLS::Listing::Parser.update(self, response.body)
+    MLSGem.post('/listings', {:listing => to_hash}, 201, 400) do |response, code|
+      raise MLSGem::Exception::UnexpectedResponse if ![201, 400].include?(code)
+      MLSGem::Listing::Parser.update(self, response.body)
     end
   end
 
   def save
     return create unless id
-    MLS.put("/listings/#{id}", {:listing => to_hash}, 400) do |response, code|
+    MLSGem.put("/listings/#{id}", {:listing => to_hash}, 400) do |response, code|
       if code == 200 || code == 400
-        MLS::Listing::Parser.update(self, response.body)
+        MLSGem::Listing::Parser.update(self, response.body)
         code == 200
       else
-        raise MLS::Exception::UnexpectedResponse, code
+        raise MLSGem::Exception::UnexpectedResponse, code
       end
     end
   end
@@ -303,7 +303,7 @@ class MLS::Listing < MLS::Resource
 
   def import #TODO test me
     result = :failure
-    MLS.post('/import', {:listing => to_hash}, 400) do |response, code|
+    MLSGem.post('/import', {:listing => to_hash}, 400) do |response, code|
       case code
       when 200
         result = :duplicate
@@ -314,9 +314,9 @@ class MLS::Listing < MLS::Resource
       when 400
         result = :failure
       else
-        raise MLS::Exception::UnexpectedResponse, code
+        raise MLSGem::Exception::UnexpectedResponse, code
       end
-      MLS::Listing::Parser.update(self, response.body)
+      MLSGem::Listing::Parser.update(self, response.body)
     end
     result
   end
@@ -328,14 +328,14 @@ class MLS::Listing < MLS::Resource
   class << self
 
     def find(id)
-      response = MLS.get("/listings/#{id}")
-      MLS::Listing::Parser.parse(response.body)
+      response = MLSGem.get("/listings/#{id}")
+      MLSGem::Listing::Parser.parse(response.body)
     end
 
     # currently supported options are filters, page, per_page, offset, order
     def all(options={})
-      response = MLS.get('/listings', options)
-      MLS::Listing::Parser.parse_collection(response.body)
+      response = MLSGem.get('/listings', options)
+      MLSGem::Listing::Parser.parse_collection(response.body)
     end
 
     def import(attrs)
@@ -344,7 +344,7 @@ class MLS::Listing < MLS::Resource
     end
 
     def amenities
-      @amenities ||= Yajl::Parser.new.parse(MLS.get('/listings/amenities').body).map(&:to_sym)
+      @amenities ||= Yajl::Parser.new.parse(MLSGem.get('/listings/amenities').body).map(&:to_sym)
     end
 
   end
@@ -352,43 +352,43 @@ class MLS::Listing < MLS::Resource
 end
 
 
-class MLS::Listing::Parser < MLS::Parser
+class MLSGem::Listing::Parser < MLSGem::Parser
 
   def photos=(photos)
-    @object.photos = photos.map {|p| MLS::Photo::Parser.build(p)}
+    @object.photos = photos.map {|p| MLSGem::Photo::Parser.build(p)}
   end
 
   def similar_photos=(photos)
-    @object.similar_photos = photos.map { |p| MLS::Photo::Parser.build(p) }
+    @object.similar_photos = photos.map { |p| MLSGem::Photo::Parser.build(p) }
   end
 
   def videos=(videos)
     @object.videos = videos.map do |video|
-      MLS::Video::Parser.build(video)
+      MLSGem::Video::Parser.build(video)
     end
   end
 
   def floorplan=(floorplan)
-    @object.floorplan = MLS::Floorplan::Parser.build(floorplan)
+    @object.floorplan = MLSGem::Floorplan::Parser.build(floorplan)
   end
 
   def flyer=(flyer)
-    @object.flyer = MLS::Flyer::Parser.build(flyer)
+    @object.flyer = MLSGem::Flyer::Parser.build(flyer)
   end
 
   def address=(address)
-    @object.address = MLS::Address::Parser.build(address)
+    @object.address = MLSGem::Address::Parser.build(address)
   end
 
   def property=(property)
-    @object.property = MLS::Property::Parser.build(property)
+    @object.property = MLSGem::Property::Parser.build(property)
   end
 
   def agents=(agents)
-    @object.agents = agents.map {|a| MLS::Account::Parser.build(a) }
+    @object.agents = agents.map {|a| MLSGem::Account::Parser.build(a) }
   end
   
   def primary_agent=(agent)
-    @object.primary_agent = MLS::Account::Parser.build(agent)
+    @object.primary_agent = MLSGem::Account::Parser.build(agent)
   end
 end

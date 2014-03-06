@@ -1,4 +1,4 @@
-class MLS::Attribute::Decimal < MLS::Attribute
+class MLSGem::Attribute::Decimal < MLSGem::Attribute
   
   def load(value) # from_json
     if value.nil?

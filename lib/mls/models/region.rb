@@ -1,4 +1,4 @@
-class MLS::Region < MLS::Resource
+class MLSGem::Region < MLSGem::Resource
 
   attribute :id,             Fixnum
   attribute :name,           String
@@ -20,13 +20,13 @@ class MLS::Region < MLS::Resource
   class << self
 
     def find(id)
-      response = MLS.get("/regions/#{id}")
-      MLS::Region::Parser.parse(response.body)
+      response = MLSGem.get("/regions/#{id}")
+      MLSGem::Region::Parser.parse(response.body)
     end
 
     def all(options={})
-      response = MLS.get('/regions', options)
-      MLS::Region::Parser.parse_collection(response.body)
+      response = MLSGem.get('/regions', options)
+      MLSGem::Region::Parser.parse_collection(response.body)
     end
 
   end
@@ -51,6 +51,6 @@ class MLS::Region < MLS::Resource
 end
 
 
-class MLS::Region::Parser < MLS::Parser
+class MLSGem::Region::Parser < MLSGem::Parser
 
 end

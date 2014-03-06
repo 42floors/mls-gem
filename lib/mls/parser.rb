@@ -1,4 +1,4 @@
-class MLS::Parser
+class MLSGem::Parser
 
   attr_reader :object
 

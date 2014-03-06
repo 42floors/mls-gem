@@ -1,4 +1,4 @@
-class MLS::PDF < MLS::Resource
+class MLSGem::PDF < MLSGem::Resource
 
   attribute :id, Fixnum
   attribute :digest, String
@@ -6,10 +6,10 @@ class MLS::PDF < MLS::Resource
   attribute :type, String
 
   def url(style='700x467#', protocol='http')
-    "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
+    "#{protocol}://#{MLSGem.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
   end
 end
 
-class MLS::PDF::Parser < MLS::Parser
+class MLSGem::PDF::Parser < MLSGem::Parser
 
 end

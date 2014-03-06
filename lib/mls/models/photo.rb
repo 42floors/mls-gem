@@ -1,6 +1,6 @@
 require 'restclient'
 
-class MLS::Photo < MLS::Resource
+class MLSGem::Photo < MLSGem::Resource
 
   attribute :id, Fixnum
   attribute :digest, String
@@ -14,7 +14,7 @@ class MLS::Photo < MLS::Resource
   attribute :subject_id, Fixnum
 
   def url(style=nil, protocol='http')
-    result = "#{protocol}://#{MLS.image_host}/#{digest}.jpg"
+    result = "#{protocol}://#{MLSGem.image_host}/#{digest}.jpg"
     if style
       result = result + "?s=#{URI.escape(style)}"
     end
@@ -24,17 +24,17 @@ class MLS::Photo < MLS::Resource
 
   def self.create(attrs)
     attrs[:file].rewind
-    url = MLS.url.dup
+    url = MLSGem.url.dup
     url.user = nil
     url.path = "/api/photos"
-    response = RestClient.post(url.to_s, {:photo => attrs}, MLS.headers)
+    response = RestClient.post(url.to_s, {:photo => attrs}, MLSGem.headers)
     attrs[:file].close unless attrs[:file].closed?
 
-    MLS::Photo::Parser.parse(response.body)
+    MLSGem::Photo::Parser.parse(response.body)
   end
   
 end
 
-class MLS::Photo::Parser < MLS::Parser
+class MLSGem::Photo::Parser < MLSGem::Parser
 
 end

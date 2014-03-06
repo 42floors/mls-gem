@@ -13,10 +13,10 @@ require 'fakeweb'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'../'))
 require 'lib/mls/factories_helper'
 
-MLS_HOST = ENV['MLS_URL'] || 'http://localhost:4000/api'
+MLSGem_HOST = ENV['MLSGem_URL'] || 'http://localhost:4000/api'
 
-MLS.url = ENV["MLS_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:5000'#
-# MLS.auth_cookie = MLS::Account.authenticate('jonbracy@gmail.com', 'test').auth_cookie
+MLSGem.url = ENV["MLSGem_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:5000'#
+# MLSGem.auth_cookie = MLSGem::Account.authenticate('jonbracy@gmail.com', 'test').auth_cookie
 
 # File 'lib/active_support/testing/declarative.rb', somewhere in rails....
 class ::Test::Unit::TestCase

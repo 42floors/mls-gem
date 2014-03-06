@@ -1,4 +1,4 @@
-class MLS::Attribute::Hash < MLS::Attribute
+class MLSGem::Attribute::Hash < MLSGem::Attribute
   
   def load(value) # from_json
     if value.is_a?(Hash)

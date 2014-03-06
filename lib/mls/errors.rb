@@ -1,29 +1,29 @@
-class MLS::Exception < Exception
+class MLSGem::Exception < Exception
 end
 
-class MLS::Exception::UnexpectedResponse < MLS::Exception
+class MLSGem::Exception::UnexpectedResponse < MLSGem::Exception
 end
 
-class MLS::Exception::BadRequest < MLS::Exception
+class MLSGem::Exception::BadRequest < MLSGem::Exception
 end
 
-class MLS::Exception::Unauthorized < MLS::Exception
+class MLSGem::Exception::Unauthorized < MLSGem::Exception
 end
 
-class MLS::Exception::NotFound < MLS::Exception
+class MLSGem::Exception::NotFound < MLSGem::Exception
 end
 
-class MLS::Exception::Gone < MLS::Exception
+class MLSGem::Exception::Gone < MLSGem::Exception
 end
 
-class MLS::Exception::MovedPermanently < MLS::Exception
+class MLSGem::Exception::MovedPermanently < MLSGem::Exception
 end
 
-class MLS::Exception::ApiVersionUnsupported < MLS::Exception
+class MLSGem::Exception::ApiVersionUnsupported < MLSGem::Exception
 end
 
-class MLS::Exception::RecordInvalid < MLS::Exception
+class MLSGem::Exception::RecordInvalid < MLSGem::Exception
 end
 
-class MLS::Exception::ServiceUnavailable < MLS::Exception
+class MLSGem::Exception::ServiceUnavailable < MLSGem::Exception
 end

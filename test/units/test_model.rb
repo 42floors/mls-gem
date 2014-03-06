@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MyModel
-  include MLS::Model
+  include MLSGem::Model
 
 end
 

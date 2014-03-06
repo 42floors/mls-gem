@@ -15,13 +15,13 @@ class TestAccount < ::Test::Unit::TestCase
   
   def test_search_email
     account = FactoryGirl.create(:account)
-    matches = MLS::Account.search(account.email)
+    matches = MLSGem::Account.search(account.email)
     assert_equal [account].map(&:id), matches.map(&:id)
   end
 
   def test_search_name
     account = FactoryGirl.create(:account)
-    matches = MLS::Account.search(account.name)
+    matches = MLSGem::Account.search(account.name)
     assert_equal [account].map(&:id), matches.map(&:id)
   end
 

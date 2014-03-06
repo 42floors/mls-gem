@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :address, :class => MLS::Address do
+  factory :address, :class => MLSGem::Address do
     street_number { Kernel.rand(1000).to_s }
     street        { Faker::Address.street_name }
     neighborhood  { Faker::Name.name }

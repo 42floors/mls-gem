@@ -1,12 +1,12 @@
-module MLS::Model
+module MLSGem::Model
 
   def self.extended(model) #:nodoc:
     model.instance_variable_set(:@attributes, {})
     model.instance_variable_set(:@associations, {})
   end
 
-  # Creates an object and saves it to the MLS. The resulting object is returned
-  # whether or no the object was saved successfully to the MLS or not.
+  # Creates an object and saves it to the MLSGem. The resulting object is returned
+  # whether or no the object was saved successfully to the MLSGem or not.
   #
   # ==== Examples
   #  #!ruby
@@ -27,7 +27,7 @@ module MLS::Model
   # Attributes ===================================================================================================
 
   def attribute(name, type, options = {})
-    klass = MLS::Attribute.determine_class(type)
+    klass = MLSGem::Attribute.determine_class(type)
     raise NotImplementedError, "#{type} is not supported" unless klass
 
     attribute = klass.new(name, options)
@@ -75,7 +75,7 @@ module MLS::Model
       end
     RUBY
 
-    if attribute.kind_of?(MLS::Attribute::Boolean)
+    if attribute.kind_of?(MLSGem::Attribute::Boolean)
       attribute_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
         #{reader_visibility}
         def #{boolean_reader_name}
