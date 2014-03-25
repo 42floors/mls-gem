@@ -25,7 +25,7 @@ class MLS
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :auth_cookie, :logger
+  attr_accessor :api_key, :auth_cookie, :cookie_jar, :logger
 
   # Sets the API Token and Host of the MLS Server
   #
@@ -86,8 +86,14 @@ class MLS
   end
 
   def prepare_request(req) # TODO: testme
+    #req['Cookie'] = auth_cookie if auth_cookie
     headers.each { |k, v| req[k] = v }
-    req['Cookie'] = auth_cookie if auth_cookie
+    cookie = []
+    cookie_jar[:api] ||= {}
+    cookie_jar[:api].each do |k, v|
+      cookie << "#{k}=#{v}"
+    end
+    req['Cookie'] = cookie.join(',')
   end
 
   # Gets to +url+ on the MLS Server. Automatically includes any headers returned
@@ -381,6 +387,14 @@ class MLS
         raise MLS::Exception::MovedPermanently, response.body
       when 300..599
         raise MLS::Exception, code
+      end
+    end
+
+    if response['Set-Cookie']
+      res_cookies = response['Set-Cookie'].split(',')
+      res_cookies.each do |cookie|
+        cookie_array = cookie.split(';')[0].strip.split('=')
+        cookie_jar[:api][cookie_array[0].to_sym] = cookie_array[1]
       end
     end
 
