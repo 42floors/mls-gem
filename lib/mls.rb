@@ -86,14 +86,8 @@ class MLS
   end
 
   def prepare_request(req) # TODO: testme
-    #req['Cookie'] = auth_cookie if auth_cookie
     headers.each { |k, v| req[k] = v }
-    cookie = []
-    cookie_jar[:api] ||= {}
-    cookie_jar[:api].each do |k, v|
-      cookie << "#{k}=#{v}"
-    end
-    req['Cookie'] = cookie.join(',')
+    req['Cookie'] = cookie_jar[:api_session] if cookie_jar[:api_session]
   end
 
   # Gets to +url+ on the MLS Server. Automatically includes any headers returned
@@ -390,14 +384,8 @@ class MLS
       end
     end
 
-    if response['Set-Cookie']
-      res_cookies = response['Set-Cookie'].split(',')
-      res_cookies.each do |cookie|
-        cookie_array = cookie.split(';')[0].strip.split('=')
-        cookie_jar[:api][cookie_array[0].to_sym] = cookie_array[1]
-      end
-    end
-
+    cookie_jar[:api_session] = response['Set-Cookie'] if response['Set-Cookie']
+    
     response
   end
 
