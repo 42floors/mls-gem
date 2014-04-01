@@ -25,7 +25,7 @@ class MLS
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :auth_cookie, :cookie_jar, :logger
+  attr_accessor :api_key, :cookie_jar, :logger
 
   # Sets the API Token and Host of the MLS Server
   #
