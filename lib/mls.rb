@@ -25,7 +25,7 @@ class MLS
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :cookie_jar, :logger
+  attr_accessor :api_key, :cookie_jar, :logger, :branch
 
   # Sets the API Token and Host of the MLS Server
   #
@@ -77,12 +77,14 @@ class MLS
   end
 
   def headers # TODO: testme
-    {
+    headers = {
       'Content-Type' => 'application/json',
       'User-Agent' => @user_agent,
       'X-42Floors-API-Version' => API_VERSION,
       'X-42Floors-API-Key' => api_key
     }
+    headers['X-42Floors-Branch'] = branch if branch
+    headers
   end
 
   def prepare_request(req) # TODO: testme
