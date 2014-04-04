@@ -25,7 +25,7 @@ class MLS
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :cookie_jar, :logger, :branch, :server
+  attr_accessor :api_key, :cookie_jar, :logger, :branch, :server, :forwarded_for
 
   # Sets the API Token and Host of the MLS Server
   #
@@ -85,6 +85,7 @@ class MLS
     }
     headers['X-42Floors-Branch'] = branch if branch
     headers['X-42Floors-Server'] = server if server
+    headers['X-Forwarded-For'] = forwarded_for if forwarded_for
     headers
   end
 
