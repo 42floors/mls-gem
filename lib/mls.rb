@@ -389,6 +389,7 @@ class MLS
     end
 
     cookie_jar[:api_session] = response['Set-Cookie'] if response['Set-Cookie']
+    cookie_jar[:api_session_id] = response['X-42Floors-API-Session-Id'] if response['X-42Floors-API-Session-Id']
     
     response
   end
