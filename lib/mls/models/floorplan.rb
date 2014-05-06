@@ -20,7 +20,7 @@ class MLSGem::Floorplan < MLSGem::Resource
     attrs[:file].rewind
     url = MLSGem.url.dup
     url.user = nil
-    url.path = "/api/floorplans"
+    url.path = "/floorplans"
     
     if attrs[:subject]
       attrs[:subject_id] = attrs[:subject].id

@@ -13,7 +13,7 @@ require 'fakeweb'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'../'))
 require 'lib/mls/factories_helper'
 
-MLSGem_HOST = ENV['MLSGem_URL'] || 'http://localhost:4000/api'
+MLSGem_HOST = ENV['MLS_URL'] || 'http://localhost:4000'
 
 MLSGem.url = ENV["MLSGem_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:5000'#
 # MLSGem.auth_cookie = MLSGem::Account.authenticate('jonbracy@gmail.com', 'test').auth_cookie

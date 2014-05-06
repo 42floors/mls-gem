@@ -26,7 +26,7 @@ class MLSGem::Photo < MLSGem::Resource
     attrs[:file].rewind
     url = MLSGem.url.dup
     url.user = nil
-    url.path = "/api/photos"
+    url.path = "/photos"
     response = RestClient.post(url.to_s, {:photo => attrs}, MLSGem.headers)
     attrs[:file].close unless attrs[:file].closed?
 

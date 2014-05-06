@@ -29,7 +29,6 @@ class MLSGem::Account < MLSGem::Resource
   attribute :updated_at,              DateTime,  :serialize => :false
 
   attribute :email_token,             String,  :serialize => false
-  attribute :auth_cookie,                String,  :serialize => false
   attribute :start_hours_of_operation, Fixnum,  :serialize => :if_present
   attribute :end_hours_of_operation,   Fixnum,  :serialize => :if_present
   attribute :days_of_operation,        String,  :serialize => :if_present
@@ -129,12 +128,8 @@ class MLSGem::Account < MLSGem::Resource
     def authenticate(attrs_or_email, password=nil)
       email = attrs_or_email.is_a?(Hash) ? attrs_or_email[:email] : attrs_or_email
       password = attrs_or_email.is_a?(Hash) ? attrs_or_email[:password] : password
-
       response = MLSGem.post('/login', {:email => email, :password => password})
-      MLSGem.auth_cookie = response['set-cookie']
-
       account = MLSGem::Account::Parser.parse(response.body)
-      account.auth_cookie = MLSGem.auth_cookie
       account
     rescue MLSGem::Exception::Unauthorized => response
       nil

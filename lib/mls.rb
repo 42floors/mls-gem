@@ -25,7 +25,7 @@ class MLSGem
 
   attr_reader :url, :user_agent
   attr_writer :asset_host, :image_host, :agent_profile
-  attr_accessor :api_key, :auth_cookie, :logger
+  attr_accessor :api_key, :cookie_jar, :logger, :branch, :server, :forwarded_for
 
   # Sets the API Token and Host of the MLSGem Server
   #
@@ -77,17 +77,21 @@ class MLSGem
   end
 
   def headers # TODO: testme
-    {
+    headers = {
       'Content-Type' => 'application/json',
       'User-Agent' => @user_agent,
       'X-42Floors-API-Version' => API_VERSION,
       'X-42Floors-API-Key' => api_key
     }
+    headers['X-42Floors-Branch'] = branch if branch
+    headers['X-42Floors-Server'] = server if server
+    headers['X-Forwarded-For'] = forwarded_for if forwarded_for
+    headers
   end
 
   def prepare_request(req) # TODO: testme
     headers.each { |k, v| req[k] = v }
-    req['Cookie'] = auth_cookie if auth_cookie
+    req['Cookie'] = cookie_jar[:api_session] if cookie_jar[:api_session]
   end
 
   # Gets to +url+ on the MLSGem Server. Automatically includes any headers returned
@@ -95,8 +99,7 @@ class MLSGem
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Get to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To get to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Get to. To get to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +params+ - A Hash or Ruby Object that responds to #to_param. The result
   #   of this method is appended on the URL as query params
@@ -135,7 +138,7 @@ class MLSGem
   def get(url, params={}, *valid_response_codes, &block)
     params ||= {}
 
-    req = Net::HTTP::Get.new("/api#{url}?" + params.to_param)
+    req = Net::HTTP::Get.new(url + '?' + params.to_param)
     prepare_request(req)
 
     response = connection.request(req)
@@ -154,8 +157,7 @@ class MLSGem
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Put to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To put to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Put to. To put to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -194,7 +196,7 @@ class MLSGem
   def put(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Put.new("/api#{url}")
+    req = Net::HTTP::Put.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
@@ -213,8 +215,7 @@ class MLSGem
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Post to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To post to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Post to. To post to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -253,7 +254,7 @@ class MLSGem
   def post(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Post.new("/api#{url}")
+    req = Net::HTTP::Post.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
@@ -272,8 +273,7 @@ class MLSGem
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Post to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To delete to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Post to. To delete to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -312,7 +312,7 @@ class MLSGem
   def delete(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Delete.new("/api#{url}")
+    req = Net::HTTP::Delete.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
@@ -384,6 +384,9 @@ class MLSGem
       end
     end
 
+    cookie_jar[:api_session] = response['Set-Cookie'] if response['Set-Cookie']
+    cookie_jar[:api_session_id] = response['X-42Floors-API-Session-Id'] if response['X-42Floors-API-Session-Id']
+    
     response
   end
 
