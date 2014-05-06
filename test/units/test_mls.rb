@@ -40,7 +40,7 @@ class TestMLS < ::Test::Unit::TestCase
     FakeWeb.register_uri(:get, "#{MLS_HOST}/test?key=value", :body => 'get')
     response = MLS.get('/test', :key => 'value')
 
-    assert_equal '/api/test?key=value', FakeWeb.last_request.path
+    assert_equal '/test?key=value', FakeWeb.last_request.path
   end
 
   test '#get to 404 raises MLS::Exception::NotFound' do

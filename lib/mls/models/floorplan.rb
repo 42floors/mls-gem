@@ -20,7 +20,7 @@ class MLS::Floorplan < MLS::Resource
     attrs[:file].rewind
     url = MLS.url.dup
     url.user = nil
-    url.path = "/api/floorplans"
+    url.path = "/floorplans"
     
     if attrs[:subject]
       attrs[:subject_id] = attrs[:subject].id

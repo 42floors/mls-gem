@@ -20,7 +20,7 @@ class MLS::Flyer < MLS::Resource
     attrs[:file].rewind
     url = MLS.url.dup
     url.user = nil
-    url.path = "/api/flyers"
+    url.path = "/flyers"
     
     if attrs[:subject]
       attrs[:subject_id] = attrs[:subject].id

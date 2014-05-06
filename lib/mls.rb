@@ -99,8 +99,7 @@ class MLS
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Get to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To get to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Get to. To get to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +params+ - A Hash or Ruby Object that responds to #to_param. The result
   #   of this method is appended on the URL as query params
@@ -139,7 +138,7 @@ class MLS
   def get(url, params={}, *valid_response_codes, &block)
     params ||= {}
 
-    req = Net::HTTP::Get.new("/api#{url}?" + params.to_param)
+    req = Net::HTTP::Get.new(url + '?' + params.to_param)
     prepare_request(req)
 
     response = connection.request(req)
@@ -158,8 +157,7 @@ class MLS
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Put to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To put to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Put to. To put to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -198,7 +196,7 @@ class MLS
   def put(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Put.new("/api#{url}")
+    req = Net::HTTP::Put.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
@@ -217,8 +215,7 @@ class MLS
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Post to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To post to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Post to. To post to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -257,7 +254,7 @@ class MLS
   def post(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Post.new("/api#{url}")
+    req = Net::HTTP::Post.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
@@ -276,8 +273,7 @@ class MLS
   #
   # Paramaters::
   #
-  # * +url+ - The +url+ on the server to Post to. This url will automatically
-  #   be prefixed with <tt>"/api"</tt>. To delete to <tt>"/api/accounts"</tt>
+  # * +url+ - The +url+ on the server to Post to. To delete to <tt>"/accounts"</tt>
   #   pass <tt>"/accounts"</tt> as +url+
   # * +body+ - A Ruby object which is converted into JSON and added in the request
   #   Body.
@@ -316,7 +312,7 @@ class MLS
   def delete(url, body={}, *valid_response_codes, &block)
     body ||= {}
 
-    req = Net::HTTP::Delete.new("/api#{url}")
+    req = Net::HTTP::Delete.new(url)
     req.body = Yajl::Encoder.encode(body)
     prepare_request(req)
 
