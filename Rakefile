@@ -9,10 +9,9 @@ task :console do
 end
 task :c => :console
 
-
 Rake::TestTask.new do |t|
     t.libs << 'lib' << 'test'
-    t.test_files = FileList['test/units/**/test*.rb']
+    t.test_files = FileList['test/**/*_test.rb']
     #t.warning = true
     #t.verbose = true
 end
@@ -24,14 +23,15 @@ Rake::RDocTask.new do |rd|
   
   rd.options << '-f' << 'sdoc' # explictly set shtml generator
   rd.options << '-T' << '42floors'
-  rd.options << '-e' << 'UTF-8'
-  rd.options << '-g'
-  rd.options << '--include' << 'lib/rdoc'
+  rd.options << '-g' # Generate github links
   
   rd.rdoc_files.include('README.rdoc')
   rd.rdoc_files.include('lib/**/*.rb')
-  rd.rdoc_files.exclude('lib/rdoc/**/*.rb')
 end
 
 desc "Run tests"
 task :default => :test
+
+namespace :pages do
+  #TODO: https://github.com/defunkt/sdoc-helpers/blob/master/lib/sdoc_helpers/pages.rb
+end

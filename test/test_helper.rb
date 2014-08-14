@@ -1,25 +1,34 @@
-# require 'simplecov'
-# SimpleCov.start do
-#   add_filter "/test/"
-#   use_merging true
-# end
+# To make testing/debugging easier, test within this source tree versus an
+# installed gem
+dir = File.dirname(__FILE__)
+root = File.expand_path(File.join(dir, '..'))
+lib = File.expand_path(File.join(root, 'lib'))
+
+$LOAD_PATH << lib
 
 require 'mls'
-require 'turn'
+require "minitest/autorun"
+require 'minitest/unit'
+require 'minitest/reporters'
 require 'faker'
-require 'test/unit'
-require 'fakeweb'
+require 'webmock/minitest'
+require "mocha"
+require "mocha/mini_test"
+require 'active_support/testing/time_helpers'
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'../'))
-require 'lib/mls/factories_helper'
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-MLS_HOST = ENV['MLS_URL'] || 'http://localhost:4000'
-
-MLS.url = ENV["MLS_TEST_URL"] || 'http://LBJXFC%2BhDiRRCYj6kXtXREfgNXRCJa8ALvPn%2FIeyjSe2QsQyHZ%2F%2BWwN2VZM2cw%3D%3D@localhost:5000'#
-# MLS.auth_cookie = MLS::Account.authenticate('jonbracy@gmail.com', 'test').auth_cookie
+# require 'factory_girl'
+#
+# factories_dir = File.join(File.dirname(__FILE__), 'factories')
+# FactoryGirl.definition_file_paths = [factories_dir]
+# FactoryGirl.find_definitions
 
 # File 'lib/active_support/testing/declarative.rb', somewhere in rails....
-class ::Test::Unit::TestCase
+class Minitest::Test
+
+  include ActiveSupport::Testing::TimeHelpers
+
   def self.test(name, &block)
     test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
     defined = instance_method(test_name) rescue false
@@ -32,15 +41,5 @@ class ::Test::Unit::TestCase
       end
     end
   end
-end
 
-def mock_response(method=:get, code='200', body='')
-  FakeWeb.register_uri(method, "http://mls.test/test", :status => [code, "Filler"], :body => body)
-  uri = URI.parse("http://mls.test/test")
-  case method
-  when :get
-    Net::HTTP.get_response(uri)
-  when :post
-    Net::HTTP.post_form(uri)
-  end
 end

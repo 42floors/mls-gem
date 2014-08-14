@@ -22,18 +22,14 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'sdoc'
   s.add_development_dependency 'bundler'
-  s.add_development_dependency 'minitest', '4.7.4'
-  s.add_development_dependency 'turn'
-  # s.add_development_dependency 'faker'
-  # s.add_development_dependency 'factory_girl'
-  s.add_development_dependency 'fakeweb'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest-reporters'
+  s.add_development_dependency 'mocha'
+  s.add_development_dependency 'faker'
+  s.add_development_dependency 'factory_girl'
+  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'sdoc-templates-42floors'
 
   # Runtime
-  s.add_runtime_dependency 'activesupport'
-  # the gem provides factories, so this is required as a runtime dependency
-  s.add_runtime_dependency 'faker'
-  s.add_runtime_dependency 'factory_girl'
-  s.add_runtime_dependency 'yajl-ruby'
-  s.add_runtime_dependency 'rest-client'
-
+  s.add_runtime_dependency 'sunstone'
 end
