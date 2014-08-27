@@ -33,6 +33,7 @@ require 'mls/region'
 require 'mls/listing'
 require 'mls/lease'
 require 'mls/sublease'
+require 'mls/sale'
 require 'mls/coworking_space'
 require 'mls/address'
 
