@@ -34,57 +34,57 @@ class Listing < MLS::Model
   # has_and_belongs_to_many :uses, :inverse_of => :listings
 
   def rate(units=nil)
-    return nil if !@rate
+    return nil if !read_attribute(:rate)
     units ||= rate_units
 
     price = if rate_units == '/sqft/mo'
       if units == '/sqft/mo'
-        @rate
+        read_attribute(:rate)
       elsif units == '/sqft/yr'
-        @rate * 12.0
+        read_attribute(:rate) * 12.0
       elsif units == '/mo'
-        @rate * @size
+        read_attribute(:rate) * size
       elsif units == '/yr'
-        @rate * @size * 12.0
+        read_attribute(:rate) * size * 12.0
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
 
     elsif rate_units == '/sqft/yr'
       if units == '/sqft/mo'
-        @rate / 12.0
+        read_attribute(:rate) / 12.0
       elsif units == '/sqft/yr'
-        @rate
+        read_attribute(:rate)
       elsif units == '/mo'
-        (@rate * @size) / 12.0
+        (read_attribute(:rate) * size) / 12.0
       elsif units == '/yr'
-        @rate * @size
+        read_attribute(:rate) * size
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
 
     elsif rate_units == '/mo'
       if units == '/sqft/mo'
-        @rate / @size.to_f
+        read_attribute(:rate) / size.to_f
       elsif units == '/sqft/yr'
-        (@rate * 12) / @size.to_f
+        (read_attribute(:rate) * 12) / size.to_f
       elsif units == '/mo'
-        @rate
+        read_attribute(:rate)
       elsif units == '/yr'
-        @rate * 12
+        read_attribute(:rate) * 12
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
 
     elsif rate_units == '/yr'
       if units == '/sqft/mo'
-        (@rate / 12.0) / @size.to_f
+        (read_attribute(:rate) / 12.0) / size.to_f
       elsif units == '/sqft/yr'
-        @rate / @size.to_f
+        read_attribute(:rate) / size.to_f
       elsif units == '/mo'
-        @rate / 12.0
+        read_attribute(:rate) / 12.0
       elsif units == '/yr'
-        @rate
+        read_attribute(:rate)
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end

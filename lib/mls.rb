@@ -12,11 +12,11 @@ module MLS
   end
 
   def self.asset_host
-    MLS::Model.connection.server_config[:asset_host]
+    MLS::Model.connection.server_config['asset_host']
   end
 
   def self.image_host
-    MLS::Model.connection.server_config[:image_host]
+    MLS::Model.connection.server_config['image_host']
   end
   
 end
