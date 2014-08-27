@@ -1,4 +1,4 @@
-class MLS::Listing < MLS::Resource
+class Listing < MLS::Model
 
   WORKFLOW_STATES = %w(visible processing invisible expired)
   LEASE_STATES = %w(listed leased)
@@ -11,17 +11,17 @@ class MLS::Listing < MLS::Resource
   CHANNELS = %w(excavator mls staircase broker_dashboard)
 
   belongs_to :avatar, :class_name => 'Photo'
-  belongs_to :floorplan
+  # belongs_to :floorplan
   belongs_to :property
 
-  has_one :address
-  has_one :contact
-
-  has_many :addresses
-  has_many :photos
-  has_many :comments
-  has_many :regions
-  has_many :agents
+  # has_one :address
+  # has_one :contact
+  #
+  # has_many :addresses
+  # has_many :photos
+  # has_many :comments
+  # has_many :regions
+  # has_many :agents
 
   # has_many :favoritizations, :foreign_key => :favorite_id
   # has_many :accounts, :through => :favoritizations
@@ -32,16 +32,6 @@ class MLS::Listing < MLS::Resource
   # has_many :lead_listings, :dependent => :delete_all
   #
   # has_and_belongs_to_many :uses, :inverse_of => :listings
-
-  attr_accessor :property, :address, :agents, :account, :photos, :flyer, :floorplan, :videos, :similar_photos, :spaces, :primary_agent
-
-  def avatar(size='150x100#', protocol='http')
-    if avatar_digest
-      "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg?s=#{URI.escape(size)}"
-    else
-      address.avatar(size, protocol)
-    end
-  end
 
   def rate(units=nil)
     return nil if !@rate
