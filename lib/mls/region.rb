@@ -1,5 +1,7 @@
 class Region < MLS::Model
   
+  include MLS::Slugger
+  
   self.inheritance_column = 'inheritance_type'
 
   belongs_to :cover_photo, :class_name => 'Photo'

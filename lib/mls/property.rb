@@ -1,5 +1,7 @@
 class Property < MLS::Model
 
+  include MLS::Slugger
+  
   belongs_to :avatar, :class_name => 'Photo'
   
   has_many :listings
@@ -14,5 +16,11 @@ class Property < MLS::Model
 
     result
   end
-
+  
+  def image_server_url(digest, size, bg=false, format="jpg")
+    "http://#{MLS.image_host}/#{digest}.#{format}?s=#{CGI.escape(size)}#{bg ? "&bg=" + CGI.escape(bg) : ""}"
+  end
+  
+  
+  
 end

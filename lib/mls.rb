@@ -25,6 +25,26 @@ class MLS::Model < ActiveRecord::Base
   self.abstract_class = true
 end
 
+module MLS::Slugger
+  
+  extend ActiveSupport::Concern
+  
+  module ClassMethods
+  
+    def find(*args)
+      friendly = -> (arg) { arg.respond_to?(:to_i) && arg.to_i.to_s != arg.to_s }
+
+      if args.count == 1 && friendly.call(args.first)
+        find_by_slug!(args)
+      else
+        super
+      end
+    end
+
+  end
+  
+end
+
 require 'mls/photo'
 require 'mls/account'
 require 'mls/brokerage'
