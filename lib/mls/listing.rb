@@ -93,5 +93,30 @@ class Listing < MLS::Model
 
     price.round(2)
   end
+  
+  def name
+    return read_attribute(:name) if !read_attribute(:name)
+
+    case space_type
+    when 'unit'
+      if unit
+        "Unit #{unit}"
+      elsif floor
+        "#{floor.ordinalize} Floor Unit"
+      else
+        "Unit Lease"
+      end
+    when 'building'
+      "Entire Building"
+    when 'floor'
+      if floor
+        "#{floor.ordinalize} Floor"
+      elsif unit
+        "Unit #{unit}"
+      else
+        "Floor Lease"
+      end
+    end
+  end
 
 end
