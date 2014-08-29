@@ -3,6 +3,7 @@ class Property < MLS::Model
   include MLS::Slugger
   
   belongs_to :avatar, :class_name => 'Photo'
+  belongs_to :contact, :class_name => 'Account'
   
   has_many :listings
   has_many :localities
@@ -14,17 +15,25 @@ class Property < MLS::Model
   has_one    :address, -> { where(:primary => true) }
   
   # TODO: move to avatar module to share with other models
-  def avatar_url(style=nil, protocol='http')
-    result = "#{protocol}://#{MLS.image_host}/#{avatar_digest}.jpg"
-    result += "?s=#{URI.escape(style)}" if style
+  def avatar_url(options={})
+    options.reverse_merge!({
+      :style => nil,
+      :protocol => "http",
+      :bg => nil,
+      :format => "jpg"
+    });
+    url_params = {s: options[:style], bg: options[:bg]}.select{ |k, v| v }
+    result = "#{options[:protocol]}://#{MLS.image_host}/#{avatar_digest}.#{options[:format]}"
+    result += "?#{url_params.to_param}" if url_params.size > 1
 
     result
   end
   
-  def image_server_url(digest, size, bg=false, format="jpg")
-    "http://#{MLS.image_host}/#{digest}.#{format}?s=#{CGI.escape(size)}#{bg ? "&bg=" + CGI.escape(bg) : ""}"
+  def default_contact
+    contact || listings.where(lease_state: :listed, state: :visible)
+            .where({ type: ['Lease', 'Sublease', 'Sale']})
+            .order(size: :desc)
+            .first.try(:contact)
   end
-  
-  
   
 end

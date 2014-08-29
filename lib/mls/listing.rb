@@ -11,14 +11,18 @@ class Listing < MLS::Model
   CHANNELS = %w(excavator mls staircase broker_dashboard)
 
   belongs_to :avatar, :class_name => 'Photo'
-  # belongs_to :floorplan
+  belongs_to :floorplan
+  belongs_to :flyer
   belongs_to :property
-
+  
+  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
+  has_many :agents, :class_name => 'Account'
+  
   # has_one :address
   # has_one :contact
   #
   # has_many :addresses
-  # has_many :photos
+  
   # has_many :comments
   # has_many :regions
   # has_many :agents
@@ -33,6 +37,11 @@ class Listing < MLS::Model
   #
   # has_and_belongs_to_many :uses, :inverse_of => :listings
 
+  def contact
+    agents.first
+  end
+  alias_method :default_contact, :contact
+  
   def rate(units=nil)
     return nil if !read_attribute(:rate)
     units ||= rate_units

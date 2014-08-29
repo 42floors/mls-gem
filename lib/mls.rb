@@ -57,6 +57,8 @@ require 'mls/sale'
 require 'mls/coworking_space'
 require 'mls/address'
 require 'mls/locality'
+require 'mls/flyer'
+require 'mls/floorplan'
 
 # Models
 # # Helpers
