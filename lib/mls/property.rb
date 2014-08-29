@@ -5,6 +5,10 @@ class Property < MLS::Model
   belongs_to :avatar, :class_name => 'Photo'
   
   has_many :listings
+  has_many :localities
+  has_many :regions, :through => :localities
+  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
+  # has_many :regions
 
   has_many   :addresses
   has_one    :address, -> { where(:primary => true) }

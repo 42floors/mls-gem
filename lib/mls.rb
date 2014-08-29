@@ -56,6 +56,7 @@ require 'mls/sublease'
 require 'mls/sale'
 require 'mls/coworking_space'
 require 'mls/address'
+require 'mls/locality'
 
 # Models
 # # Helpers
