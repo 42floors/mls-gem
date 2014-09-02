@@ -1,4 +1,6 @@
 class Listing < MLS::Model
+  
+  include MLS::Slugger
 
   WORKFLOW_STATES = %w(visible processing invisible expired)
   LEASE_STATES = %w(listed leased)
