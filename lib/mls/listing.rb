@@ -17,6 +17,7 @@ class Listing < MLS::Model
   
   has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
   has_many :agents, :class_name => 'Account'
+  has_many :spaces
   
   # has_one :address
   # has_one :contact
@@ -104,7 +105,7 @@ class Listing < MLS::Model
   end
   
   def name
-    return read_attribute(:name) if !read_attribute(:name)
+    return read_attribute(:name) if read_attribute(:name)
 
     case space_type
     when 'unit'

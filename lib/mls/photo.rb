@@ -11,7 +11,7 @@ class Photo < MLS::Model
     });
     url_params = {s: options[:style], bg: options[:bg]}.select{ |k, v| v }
     result = "#{options[:protocol]}://#{MLS.image_host}/#{digest}.#{options[:format]}"
-    result += "?#{url_params.to_param}" if url_params.size > 1
+    result += "?#{url_params.to_param}" if url_params.size > 0
 
     result
   end
