@@ -17,8 +17,10 @@ class Listing < MLS::Model
   belongs_to :flyer
   belongs_to :property
   
-  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
-  has_many :agents, :class_name => 'Account'
+  has_many :photos, -> { order('photos.order ASC') }, :as => :subject
+
+  has_many :agencies, -> { order(:order) }, :as => :subject
+  has_many :agents, :through => :agencies, :source => :agent
   
   # has_one :address
   # has_one :contact
