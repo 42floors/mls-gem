@@ -14,9 +14,8 @@ class Listing < MLS::Model
 
   belongs_to :avatar, :class_name => 'Photo'
   belongs_to :property
-
-  has_one :floorplan, :as => :subject
-  has_one :flyer, :as => :subject
+  belongs_to :floorplan
+  belongs_to :flyer
   
   has_many :photos, -> { order('photos.order ASC') }, :as => :subject
 
