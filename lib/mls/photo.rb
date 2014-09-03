@@ -1,6 +1,6 @@
 class Photo < MLS::Model
 
-  belongs_to :subject, :polymorphic => true
+  belongs_to :subject, :polymorphic => true, :inverse_of => :photos
     
   def url(options={})
     options.reverse_merge!({

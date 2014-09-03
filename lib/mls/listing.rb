@@ -17,7 +17,7 @@ class Listing < MLS::Model
   belongs_to :floorplan
   belongs_to :flyer
   
-  has_many :photos, -> { order('photos.order ASC') }, :as => :subject
+  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
 
   has_many :agencies, -> { order(:order) }, :as => :subject
   has_many :agents, :through => :agencies, :source => :agent
