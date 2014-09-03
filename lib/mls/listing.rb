@@ -13,9 +13,10 @@ class Listing < MLS::Model
   CHANNELS = %w(excavator mls staircase broker_dashboard)
 
   belongs_to :avatar, :class_name => 'Photo'
-  belongs_to :floorplan
-  belongs_to :flyer
   belongs_to :property
+  
+  has_one :floorplan, :as => :subject
+  has_one :flyer, :as => :subject
   
   has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
   has_many :agents, :class_name => 'Account'
