@@ -14,12 +14,14 @@ class Listing < MLS::Model
 
   belongs_to :avatar, :class_name => 'Photo'
   belongs_to :property
-  
+
   has_one :floorplan, :as => :subject
   has_one :flyer, :as => :subject
   
-  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
-  has_many :agents, :class_name => 'Account'
+  has_many :photos, -> { order('photos.order ASC') }, :as => :subject
+
+  has_many :agencies, -> { order(:order) }, :as => :subject
+  has_many :agents, :through => :agencies, :source => :agent
   
   # has_one :address
   # has_one :contact
@@ -38,7 +40,7 @@ class Listing < MLS::Model
   # has_many :email_proxies, :as => :subject, :inverse_of => :subject
   # has_many :lead_listings, :dependent => :delete_all
   #
-  # has_and_belongs_to_many :uses, :inverse_of => :listings
+  has_and_belongs_to_many :uses
 
   def contact
     agents.first
