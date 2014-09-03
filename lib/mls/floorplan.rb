@@ -1,6 +1,6 @@
 class Floorplan < MLS::Model
 
-  belongs_to :subject, :polymorphic => true
+  has_one :listing
   belongs_to :avatar, :class_name => 'Photo'
   
   def avatar_url(options={})
@@ -18,7 +18,7 @@ class Floorplan < MLS::Model
   end
   
   def url
-    "http://#{MLS.asset_host}/#{self.class.underscore}/#{digest}/compressed/#{filename}"
+    "http://#{MLS.asset_host}/floorplans/#{file_digest}/compressed/#{file_name}"
   end
     
 end

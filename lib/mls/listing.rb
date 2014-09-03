@@ -39,7 +39,7 @@ class Listing < MLS::Model
   # has_many :email_proxies, :as => :subject, :inverse_of => :subject
   # has_many :lead_listings, :dependent => :delete_all
   #
-  # has_and_belongs_to_many :uses, :inverse_of => :listings
+  has_and_belongs_to_many :uses
 
   def contact
     agents.first
