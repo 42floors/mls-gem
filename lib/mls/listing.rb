@@ -42,7 +42,7 @@ class Listing < MLS::Model
   has_and_belongs_to_many :uses
 
   def contact
-    agents.first
+    @contact ||= agents.first
   end
   alias_method :default_contact, :contact
   
