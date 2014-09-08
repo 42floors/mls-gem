@@ -1,6 +1,6 @@
 class Account < MLS::Model
 
-  belongs_to :avatar, :class_name => 'Photo'
+  include MLS::Avatar
   
   belongs_to :brokerage
 

@@ -1,6 +1,7 @@
 class Listing < MLS::Model
   
   include MLS::Slugger
+  include MLS::Avatar
 
   WORKFLOW_STATES = %w(visible processing invisible expired)
   LEASE_STATES = %w(listed leased)
@@ -12,7 +13,6 @@ class Listing < MLS::Model
   SOURCE_TYPES = %w(website flyer)
   CHANNELS = %w(excavator mls staircase broker_dashboard)
 
-  belongs_to :avatar, :class_name => 'Photo'
   belongs_to :property
   belongs_to :floorplan
   belongs_to :flyer
