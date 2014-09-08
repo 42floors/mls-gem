@@ -3,9 +3,9 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "mls"
-  s.version     = '0.14.0'
-  s.authors     = ["James R. Bracy", "Jon Bracy"]
-  s.email       = ["james@42floors.com"]
+  s.version     = '1.0.0'
+  s.authors     = ["Jon Bracy", "James R. Bracy"]
+  s.email       = ["jon@42floors.com", "james@42floors.com"]
   s.homepage    = "http://mls.42floors.com"
   s.summary     = %q{42Floors MLS Client}
   s.description = %q{Ruby library for integrating with the 42Floors MLS}
