@@ -67,7 +67,7 @@ module MLS::Avatar
 
     url_params = {s: options[:style], bg: options[:bg]}.select{ |k, v| v }
     result = "#{options[:protocol]}://#{MLS.image_host}/#{avatar_digest}.#{options[:format]}"
-    result += "?#{url_params.to_param}" if url_params.size > 1
+    result += "?#{url_params.to_param}" if url_params.size > 0
 
     result
   end
