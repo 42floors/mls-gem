@@ -101,6 +101,8 @@ class Listing < MLS::Model
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
+    else
+      read_attribute(:rate)
 
     end
 
