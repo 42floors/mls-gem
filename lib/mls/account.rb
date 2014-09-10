@@ -2,7 +2,7 @@ class Account < MLS::Model
 
   include MLS::Avatar
   
-  belongs_to :brokerage
+  belongs_to :organization
 
   has_many :agencies, :inverse_of => :agent, :foreign_key => :agent_id
   
