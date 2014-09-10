@@ -76,7 +76,7 @@ end
 
 require 'mls/photo'
 require 'mls/account'
-require 'mls/brokerage'
+require 'mls/organization'
 require 'mls/property'
 require 'mls/region'
 require 'mls/listing'
