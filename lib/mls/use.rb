@@ -1,5 +1,6 @@
 class Use < MLS::Model
 
+  include MLS::Slugger
   # has_ltree_hierarchy
 
   has_many :children, class_name: 'Use', foreign_key: 'parent_id', inverse_of: :parent
