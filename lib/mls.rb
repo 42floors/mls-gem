@@ -12,11 +12,23 @@ module MLS
   end
 
   def self.asset_host
-    MLS::Model.connection.server_config['asset_host']
+    config['asset_host']
   end
 
   def self.image_host
-    MLS::Model.connection.server_config['image_host']
+    config['image_host']
+  end
+
+  def self.config
+    @config ||= MLS::Model.connection.server_config
+  end
+
+  # Set a cookie jar to use during request sent during the
+  def self.with_cookie_store(store, &block)
+    Thread.current[:sunstone_cookie_store] = store
+    yield
+  ensure
+    Thread.current[:sunstone_cookie_store] = nil
   end
   
 end
@@ -83,6 +95,7 @@ require 'mls/listing'
 require 'mls/lease'
 require 'mls/sublease'
 require 'mls/space'
+require 'mls/lead'
 require 'mls/sale'
 require 'mls/coworking_space'
 require 'mls/address'
@@ -90,6 +103,7 @@ require 'mls/locality'
 require 'mls/flyer'
 require 'mls/inquiry'
 require 'mls/agency'
+require 'mls/session'
 require 'mls/floorplan'
 require 'mls/use'
 
