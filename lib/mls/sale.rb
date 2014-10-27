@@ -1,2 +1,0 @@
-class Sale < Listing
-end
