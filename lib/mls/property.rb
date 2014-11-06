@@ -15,7 +15,7 @@ class Property < MLS::Model
   has_one    :address, -> { where(:primary => true) }
 
   def default_contact
-    @default_contact ||= listings.where(lease_state: :listed, ghost: false)
+    @default_contact ||= listings.where(lease_state: :listed, ghost: false, authorized: true)
             .where({ type: ['Lease', 'Sublease']})
             .order(size: :desc)
             .first.try(:contact)
