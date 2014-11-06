@@ -1,30 +1,36 @@
 class Listing < MLS::Model
-  
+  self.inheritance_column = nil
+
   include MLS::Slugger
   include MLS::Avatar
 
   LEASE_STATES = %w(listed leased)
-  TYPES = %w(lease sublease coworking_space)
   SPACE_TYPES = %w(unit floor building)
-  LEASE_TERMS = ['Full Service', 'NNN', 'Modified Gross']
-  RATE_UNITS = ['/sqft/yr', '/sqft/mo', '/mo', '/yr', '/desk/mo']
-  USES = ["Office", "Creative", "Loft", "Medical Office", "Flex Space", "R&D", "Office Showroom", "Industrial", "Retail"]
-  SOURCE_TYPES = %w(website flyer)
-  CHANNELS = %w(excavator mls staircase broker_dashboard)
+  TYPES = %w(Sale Lease Sublease CoworkingSpace)
+  TERMS = ['Full Service', 'Net Lease', 'NN', 'NNN', 'Absolute NNN', 'Gross Lease', 'Modified Gross', 'Industrial Gross', 'Absolute Gross', 'Ground Lease', 'Other']
+  SALE_TERMS = ['Cash to Seller', 'Purchase Money Mtg.', 'Owner Financing', 'Build-to-Suit', 'Sale/Leaseback', 'Other']
+  RATE_UNITS = {
+    '/sqft/yr' => 'rate_per_sqft_per_year',
+    '/sqft/mo' => 'rate_per_sqft_per_month',
+    '/mo' => 'rate_per_month',
+    '/yr' => 'rate_per_year',
+  }
+  TERM_UNITS = ['years', 'months']
+  AMENITIES = %W(kitchen showers patio reception ready_to_move_in furniture natural_light high_ceilings)
 
   belongs_to :property
   belongs_to :floorplan
   belongs_to :flyer
-  
+
+  has_many :spaces
+
   has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
 
   has_many :agencies, -> { order(:order) }, :as => :subject
-  has_many :agents, :through => :agencies, :source => :agent
-  
-  # has_one :address
-  # has_one :contact
-  #
-  # has_many :addresses
+  has_many :agents, -> { order('agencies.order') }, :through => :agencies, :source => :agent
+
+  has_one  :address
+  has_many :addresses
   
   # has_many :comments
   # has_many :regions
@@ -107,7 +113,23 @@ class Listing < MLS::Model
 
     price.round(2)
   end
-  
+
+  def lease? # TODO: test me
+    type == 'Lease'
+  end
+
+  def sublease? # TODO: test me
+    type == 'Sublease'
+  end
+
+  def coworking? # TODO: test me
+    type == 'CoworkingSpace'
+  end
+
+  def sale?
+    type == 'Sale'
+  end
+
   def name
     return read_attribute(:name) if read_attribute(:name)
 

@@ -30,7 +30,7 @@ module MLS
   ensure
     Thread.current[:sunstone_cookie_store] = nil
   end
-  
+
 end
 
 class MLS::Model < ActiveRecord::Base
@@ -38,11 +38,11 @@ class MLS::Model < ActiveRecord::Base
 end
 
 module MLS::Slugger
-  
+
   extend ActiveSupport::Concern
-  
+
   module ClassMethods
-  
+
     def find(*args)
       friendly = -> (arg) { arg.respond_to?(:to_i) && arg.to_i.to_s != arg.to_s }
 
@@ -54,7 +54,7 @@ module MLS::Slugger
     end
 
   end
-  
+
   def to_param
     slug
   end
@@ -92,14 +92,10 @@ require 'mls/organization'
 require 'mls/property'
 require 'mls/region'
 require 'mls/listing'
-require 'mls/lease'
-require 'mls/sublease'
 require 'mls/space'
 require 'mls/lead'
 require 'mls/lead_listing'
 require 'mls/lead_property'
-require 'mls/sale'
-require 'mls/coworking_space'
 require 'mls/address'
 require 'mls/locality'
 require 'mls/flyer'
@@ -108,6 +104,7 @@ require 'mls/agency'
 require 'mls/session'
 require 'mls/floorplan'
 require 'mls/use'
+require 'mls/comment'
 
 # Models
 # # Helpers

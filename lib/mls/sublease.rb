@@ -1,2 +1,0 @@
-class Sublease < Listing
-end
