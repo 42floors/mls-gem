@@ -88,6 +88,7 @@ end
 
 require 'mls/photo'
 require 'mls/account'
+require 'mls/email'
 require 'mls/organization'
 require 'mls/property'
 require 'mls/region'
