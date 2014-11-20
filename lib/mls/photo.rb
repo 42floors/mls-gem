@@ -5,12 +5,21 @@ class Photo < MLS::Model
   def url(options={})
     options.reverse_merge!({
       :style => nil,
-      :protocol => "http",
       :bg => nil,
-      :format => "jpg"
+      :protocol => 'https',
+      :format => "jpg",
+      :host => MLS.image_host
     });
+
     url_params = {s: options[:style], bg: options[:bg]}.select{ |k, v| v }
-    result = "#{options[:protocol]}://#{MLS.image_host}/#{digest}.#{options[:format]}"
+
+    if options[:protocol] == :relative # Protocol Relative
+      result = '//'
+    else options[:protocol]
+      result = "#{options[:protocol]}://"
+    end
+
+    result += "#{options[:host]}/#{digest}.#{options[:format]}"
     result += "?#{url_params.to_param}" if url_params.size > 0
 
     result
