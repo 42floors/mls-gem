@@ -87,7 +87,7 @@ module MLS::Avatar
       result = "#{options[:protocol]}://"
     end
     
-    result += "#{options[:host]}/#{digest}.#{options[:format]}"
+    result += "#{options[:host]}/#{avatar_digest}.#{options[:format]}"
     result += "?#{url_params.to_param}" if url_params.size > 0
 
     result
