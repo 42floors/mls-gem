@@ -25,3 +25,6 @@ class Photo < MLS::Model
     result
   end
 end
+
+
+class InternalPhoto < Photo; end 
