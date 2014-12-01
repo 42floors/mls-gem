@@ -8,9 +8,8 @@ class Property < MLS::Model
   has_many :listings
   has_many :localities
   has_many :regions, :through => :localities
-  has_many   :photos, -> { where(:type => "Photo").order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
-  has_many   :internal_photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
-  # has_many :regions
+  has_many :photos, -> { where(:type => "Photo").order(:order => :asc) }, :as => :subject, :inverse_of => :subject
+  has_many :internal_photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_many   :addresses
   has_one    :address, -> { where(:primary => true) }

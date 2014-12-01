@@ -24,7 +24,7 @@ class Listing < MLS::Model
 
   has_many :spaces
 
-  has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
+  has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_many :agencies, -> { order(:order) }, :as => :subject
   has_many :agents, -> { order('agencies.order') }, :through => :agencies, :source => :agent
