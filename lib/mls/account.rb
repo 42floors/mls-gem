@@ -1,5 +1,6 @@
 class Account < MLS::Model
 
+  include MLS::Slugger
   include MLS::Avatar
 
   has_one :lead, foreign_key: :account_id
