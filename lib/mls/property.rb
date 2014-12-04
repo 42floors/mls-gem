@@ -23,5 +23,9 @@ class Property < MLS::Model
             .order(size: :desc)
             .first.try(:contact)
   end
+  
+  def address
+    addresses.find(&:primary)
+  end
 
 end
