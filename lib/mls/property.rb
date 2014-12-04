@@ -11,8 +11,11 @@ class Property < MLS::Model
   has_many :photos, -> { where(:type => "Photo").order(:order => :asc) }, :as => :subject, :inverse_of => :subject
   has_many :internal_photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
-  has_many   :addresses
-  has_one    :address, -> { where(:primary => true) }
+  has_many   :addresses do
+    def primary
+      where(:primary => true).first
+    end
+  end
 
   def default_contact
     @default_contact ||= listings.where(lease_state: :listed, ghost: false, authorized: true)
