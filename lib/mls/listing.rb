@@ -16,7 +16,8 @@ class Listing < MLS::Model
     '/yr' => 'rate_per_year',
   }
   TERM_UNITS = ['years', 'months']
-  AMENITIES = %W(kitchen showers patio reception ready_to_move_in furniture natural_light high_ceilings)
+  AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit furniture
+                  natural_light high_ceilings plug_and_play additional_storage storefront)
 
   belongs_to :property
   belongs_to :floorplan
