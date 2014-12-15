@@ -115,6 +115,7 @@ require 'mls/session'
 require 'mls/floorplan'
 require 'mls/use'
 require 'mls/comment'
+require 'mls/unit'
 
 # Models
 # # Helpers

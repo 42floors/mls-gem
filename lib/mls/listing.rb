@@ -22,6 +22,7 @@ class Listing < MLS::Model
   belongs_to :property
   belongs_to :floorplan
   belongs_to :flyer
+  belongs_to :unit
 
   has_many :spaces
 
