@@ -31,6 +31,13 @@ module MLS
     Thread.current[:sunstone_cookie_store] = nil
   end
 
+  def self.with_api_key(key, &block)
+    Thread.current[:sunstone_api_key] = key
+    yield
+  ensure
+    Thread.current[:sunstone_api_key] = nil
+  end
+
 end
 
 class MLS::Model < ActiveRecord::Base
@@ -70,7 +77,7 @@ module MLS::Avatar
   end
 
   def avatar_url(options={})
-    
+
     options.reverse_merge!({
       :style => nil,
       :bg => nil,
@@ -86,7 +93,7 @@ module MLS::Avatar
     else options[:protocol]
       result = "#{options[:protocol]}://"
     end
-    
+
     result += "#{options[:host]}/#{avatar_digest}.#{options[:format]}"
     result += "?#{url_params.to_param}" if url_params.size > 0
 
