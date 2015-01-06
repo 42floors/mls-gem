@@ -19,7 +19,7 @@ class Property < MLS::Model
   end
 
   def default_contact
-    @default_contact ||= listings.where(lease_state: :listed, ghost: false, authorized: true)
+    @default_contact ||= listings.where(lease_state: :listed, authorized: true)
             .where({ type: ['Lease', 'Sublease']})
             .order(size: :desc)
             .first.try(:contact)

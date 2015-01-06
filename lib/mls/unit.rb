@@ -1,4 +1,4 @@
-class Unit < ActiveRecord::Base
+class Unit < MLS::Model
   include MLS::Slugger
   include MLS::Avatar
 

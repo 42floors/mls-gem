@@ -19,10 +19,11 @@ class Listing < MLS::Model
   AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit furniture
                   natural_light high_ceilings plug_and_play additional_storage storefront)
 
-  belongs_to :property
   belongs_to :floorplan
   belongs_to :flyer
-  belongs_to :unit
+  has_one :unit
+  
+  has_one  :property,  :through => :unit
 
   has_many :spaces
 
@@ -134,27 +135,27 @@ class Listing < MLS::Model
 
   def name
     return read_attribute(:name) if read_attribute(:name)
-
     case space_type
     when 'unit'
-      if unit
-        "Unit #{unit}"
-      elsif floor
-        "#{floor.ordinalize} Floor Unit"
+      if unit.try(:number)
+        "Unit #{unit.number}"
+      elsif unit.try(:floor)
+        "#{unit.floor.to_i.ordinalize} Floor Unit"
       else
         "Unit Lease"
       end
     when 'building'
       "Entire Building"
     when 'floor'
-      if floor
-        "#{floor.ordinalize} Floor"
-      elsif unit
-        "Unit #{unit}"
+      if unit.try(:floor) && unit.floor == unit.floor.to_i.to_s
+        "#{unit.floor.to_i.ordinalize} Floor"
+      elsif unit.try(:floor)
+        unit.floor
+      elsif unit.try(:number)
+        "Unit #{unit.number}"
       else
         "Floor Lease"
       end
     end
   end
-
 end
