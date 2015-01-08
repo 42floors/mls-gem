@@ -21,7 +21,7 @@ class Listing < MLS::Model
 
   belongs_to :floorplan
   belongs_to :flyer
-  has_one :unit
+  belongs_to :unit
   
   has_one  :property,  :through => :unit
 
