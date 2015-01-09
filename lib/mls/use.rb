@@ -5,7 +5,7 @@ class Use < MLS::Model
 
   has_many :children, class_name: 'Use', foreign_key: 'parent_id', inverse_of: :parent
   
-  has_and_belongs_to_many :listings
+  has_and_belongs_to_many :units
   # has_and_belongs_to_many :properties
 
   def descendants(uses = nil)
