@@ -7,7 +7,9 @@ class Unit < MLS::Model
 
   has_many :listings
   has_many :photos, -> { order('photos.order ASC') }, :as => :subject, :inverse_of => :subject
-
+  
+  has_and_belongs_to_many :uses
+  
   def tags
     read_attribute(:tags) || []
   end
