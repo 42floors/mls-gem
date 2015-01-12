@@ -6,7 +6,7 @@ class Unit < MLS::Model
   belongs_to :floorplan
 
   has_many :listings
-  has_many :photos, -> { order('order ASC') }, :as => :subject, :inverse_of => :subject
+  has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_and_belongs_to_many :uses
 
