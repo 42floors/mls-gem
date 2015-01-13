@@ -15,6 +15,7 @@ class Unit < MLS::Model
   end
   
   def name
+    return read_attribute(:name) if read_attribute(:name)
     name = ""
     case self.type
     when 'unit'
