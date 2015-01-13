@@ -1,4 +1,6 @@
 class Unit < MLS::Model
+  self.inheritance_column = nil
+  
   include MLS::Slugger
   include MLS::Avatar
 
