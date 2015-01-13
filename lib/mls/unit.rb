@@ -25,7 +25,8 @@ class Unit < MLS::Model
       name += " #{self.number}" if self.number
       name += " (Floor #{self.floor})" if self.floor
     when 'floor'
-      name += "Floor #{self.floor}" if self.floor
+      name += "Floor"
+      name += " #{self.floor}" if self.floor
       name += " (Unit #{self.number})" if self.number
     when 'building'
       "Entire Building"
