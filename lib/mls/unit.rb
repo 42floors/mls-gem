@@ -1,6 +1,6 @@
 class Unit < MLS::Model
   self.inheritance_column = nil
-  
+
   include MLS::Slugger
   include MLS::Avatar
 
@@ -15,7 +15,7 @@ class Unit < MLS::Model
   def tags
     read_attribute(:tags) || []
   end
-  
+
   def name
     return read_attribute(:name) if read_attribute(:name)
     name = ""
@@ -23,9 +23,9 @@ class Unit < MLS::Model
     when 'unit'
       name += "Unit"
       name += " #{self.number}" if self.number
-      name += " (Floor #{self.number})" if self.number
+      name += " (Floor #{self.floor})" if self.floor
     when 'floor'
-      name += "Floor #{self.number}" if self.floor
+      name += "Floor #{self.floor}" if self.floor
       name += " (Unit #{self.number})" if self.number
     when 'building'
       "Entire Building"
