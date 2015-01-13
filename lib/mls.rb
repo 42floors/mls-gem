@@ -50,14 +50,11 @@ module MLS::Slugger
 
   module ClassMethods
 
-    def find(*args)
-      friendly = -> (arg) { arg.respond_to?(:to_i) && arg.to_i.to_s != arg.to_s }
-
-      if args.count == 1 && friendly.call(args.first)
-        find_by_slug!(args)
-      else
-        super
-      end
+    def find(*ids)
+      friendly = -> (id) { id.respond_to?(:to_i) && id.to_i.to_s != id.to_s }
+      return super if ids.size > 1 || !ids.all? { |x| friendly.call(x) }
+      
+      find_by_slug!(ids)
     end
 
   end
@@ -121,6 +118,7 @@ require 'mls/agency'
 require 'mls/session'
 require 'mls/floorplan'
 require 'mls/use'
+require 'mls/slug'
 require 'mls/comment'
 require 'mls/unit'
 
