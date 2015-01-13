@@ -2,7 +2,6 @@ class Listing < MLS::Model
   self.inheritance_column = nil
 
   include MLS::Slugger
-  include MLS::Avatar
 
   LEASE_STATES = %w(listed leased)
   SPACE_TYPES = %w(unit floor building)
