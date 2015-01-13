@@ -13,5 +13,20 @@ class Unit < MLS::Model
   def tags
     read_attribute(:tags) || []
   end
+  
+  def name
+    name = ""
+    case self.type
+    when 'unit'
+      name += "Unit"
+      name += " #{self.number}" if self.number
+      name += " (Floor #{self.number})" if self.number
+    when 'floor'
+      name += "Floor #{self.number}" if self.floor
+      name += " (Unit #{self.number})" if self.number
+    when 'building'
+      "Entire Building"
+    end
+  end
 
 end
