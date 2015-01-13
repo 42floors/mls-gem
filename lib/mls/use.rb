@@ -1,4 +1,5 @@
 class Use < MLS::Model
+  self.inheritance_column = nil
 
   include MLS::Slugger
   # has_ltree_hierarchy
