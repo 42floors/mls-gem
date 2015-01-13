@@ -5,7 +5,8 @@ class Property < MLS::Model
 
   belongs_to :contact, :class_name => 'Account'
 
-  has_many :listings
+  has_many :units
+  has_many :listings, :through => :units
   has_many :localities
   has_many :regions, :through => :localities
   has_many :photos, -> { where(:type => "Photo").order(:order => :asc) }, :as => :subject, :inverse_of => :subject
@@ -18,7 +19,7 @@ class Property < MLS::Model
   end
 
   def default_contact
-    @default_contact ||= listings.where(lease_state: :listed, ghost: false, authorized: true)
+    @default_contact ||= listings.where(lease_state: :listed, authorized: true)
             .where({ type: ['Lease', 'Sublease']})
             .order(size: :desc)
             .first.try(:contact)

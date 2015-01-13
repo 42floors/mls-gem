@@ -19,9 +19,11 @@ class Listing < MLS::Model
   AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit furniture
                   natural_light high_ceilings plug_and_play additional_storage storefront)
 
-  belongs_to :property
   belongs_to :floorplan
   belongs_to :flyer
+  belongs_to :unit
+
+  has_one  :property,  :through => :unit
 
   has_many :spaces
 
@@ -32,7 +34,7 @@ class Listing < MLS::Model
 
   has_one  :address
   has_many :addresses
-  
+
   # has_many :comments
   # has_many :regions
   # has_many :agents
@@ -45,13 +47,11 @@ class Listing < MLS::Model
   # has_many :email_proxies, :as => :subject, :inverse_of => :subject
   # has_many :lead_listings, :dependent => :delete_all
 
-  has_and_belongs_to_many :uses
-
   def contact
     @contact ||= agents.first
   end
   alias_method :default_contact, :contact
-  
+
   def rate(units=nil)
     return nil if !read_attribute(:rate)
     units ||= rate_units
@@ -62,9 +62,9 @@ class Listing < MLS::Model
       elsif units == '/sqft/yr'
         read_attribute(:rate) * 12.0
       elsif units == '/mo'
-        read_attribute(:rate) * size
+        read_attribute(:rate) * unit.size
       elsif units == '/yr'
-        read_attribute(:rate) * size * 12.0
+        read_attribute(:rate) * unit.size * 12.0
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
@@ -75,18 +75,18 @@ class Listing < MLS::Model
       elsif units == '/sqft/yr'
         read_attribute(:rate)
       elsif units == '/mo'
-        (read_attribute(:rate) * size) / 12.0
+        (read_attribute(:rate) * unit.size) / 12.0
       elsif units == '/yr'
-        read_attribute(:rate) * size
+        read_attribute(:rate) * unit.size
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
 
     elsif rate_units == '/mo'
       if units == '/sqft/mo'
-        read_attribute(:rate) / size.to_f
+        read_attribute(:rate) / unit.size.to_f
       elsif units == '/sqft/yr'
-        (read_attribute(:rate) * 12) / size.to_f
+        (read_attribute(:rate) * 12) / unit.size.to_f
       elsif units == '/mo'
         read_attribute(:rate)
       elsif units == '/yr'
@@ -97,9 +97,9 @@ class Listing < MLS::Model
 
     elsif rate_units == '/yr'
       if units == '/sqft/mo'
-        (read_attribute(:rate) / 12.0) / size.to_f
+        (read_attribute(:rate) / 12.0) / unit.size.to_f
       elsif units == '/sqft/yr'
-        read_attribute(:rate) / size.to_f
+        read_attribute(:rate) / unit.size.to_f
       elsif units == '/mo'
         read_attribute(:rate) / 12.0
       elsif units == '/yr'
@@ -133,27 +133,27 @@ class Listing < MLS::Model
 
   def name
     return read_attribute(:name) if read_attribute(:name)
-
     case space_type
     when 'unit'
-      if unit
-        "Unit #{unit}"
-      elsif floor
-        "#{floor.ordinalize} Floor Unit"
+      if unit.try(:number)
+        "Unit #{unit.number}"
+      elsif unit.try(:floor)
+        "#{unit.floor.to_i.ordinalize} Floor Unit"
       else
         "Unit Lease"
       end
     when 'building'
       "Entire Building"
     when 'floor'
-      if floor
-        "#{floor.ordinalize} Floor"
-      elsif unit
-        "Unit #{unit}"
+      if unit.try(:floor) && unit.floor == unit.floor.to_i.to_s
+        "#{unit.floor.to_i.ordinalize} Floor"
+      elsif unit.try(:floor)
+        unit.floor
+      elsif unit.try(:number)
+        "Unit #{unit.number}"
       else
         "Floor Lease"
       end
     end
   end
-
 end
