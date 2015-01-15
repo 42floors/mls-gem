@@ -17,7 +17,9 @@ class Unit < MLS::Model
   end
 
   def name
-    return read_attribute(:name) if read_attribute(:name)
+    puts "*"*80
+    puts self.type
+    puts "*"*80
     name = ""
     case self.type
     when 'unit'
@@ -31,6 +33,7 @@ class Unit < MLS::Model
     when 'building'
       "Entire Building"
     end
+    name
   end
 
 end
