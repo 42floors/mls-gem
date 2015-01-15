@@ -17,9 +17,6 @@ class Unit < MLS::Model
   end
 
   def name
-    puts "*"*80
-    puts self.type
-    puts "*"*80
     name = ""
     case self.type
     when 'unit'
