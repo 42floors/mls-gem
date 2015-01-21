@@ -3,7 +3,6 @@ class Listing < MLS::Model
 
   include MLS::Slugger
 
-  LEASE_STATES = %w(listed leased)
   SPACE_TYPES = %w(unit floor building)
   TYPES = %w(Sale Lease Sublease CoworkingSpace)
   TERMS = ['Full Service', 'Net Lease', 'NN', 'NNN', 'Absolute NNN', 'Gross Lease', 'Modified Gross', 'Industrial Gross', 'Absolute Gross', 'Ground Lease', 'Other']
