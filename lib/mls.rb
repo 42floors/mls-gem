@@ -53,7 +53,7 @@ module MLS::Slugger
     def find(*ids)
       friendly = -> (id) { id.respond_to?(:to_i) && id.to_i.to_s != id.to_s }
       return super if ids.size > 1 || !ids.all? { |x| friendly.call(x) }
-      
+
       find_by_slug!(ids)
     end
 
@@ -108,8 +108,6 @@ require 'mls/region'
 require 'mls/listing'
 require 'mls/space'
 require 'mls/lead'
-require 'mls/lead_listing'
-require 'mls/lead_property'
 require 'mls/address'
 require 'mls/locality'
 require 'mls/flyer'
@@ -121,6 +119,7 @@ require 'mls/use'
 require 'mls/slug'
 require 'mls/comment'
 require 'mls/unit'
+require 'mls/recommendation'
 
 # Models
 # # Helpers
