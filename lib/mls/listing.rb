@@ -4,7 +4,7 @@ class Listing < MLS::Model
   include MLS::Slugger
 
   SPACE_TYPES = %w(unit floor building)
-  TYPES = %w(Sale Lease Sublease CoworkingSpace)
+  TYPES = %w(Sale Lease Sublease)
   TERMS = ['Full Service', 'Net Lease', 'NN', 'NNN', 'Absolute NNN', 'Gross Lease', 'Modified Gross', 'Industrial Gross', 'Absolute Gross', 'Ground Lease', 'Other']
   SALE_TERMS = ['Cash to Seller', 'Purchase Money Mtg.', 'Owner Financing', 'Build-to-Suit', 'Sale/Leaseback', 'Other']
   RATE_UNITS = {
@@ -22,8 +22,6 @@ class Listing < MLS::Model
   belongs_to :unit
 
   has_one  :property,  :through => :unit
-
-  has_many :spaces
 
   has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
@@ -119,10 +117,6 @@ class Listing < MLS::Model
 
   def sublease? # TODO: test me
     type == 'Sublease'
-  end
-
-  def coworking? # TODO: test me
-    type == 'CoworkingSpace'
   end
 
   def sale?

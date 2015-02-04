@@ -120,6 +120,7 @@ require 'mls/slug'
 require 'mls/comment'
 require 'mls/unit'
 require 'mls/recommendation'
+require 'mls/coworking_space'
 
 # Models
 # # Helpers
