@@ -104,6 +104,7 @@ require 'mls/account'
 require 'mls/email'
 require 'mls/organization'
 require 'mls/property'
+require 'mls/phone'
 require 'mls/region'
 require 'mls/listing'
 require 'mls/space'
@@ -121,12 +122,3 @@ require 'mls/comment'
 require 'mls/unit'
 require 'mls/recommendation'
 require 'mls/coworking_space'
-
-# Models
-# # Helpers
-# class MLS
-#
-#   def current_account
-#   end
-#
-# end
