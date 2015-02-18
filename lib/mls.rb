@@ -121,14 +121,4 @@ require 'mls/slug'
 require 'mls/comment'
 require 'mls/unit'
 require 'mls/recommendation'
-# Removing lead_listing after recommendations release
-require 'mls/lead_listing'
-
-# Models
-# # Helpers
-# class MLS
-#
-#   def current_account
-#   end
-#
-# end
+require 'mls/coworking_space'
