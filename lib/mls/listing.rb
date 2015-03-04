@@ -58,9 +58,9 @@ class Listing < MLS::Model
       elsif units == '/sqft/yr'
         read_attribute(:rate) * 12.0
       elsif units == '/mo'
-        read_attribute(:rate) * unit.size
+        read_attribute(:rate) * size
       elsif units == '/yr'
-        read_attribute(:rate) * unit.size * 12.0
+        read_attribute(:rate) * size * 12.0
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
@@ -71,18 +71,18 @@ class Listing < MLS::Model
       elsif units == '/sqft/yr'
         read_attribute(:rate)
       elsif units == '/mo'
-        (read_attribute(:rate) * unit.size) / 12.0
+        (read_attribute(:rate) * size) / 12.0
       elsif units == '/yr'
-        read_attribute(:rate) * unit.size
+        read_attribute(:rate) * size
       else
         raise "Invalid rate conversion (#{rate_units} => #{units})"
       end
 
     elsif rate_units == '/mo'
       if units == '/sqft/mo'
-        read_attribute(:rate) / unit.size.to_f
+        read_attribute(:rate) / size.to_f
       elsif units == '/sqft/yr'
-        (read_attribute(:rate) * 12) / unit.size.to_f
+        (read_attribute(:rate) * 12) / size.to_f
       elsif units == '/mo'
         read_attribute(:rate)
       elsif units == '/yr'
@@ -93,9 +93,9 @@ class Listing < MLS::Model
 
     elsif rate_units == '/yr'
       if units == '/sqft/mo'
-        (read_attribute(:rate) / 12.0) / unit.size.to_f
+        (read_attribute(:rate) / 12.0) / size.to_f
       elsif units == '/sqft/yr'
-        read_attribute(:rate) / unit.size.to_f
+        read_attribute(:rate) / size.to_f
       elsif units == '/mo'
         read_attribute(:rate) / 12.0
       elsif units == '/yr'
