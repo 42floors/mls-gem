@@ -4,7 +4,7 @@ class Inquiry < MLS::Model
   belongs_to :subject, polymorphic: true
 
   def property
-    subject.is_a? MLS::Listing ? subject.property : subject
+    subject.is_a? MLS::Model::Listing ? subject.property : subject
   end
 
 end
