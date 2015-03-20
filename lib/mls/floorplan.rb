@@ -5,7 +5,7 @@ class Floorplan < MLS::Model
   has_one :listing
   
   def url
-    "http://#{MLS.asset_host}/floorplans/#{file_digest}/compressed/#{file_name}"
+    "http://#{MLS.asset_host}/floorplans/#{digest}/compressed/#{file_name}"
   end
     
 end

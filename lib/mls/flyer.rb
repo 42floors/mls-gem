@@ -5,7 +5,7 @@ class Flyer < MLS::Model
   has_one :listing
   
   def url
-    "http://#{MLS.asset_host}/flyers/#{file_digest}/compressed/#{file_name}"
+    "http://#{MLS.asset_host}/flyers/#{digest}/compressed/#{file_name}"
   end
     
 end
