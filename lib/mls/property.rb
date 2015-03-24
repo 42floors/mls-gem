@@ -6,6 +6,7 @@ class Property < MLS::Model
   belongs_to :contact, :class_name => 'Account'
 
   has_many :units
+  has_many :references, as: :subject
   has_many :listings, :through => :units
   has_many :localities
   has_many :regions, :through => :localities
