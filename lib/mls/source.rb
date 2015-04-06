@@ -5,4 +5,8 @@ class Source < MLS::Model
   belongs_to :owner, class_name: 'Account'
   belongs_to :upload, class_name: 'Flyer'
   
+  def name
+    url.match(/^(?:https?:\/\/)?(?:www\.)?([^\/]+)/)[1]
+  end
+  
 end
