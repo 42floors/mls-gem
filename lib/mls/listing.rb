@@ -125,27 +125,6 @@ class Listing < MLS::Model
 
   def name
     return read_attribute(:name) if read_attribute(:name)
-    case space_type
-    when 'unit'
-      if unit.try(:number)
-        "Unit #{unit.number}"
-      elsif unit.try(:floor)
-        "#{unit.floor.to_i.ordinalize} Floor Unit"
-      else
-        "Unit Lease"
-      end
-    when 'building'
-      "Entire Building"
-    when 'floor'
-      if unit.try(:floor) && unit.floor == unit.floor.to_i.to_s
-        "#{unit.floor.to_i.ordinalize} Floor"
-      elsif unit.try(:floor)
-        unit.floor
-      elsif unit.try(:number)
-        "Unit #{unit.number}"
-      else
-        "Floor Lease"
-      end
-    end
+    unit.name
   end
 end
