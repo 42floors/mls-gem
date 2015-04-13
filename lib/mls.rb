@@ -101,7 +101,7 @@ end
 
 require 'mls/photo'
 require 'mls/account'
-require 'mls/email'
+require 'mls/email_address'
 require 'mls/organization'
 require 'mls/property'
 require 'mls/phone'

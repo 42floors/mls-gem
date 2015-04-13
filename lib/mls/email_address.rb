@@ -1,4 +1,4 @@
-class Email < MLS::Model
+class EmailAddress < MLS::Model
   self.inheritance_column = false
   
   TYPES = %w(work personal other)

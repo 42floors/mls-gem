@@ -40,7 +40,6 @@ class Listing < MLS::Model
   # has_many :inquiries, :as => :subject, :inverse_of => :subject
   # has_many :agencies, -> { order('"order"') }, :dependent => :destroy, :inverse_of => :subject, :as => :subject
   # has_many :agents, -> { order('agencies.order') }, :through => :agencies, :inverse_of => :listings, :source => :agent
-  # has_many :email_proxies, :as => :subject, :inverse_of => :subject
   # has_many :lead_listings, :dependent => :delete_all
 
   def contact
