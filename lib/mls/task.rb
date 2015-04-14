@@ -6,7 +6,8 @@ class Task < MLS::Model
   
   has_many :events
   has_many :mistakes
-  has_many :reviews, :class_name => "Task", :as => :subject, :inverse_of => :subject
+  has_many :reviews, -> { where(:type => "review") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
+  has_many :fixes, -> { where(:type => "fix") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
   
   def for_source?
     subject_type == "Source"
