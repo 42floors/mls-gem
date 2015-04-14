@@ -25,8 +25,8 @@ class Task < MLS::Model
     type == "fix"
   end
   
-  def perform?
-    type == "perform"
+  def parse?
+    type == "parse"
   end
   
 end
