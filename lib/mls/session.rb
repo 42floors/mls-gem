@@ -2,15 +2,15 @@ class Session < MLS::Model
 
   belongs_to :account
 
-  # Authenticate with email and password.
+  # Authenticate with email_address and password.
   # Returns either the newly created session or nil
-  def self.authenticate(email, password=nil)
-    if email.is_a? Hash
-      password = email[:password]
-      email = email[:email]
+  def self.authenticate(email_address, password=nil)
+    if email_address.is_a? Hash
+      password = email_address[:password]
+      email_address = email_address[:email_address]
     end
     
-    Session.create(:email => email, :password => password)
+    Session.create(:email_address => email_address, :password => password)
   rescue Sunstone::Exception::Unauthorized
     nil
   end
