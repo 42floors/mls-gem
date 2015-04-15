@@ -13,14 +13,16 @@ class Account < MLS::Model
 
   has_many :email_addresses, :dependent => :destroy do
     def primary
-      where(:primary => true).first
+      # For cases where the number is not primary we order
+      order(:primary => :desc).first
     end
   end
 
   has_many :phones, dependent: :destroy do
 
     def primary
-      where(primary: true).first
+      # For cases where the number is not primary we order
+      order(:primary => :desc).first
     end
 
   end
