@@ -24,5 +24,13 @@ class Account < MLS::Model
     end
 
   end
+  
+  def email_address
+    email_addresses.primary.address
+  end
+  
+  def phone
+    phones.primary.number
+  end
 
 end
