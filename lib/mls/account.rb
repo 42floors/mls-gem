@@ -7,6 +7,8 @@ class Account < MLS::Model
 
   belongs_to :organization
 
+  has_many :tasks
+  has_many :sources
   has_many :agencies, :inverse_of => :agent, :foreign_key => :agent_id
 
   has_many :email_addresses, :dependent => :destroy do
