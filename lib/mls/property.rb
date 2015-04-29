@@ -20,10 +20,12 @@ class Property < MLS::Model
   end
 
   def default_contact
+    @default_contact ||= contact
     @default_contact ||= listings.where(leased_at: nil, authorized: true)
             .where({ type: ['Lease', 'Sublease']})
             .order(size: :desc)
             .first.try(:contact)
+    @default_contact
   end
 
   def address
