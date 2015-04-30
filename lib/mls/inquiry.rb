@@ -1,5 +1,6 @@
 class Inquiry < MLS::Model
 
+  has_many :emails
   belongs_to :lead
   belongs_to :subject, polymorphic: true
 
