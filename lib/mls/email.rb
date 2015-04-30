@@ -1,4 +1,4 @@
-class Email < ActiveRecord::Base
+class Email < MLS::Model
 
   has_and_belongs_to_many :attachments, :class_name => 'Document'
 
