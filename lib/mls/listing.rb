@@ -42,11 +42,6 @@ class Listing < MLS::Model
   # has_many :agents, -> { order('agencies.order') }, :through => :agencies, :inverse_of => :listings, :source => :agent
   # has_many :lead_listings, :dependent => :delete_all
 
-  def contact
-    @contact ||= agents.first
-  end
-  alias_method :default_contact, :contact
-
   def rate(units=nil)
     return nil if !read_attribute(:rate)
     units ||= rate_units

@@ -3,8 +3,6 @@ class Property < MLS::Model
   include MLS::Slugger
   include MLS::Avatar
 
-  belongs_to :contact, :class_name => 'Account'
-
   has_many :units
   has_many :references, as: :subject
   has_many :listings, :through => :units
@@ -17,15 +15,6 @@ class Property < MLS::Model
     def primary
       where(:primary => true).first
     end
-  end
-
-  def default_contact
-    @default_contact ||= contact
-    @default_contact ||= listings.where(leased_at: nil, authorized: true)
-            .where({ type: ['Lease', 'Sublease']})
-            .order(size: :desc)
-            .first.try(:contact)
-    @default_contact
   end
 
   def address
