@@ -17,6 +17,11 @@ class Property < MLS::Model
     end
   end
 
+  def contact
+    @contact ||= listings.where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease']})
+            .order(size: :desc).first.try(:contact)
+  end
+
   def address
     addresses.find(&:primary)
   end
