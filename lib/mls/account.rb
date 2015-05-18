@@ -10,6 +10,8 @@ class Account < MLS::Model
   has_many :tasks
   has_many :sources
   has_many :agencies, :inverse_of => :agent, :foreign_key => :agent_id
+  
+  has_and_belongs_to_many :regions, :foreign_key => :agent_id
 
   has_many :email_addresses, :dependent => :destroy do
     def primary
