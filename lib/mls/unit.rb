@@ -5,10 +5,12 @@ class Unit < MLS::Model
   include MLS::Avatar
 
   belongs_to :property
-  belongs_to :floorplan
+  belongs_to :floorplan, :class_name => 'Document'
 
   has_many :listings
-  has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
+  has_many :image_orderings, as: :subject, dependent: :destroy
+  has_many :photos, through: :image_orderings, source: :image
+  # has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_and_belongs_to_many :uses
 

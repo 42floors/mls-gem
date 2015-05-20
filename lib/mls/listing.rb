@@ -17,8 +17,7 @@ class Listing < MLS::Model
   AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit furniture
                   natural_light high_ceilings plug_and_play additional_storage storefront)
 
-  belongs_to :floorplan
-  belongs_to :flyer
+  belongs_to :flyer, :class_name => 'Document'
   belongs_to :unit
 
   has_one  :property,  :through => :unit

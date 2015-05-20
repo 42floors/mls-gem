@@ -4,7 +4,7 @@ class Region < MLS::Model
   
   self.inheritance_column = nil
 
-  belongs_to :cover_photo, :class_name => 'Photo'
+  belongs_to :cover_photo, :class_name => 'Image'
   belongs_to :market, :class_name => 'Region'
     
   has_and_belongs_to_many :parents, :join_table => 'regions_regions', :class_name => 'Region', :foreign_key => 'child_id', :association_foreign_key => 'parent_id'

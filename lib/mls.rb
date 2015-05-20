@@ -70,7 +70,7 @@ module MLS::Avatar
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :avatar, :class_name => 'Photo'
+    belongs_to :avatar, :class_name => 'Image'
   end
 
   def avatar_url(options={})
@@ -91,7 +91,7 @@ module MLS::Avatar
       result = "#{options[:protocol]}://"
     end
 
-    result += "#{options[:host]}/#{avatar_digest}.#{options[:format]}"
+    result += "#{options[:host]}/#{avatar_hash_key}.#{options[:format]}"
     result += "?#{url_params.to_param}" if url_params.size > 0
 
     result
@@ -99,7 +99,6 @@ module MLS::Avatar
 
 end
 
-require 'mls/photo'
 require 'mls/account'
 require 'mls/email_address'
 require 'mls/email'
@@ -112,12 +111,10 @@ require 'mls/space'
 require 'mls/lead'
 require 'mls/address'
 require 'mls/locality'
-require 'mls/flyer'
 require 'mls/inquiry'
 require 'mls/agency'
 require 'mls/document'
 require 'mls/session'
-require 'mls/floorplan'
 require 'mls/use'
 require 'mls/slug'
 require 'mls/comment'
@@ -131,3 +128,4 @@ require 'mls/event'
 require 'mls/event_action'
 require 'mls/change'
 require 'mls/mistake'
+require 'mls/image_ordering'

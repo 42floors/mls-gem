@@ -46,6 +46,7 @@ class Image < Document
 end
 
 class PDF < Document
+  include MLS::Avatar
 end
 
 
