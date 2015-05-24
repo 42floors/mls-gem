@@ -7,6 +7,7 @@ class Source < MLS::Model
   belongs_to :upload, class_name: 'Flyer'
   
   def name
+    return email_address if email_address
     url.match(/^(?:https?:\/\/)?(?:www\.)?([^\/]+)/)[1]
   end
   

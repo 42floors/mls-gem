@@ -1,5 +1,6 @@
 class Email < MLS::Model
 
+  belongs_to :source
   has_and_belongs_to_many :attachments, :class_name => 'Document'
 
   def from
@@ -8,6 +9,10 @@ class Email < MLS::Model
     else
       from_address
     end
+  end
+  
+  def name
+    from
   end
 
   def to
