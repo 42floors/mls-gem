@@ -6,6 +6,7 @@ class Vendor < MLS::Model
 
   has_and_belongs_to_many :regions
   belongs_to :account
-  has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
-
+  
+  has_many :photos, through: :image_orderings, source: :image
+  
 end
