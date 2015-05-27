@@ -16,7 +16,11 @@ class Email < MLS::Model
   end
 
   def to
-    to_names.zip(to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    if to_names
+      to_names.zip(to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    else
+      to_addresses
+    end
   end
   
   def sender
