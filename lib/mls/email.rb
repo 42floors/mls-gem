@@ -28,15 +28,27 @@ class Email < MLS::Model
   end
 
   def cc
-    cc_names.zip(cc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    if cc_names
+      cc_names.zip(cc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    else
+      cc_addresses
+    end
   end
 
   def bcc
-    bcc_names.zip(bcc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    if bcc_names
+      bcc_names.zip(bcc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    else
+      bcc_addresses
+    end
   end
 
   def reply_to
-    reply_to_names.zip(reply_to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    if reply_to_names
+      reply_to_names.zip(reply_to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+    else
+      reply_to_addresses
+    end
   end
   
   def multipart?
