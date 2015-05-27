@@ -18,6 +18,10 @@ class Email < MLS::Model
   def to
     to_names.zip(to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
   end
+  
+  def sender
+    headers['Sender']
+  end
 
   def cc
     cc_names.zip(cc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
@@ -29,6 +33,14 @@ class Email < MLS::Model
 
   def reply_to
     reply_to_names.zip(reply_to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
+  end
+  
+  def multipart?
+    body.keys.size > 1
+  end
+  
+  def parts
+    body.keys
   end
 
 end
