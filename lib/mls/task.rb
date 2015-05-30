@@ -6,6 +6,7 @@ class Task < MLS::Model
   
   has_many :events
   has_many :mistakes
+  has_many :time_logs
   has_many :reviews, -> { where(:type => "review") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
   has_many :fixes, -> { where(:type => "fix") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
   
@@ -27,6 +28,25 @@ class Task < MLS::Model
   
   def parse?
     type == "parse"
+  end
+  
+  def duration
+    time_logs.where(:started_at => true, :stopped_at => true).sum("duration")
+  end
+  
+  def pause
+    log = time_logs.where(:started_at => true, :stopped_at => false).first
+    if log
+      log.update(:stopped_at => Time.now)
+    end
+  end
+  
+  def resume
+    time_logs << TimeLog.create(:started_at => Time.now)
+  end
+  
+  def paused?
+    !started_at.nil? && completed_at.nil? && time_logs.where(:started_at => true, :stopped_at => false).length == 0
   end
   
 end
