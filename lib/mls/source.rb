@@ -7,7 +7,7 @@ class Source < MLS::Model
   belongs_to :upload, class_name: 'Flyer'
   
   def name
-    return email_address if email_address.respond_to?(:email_address) && email_address #check defined while project mailman not released
+    return email_address if self.respond_to?(:email_address) #check defined while project mailman not released
     url.match(/^(?:https?:\/\/)?(?:www\.)?([^\/]+)/)[1]
   end
   
