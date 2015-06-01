@@ -16,11 +16,7 @@ class Email < MLS::Model
   end
 
   def to
-    if to_names
-      to_names.zip(to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
-    else
-      to_addresses
-    end
+    to_names.zip(to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
   end
   
   def sender
@@ -28,27 +24,15 @@ class Email < MLS::Model
   end
 
   def cc
-    if cc_names
-      cc_names.zip(cc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
-    else
-      cc_addresses
-    end
+    cc_names.zip(cc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
   end
 
   def bcc
-    if bcc_names
-      bcc_names.zip(bcc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
-    else
-      bcc_addresses
-    end
+    bcc_names.zip(bcc_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
   end
 
   def reply_to
-    if reply_to_names
-      reply_to_names.zip(reply_to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
-    else
-      reply_to_addresses
-    end
+    reply_to_names.zip(reply_to_addresses).map{|t| t[0] ? "\"#{t[0]}\" <#{t[1]}>" : t[1] }.join(', ')
   end
   
   def multipart?
