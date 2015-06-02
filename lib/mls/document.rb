@@ -25,14 +25,17 @@ class Document < MLS::Model
 
   
   def width
+    return nil if !dimensions
     return dimensions.split('x')[0].to_i
   end
   
   def height
+    return nil if !dimensions
     return dimensions.split('x')[1].to_i
   end
   
   def aspect_ratio
+    return nil if !width || !height
     return width.to_f / height.to_f
   end
   
