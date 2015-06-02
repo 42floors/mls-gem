@@ -22,6 +22,19 @@ class Document < MLS::Model
   def path(style=:original)
     "/documents/#{hash_key}/#{style}#{File.extname(filename)}"
   end
+
+  
+  def width
+    return dimensions.split('x')[0].to_i
+  end
+  
+  def height
+    return dimensions.split('x')[1].to_i
+  end
+  
+  def aspect_ratio
+    return width.to_f / height.to_f
+  end
   
   def self.find_matching(file)
     filename = file.original_filename if file.respond_to?(:original_filename)
