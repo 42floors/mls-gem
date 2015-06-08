@@ -1,6 +1,7 @@
 class TimeLog < MLS::Model
   
   belongs_to :task
+  belongs_to :account
   
   scope :completed,   -> { where('started_at IS NOT NULL AND stopped_at IS NOT NULL') }
   scope :incompleted,   -> { where('started_at IS NOT NULL AND stopped_at IS NULL') }
