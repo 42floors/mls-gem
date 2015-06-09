@@ -28,5 +28,19 @@ class Property < MLS::Model
   def address
     addresses.find(&:primary)
   end
-
+  
+  def neighborhood_region
+    target = regions.where(:query => address.neighborhood).first
+    target ||= regions.where(:query => neighborhood).first
+    target ||= regions.where(:type => "Neighborhood").first
+    target
+  end
+  
+  def market
+    regions.filter(:is_market => true).first
+  end
+  
+  def target_region
+    regions.filter(:target => true).first
+  end
 end
