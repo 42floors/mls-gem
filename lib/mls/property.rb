@@ -30,7 +30,7 @@ class Property < MLS::Model
   end
   
   def neighborhood_region
-    target = regions.where(:query => address.neighborhood).first if address.neighborhood
+    target = regions.where(:query => address.neighborhood).first if address.try(:neighborhood)
     target ||= regions.where(:query => neighborhood).first if neighborhood
     target ||= regions.where(:type => "Neighborhood").first
     target
