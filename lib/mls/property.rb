@@ -50,7 +50,8 @@ class Property < MLS::Model
   
   def fetch_region(params)
     if regions.loaded?
-      regions.to_a.find{params}
+      params = params.map{|k,v| [k, v]}
+      regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
     else
       regions.where(params).first
     end
