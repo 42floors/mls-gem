@@ -30,11 +30,19 @@ class Account < MLS::Model
   end
   
   def email_address
-    email_addresses.primary.address
+    if email_addresses.loaded?
+      email_addresses.to_a.find{|p| p.primary }.address
+    else
+      email_addresses.primary.address
+    end
   end
   
   def phone
-    phones.primary.number
+    if phones.loaded?
+      phones.to_a.find{|p| p.primary }.number
+    else
+      phones.primary.number
+    end
   end
 
 end

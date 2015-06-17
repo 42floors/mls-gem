@@ -8,7 +8,7 @@ class Property < MLS::Model
   has_many :listings, :through => :units
   has_many :localities
   has_many :regions, :through => :localities
-  has_many :image_orderings, as: :subject, dependent: :destroy
+  has_many :image_orderings, as: :subject
 
   has_many   :addresses do
     def primary
@@ -30,21 +30,29 @@ class Property < MLS::Model
   end
   
   def neighborhood_region
-    target = regions.where(:query => address.neighborhood).first if address.try(:neighborhood)
-    target ||= regions.where(:query => neighborhood).first if neighborhood
-    target ||= regions.where(:type => "Neighborhood").first
-    target
+    params = {:query => address.neighborhood} if address.try(:neighborhood)
+    params ||= {:query => neighborhood} if neighborhood
+    params ||= {:type => "Neighborhood"}
+    fetch_region(params)
   end
   
   def city_region
-    regions.where(:type => "City").first
+    fetch_region(:type => "City")
   end
   
   def market
-    regions.where(:is_market => true).first
+    fetch_region(:is_market => true)
   end
   
   def target_region
-    regions.where(:target => true).first
+    fetch_region(:target => true)
+  end
+  
+  def fetch_region(params)
+    if regions.loaded?
+      regions.to_a.find{params}
+    else
+      regions.where(params).first
+    end
   end
 end
