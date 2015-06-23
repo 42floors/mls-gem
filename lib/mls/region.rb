@@ -18,6 +18,16 @@ class Region < MLS::Model
     end
   end
   
+  def target
+    return @target if @target
+    @target = children.where(:target => true).first
+    @target ||= market.try(:target)
+    @target ||= market
+    @target ||= self
+    
+    @target
+  end
+  
   def cover_photo_url(options={})
 
     options.reverse_merge!({
