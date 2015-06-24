@@ -1,7 +1,7 @@
 class Source < MLS::Model
 
   has_many :tasks, :as => :subject
-  has_mane :emails
+  has_many :emails
   
   belongs_to :account
   belongs_to :organization
