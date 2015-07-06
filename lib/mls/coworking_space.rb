@@ -8,5 +8,12 @@ class CoworkingSpace < MLS::Model
   has_many    :photos, through: :image_orderings, source: :image
   has_many    :spaces
   has_many    :addresses, :through => :property
+  
+  def name
+    return @name if @name
+    @name = organization.name
+    @name += " - " + self.name if self.name
+    @name
+  end
 
 end
