@@ -10,10 +10,9 @@ class CoworkingSpace < MLS::Model
   has_many    :addresses, :through => :property
   
   def name
-    return @name if @name
-    @name = organization.name
-    @name += " - " + self.name if self.name
-    @name
+    output = organization.name
+    output += " - " + self.name if self.name
+    output
   end
 
 end
