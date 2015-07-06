@@ -11,7 +11,7 @@ class CoworkingSpace < MLS::Model
   
   def name
     output = organization.name
-    output += " - " + self.name if self.name
+    output += " - " + read_attribute(:name) if read_attribute(:name)
     output
   end
 
