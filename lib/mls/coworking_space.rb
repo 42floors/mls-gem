@@ -1,12 +1,11 @@
 class CoworkingSpace < MLS::Model
   include MLS::Slugger
-
-  belongs_to :unit
-
-  has_one  :address
-  has_one :property, through: :unit
-
-  has_many :spaces
-  has_many :addresses
+  include MLS::Avatar
+  
+  belongs_to  :organization
+  belongs_to  :property
+  has_many    :image_orderings, as: :subject, dependent: :destroy
+  has_many    :spaces
+  has_many    :addresses, :through => :property
 
 end
