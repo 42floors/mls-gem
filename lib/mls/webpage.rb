@@ -1,6 +1,6 @@
 class Webpage < MLS::Model
 
-  has_one :task, as: :subject
+  has_many :tasks, as: :subject
 
   validates :url, presence: true
 
