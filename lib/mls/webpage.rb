@@ -4,4 +4,8 @@ class Webpage < MLS::Model
 
   validates :url, presence: true
 
+  def name
+    url
+  end
+
 end
