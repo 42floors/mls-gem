@@ -29,10 +29,16 @@ class Property < MLS::Model
     addresses.find(&:primary)
   end
   
+  def closest_region
+    region = neighborhood_region
+    region ||= city_region
+    region ||= market
+    region
+  end
+  
   def neighborhood_region
-    params = {:query => address.neighborhood} if address.try(:neighborhood)
-    params ||= {:query => neighborhood} if neighborhood
-    params ||= {:type => "Neighborhood"}
+    params = {:query => neighborhood} if neighborhood
+    params = {:type => "Neighborhood"}
     fetch_region(params)
   end
   
@@ -51,7 +57,11 @@ class Property < MLS::Model
   def fetch_region(params)
     if regions.loaded?
       params = params.map{|k,v| [k, v]}
-      regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
+      if params[0][0] == :query
+        regions.to_a.find{|r| r.name == params[0][1]}
+      else
+        regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
+      end
     else
       regions.where(params).first
     end
