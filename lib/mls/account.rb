@@ -44,5 +44,10 @@ class Account < MLS::Model
       phones.primary.try(:number)
     end
   end
+  
+  def company_name
+    return organization.name if organization
+    return company
+  end
 
 end
