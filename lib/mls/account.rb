@@ -13,14 +13,14 @@ class Account < MLS::Model
   
   has_and_belongs_to_many :regions, :foreign_key => :agent_id
 
-  has_many :email_addresses, :dependent => :destroy do
+  has_many :email_addresses do
     def primary
       # For cases where the number is not primary we order
       order(:primary => :desc).first
     end
   end
 
-  has_many :phones, dependent: :destroy do
+  has_many :phones do
 
     def primary
       # For cases where the number is not primary we order

@@ -7,7 +7,7 @@ class Vendor < MLS::Model
   has_and_belongs_to_many :regions
   belongs_to :account
 
-  has_many :image_orderings, as: :subject, dependent: :destroy
+  has_many :image_orderings, as: :subject
   has_many :photos, through: :image_orderings, source: :image
   
 end

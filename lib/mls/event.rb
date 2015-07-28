@@ -5,9 +5,9 @@ class Event < MLS::Model
   belongs_to :account
   belongs_to :task
   
-  has_many :event_actions, :dependent => :destroy
+  has_many :event_actions
   
-  has_many :regards, :dependent => :destroy
+  has_many :regards
   
   def actions
     event_actions.map(&:action)
