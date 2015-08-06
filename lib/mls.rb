@@ -150,6 +150,7 @@ module MLS::Avatar
   end
 
   def avatar_url(options={})
+    return nil unless avatar_hash_key
 
     options.reverse_merge!({
       :style => nil,
