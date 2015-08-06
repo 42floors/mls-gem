@@ -8,7 +8,7 @@ class Region < MLS::Model
   belongs_to :market, :class_name => 'Region'
   
   has_one  :geometry, as: :subject
-  has_many :stats, -> { order(:created_at => :asc) }, as: :subject
+  has_many :stats, as: :subject
     
   has_and_belongs_to_many :parents, :join_table => 'regions_regions', :class_name => 'Region', :foreign_key => 'child_id', :association_foreign_key => 'parent_id'
   has_and_belongs_to_many :children, :join_table => 'regions_regions', :class_name => 'Region', :foreign_key => 'parent_id', :association_foreign_key => 'child_id'
