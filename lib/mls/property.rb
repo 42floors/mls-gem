@@ -50,8 +50,8 @@ class Property < MLS::Model
     fetch_region(:is_market => true)
   end
   
-  def target_region
-    fetch_region(:target => true)
+  def flagship
+    fetch_region(:is_flagship => true)
   end
   
   def fetch_region(params)
