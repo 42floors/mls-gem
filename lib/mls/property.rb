@@ -37,21 +37,25 @@ class Property < MLS::Model
   end
   
   def neighborhood_region
+    return @neighborhood_region if defined? @neighborhood_region
     params = {:query => neighborhood} if neighborhood
     params = {:type => "Neighborhood"}
-    fetch_region(params)
+    @neighborhood_region = fetch_region(params)
   end
   
   def city_region
-    fetch_region(:type => "City")
+    return @city_region if defined? @city_region
+    @city_region = fetch_region(:type => "City")
   end
   
   def market
-    fetch_region(:is_market => true)
+    return @market if defined? @market
+    @market = fetch_region(:is_market => true)
   end
   
   def flagship
-    fetch_region(:is_flagship => true)
+    return @flagship if defined? @flagship
+    @flagship = fetch_region(:is_flagship => true)
   end
   
   def fetch_region(params)
