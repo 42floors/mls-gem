@@ -6,6 +6,7 @@ class Account < MLS::Model
   has_one :lead, foreign_key: :account_id
 
   belongs_to :organization
+  belongs_to :green_sheet, :foreign_key => :green_sheet_uuid
 
   has_many :tasks
   has_many :sources
