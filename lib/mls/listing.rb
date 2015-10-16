@@ -19,8 +19,7 @@ class Listing < MLS::Model
 
   belongs_to :flyer, :class_name => 'Document'
   belongs_to :unit
-
-  has_one  :property,  :through => :unit
+  belongs_to :property
 
   has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 

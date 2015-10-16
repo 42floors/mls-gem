@@ -5,7 +5,7 @@ class Property < MLS::Model
 
   has_many :units
   has_many :references, as: :subject
-  has_many :listings, :through => :units
+  has_many :listings
   has_many :localities
   has_many :regions, :through => :localities
   has_many :image_orderings, as: :subject
