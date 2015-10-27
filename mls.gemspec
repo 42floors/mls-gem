@@ -31,5 +31,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sdoc-templates-42floors'
 
   # Runtime
+  s.add_runtime_dependency 'rgeo', '>= 0.4.0'
   s.add_runtime_dependency 'sunstone', '>= 2.0.1'
 end
