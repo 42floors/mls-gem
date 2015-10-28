@@ -9,6 +9,7 @@ class Property < MLS::Model
   has_many :localities
   has_many :regions, :through => :localities
   has_many :image_orderings, as: :subject
+  has_many :photos, through: :image_orderings, source: :image
 
   has_many   :addresses do
     def primary
@@ -16,12 +17,8 @@ class Property < MLS::Model
     end
   end
 
-  def photos
-    image_orderings.sort_by(&:order).map(&:image)
-  end
-
   def contact
-    @contact ||= listings.where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'])
+    @contact ||= listings.eager_load(:email_addresses, :phones).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'])
             .order(size: :desc).first.try(:contact)
   end
 
@@ -120,15 +117,11 @@ class Property < MLS::Model
   end
   
   def fetch_region(params)
-    if regions.loaded?
-      params = params.map{|k,v| [k, v]}
-      if params[0][0] == :query
-        regions.to_a.find{|r| r.name == params[0][1]}
-      else
-        regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
-      end
+    params = params.map{|k,v| [k, v]}
+    if params[0][0] == :query
+      regions.to_a.find{|r| r.name == params[0][1]}
     else
-      regions.where(params).first
+      regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
     end
   end
 end
