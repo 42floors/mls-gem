@@ -31,19 +31,11 @@ class Account < MLS::Model
   end
   
   def email_address
-    if email_addresses.loaded?
-      email_addresses.to_a.find{|p| p.primary }.try(:address)
-    else
-      email_addresses.primary.try(:address)
-    end
+    email_addresses.to_a.find{|p| p.primary }.try(:address)
   end
   
   def phone
-    if phones.loaded?
-      phones.to_a.find{|p| p.primary }.try(:number)
-    else
-      phones.primary.try(:number)
-    end
+    phones.to_a.find{|p| p.primary }.try(:number)
   end
   
   def company_name

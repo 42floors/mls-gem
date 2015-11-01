@@ -18,7 +18,7 @@ class Property < MLS::Model
   end
 
   def contact
-    @contact ||= listings.eager_load(:email_addresses, :phones).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'])
+    @contact ||= listings.eager_load(:agents => [:email_addresses, :phones, :organization]).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'])
             .order(size: :desc).first.try(:contact)
   end
 
