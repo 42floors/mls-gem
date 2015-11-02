@@ -35,7 +35,7 @@ class Account < MLS::Model
   end
   
   def phone
-    phones.to_a.find{|p| p.primary }.try(:number)
+    (phones.to_a.find{|p| p.primary } || phones.first).try(:number)
   end
   
   def company_name
