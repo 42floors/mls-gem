@@ -11,6 +11,7 @@ class Account < MLS::Model
   has_many :tasks
   has_many :sources
   has_many :agencies, :inverse_of => :agent, :foreign_key => :agent_id
+  has_many :listings, :through => :agencies, :inverse_of => :agents
   
   has_and_belongs_to_many :regions, :foreign_key => :agent_id
 
