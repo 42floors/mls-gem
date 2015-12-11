@@ -1,6 +1,7 @@
 class Email < MLS::Model
 
   belongs_to :source
+  has_many :tasks, :as => :subject, :inverse_of => :subject
   has_and_belongs_to_many :attachments, :class_name => 'Document'
 
   def from
@@ -12,7 +13,7 @@ class Email < MLS::Model
   end
   
   def name
-    from
+    from_address || from
   end
 
   def to

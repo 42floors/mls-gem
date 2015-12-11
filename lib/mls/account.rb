@@ -39,6 +39,11 @@ class Account < MLS::Model
     (phones.to_a.find{|p| p.primary } || phones.first).try(:number)
   end
   
+  def role?(*compare_roles)
+    (roles & compare_roles).any?
+  end
+  alias_method :roles?, :role?
+  
   def company_name
     return organization.name if organization
     return company

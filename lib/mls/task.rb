@@ -3,6 +3,7 @@ class Task < MLS::Model
 
   belongs_to  :subject, :polymorphic => true
   belongs_to  :account
+  belongs_to  :source
   
   has_many :events
   has_many :mistakes
@@ -15,7 +16,7 @@ class Task < MLS::Model
   end
   
   def for_task?
-    subject_type == "Taks"
+    subject_type == "Task"
   end
   
   def review?
@@ -28,6 +29,10 @@ class Task < MLS::Model
   
   def parse?
     type == "parse"
+  end
+  
+  def crawl?
+    type == "crawl"
   end
   
   def duration
