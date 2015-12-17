@@ -20,9 +20,13 @@ class Document < MLS::Model
   end
   
   def path(style=:original)
-    "/documents/#{hash_key}/#{style}#{File.extname(filename)}"
+    "/documents/#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}"
   end
 
+  def partition(value)
+    split = value.scan(/.{1,4}/)
+    split.shift(@configs[:partition_depth] || 3).join("/") + split.join("")
+  end
   
   def width
     return nil if !dimensions
@@ -59,30 +63,6 @@ class Document < MLS::Model
 end
 
 class Image < Document
-
-  def url(options={})
-    options.reverse_merge!({
-      :style => nil,
-      :bg => nil,
-      :protocol => 'https',
-      :format => "jpg",
-      :host => MLS.image_host
-    });
-
-    url_params = {s: options[:style], bg: options[:bg]}.select{ |k, v| v }
-
-    if options[:protocol] == :relative # Protocol Relative
-      result = '//'
-    else options[:protocol]
-      result = "#{options[:protocol]}://"
-    end
-
-    result += "#{options[:host]}/#{hash_key}.#{options[:format]}"
-    result += "?#{url_params.to_param}" if url_params.size > 0
-
-    result
-  end
-
 end
 
 class PDF < Document
