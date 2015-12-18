@@ -25,7 +25,7 @@ class Document < MLS::Model
 
   def partition(value)
     split = value.scan(/.{1,4}/)
-    split.shift(@configs[:partition_depth] || 3).join("/") + split.join("")
+    split.shift(4).join("/") + split.join("")
   end
   
   def width
