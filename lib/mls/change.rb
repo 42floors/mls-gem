@@ -5,6 +5,10 @@ class Change < MLS::Model
   has_many :event_actions, :as => :action
   has_many :mistakes
   
+  def events
+    event_actions.map(&:event)
+  end
+  
   # Returns the association instance for the given name, instantiating it if it doesn't already exist
   def association(name) #:nodoc:
     association = super
