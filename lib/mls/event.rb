@@ -4,6 +4,7 @@ class Event < MLS::Model
   
   belongs_to :account
   belongs_to :task
+  belongs_to :api_key
   
   has_many :event_actions
   
