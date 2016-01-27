@@ -16,11 +16,11 @@ class Document < MLS::Model
   end
   
   def url(style=:original)
-    MLS.config['document_host'] + path(style)
+    MLS.config['document_host'] + '/' + path(style)
   end
   
   def path(style=:original)
-    "/documents/#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}"
+    "#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}"
   end
 
   def partition(value)
