@@ -36,11 +36,11 @@ class Task < MLS::Model
   end
   
   def duration
-    time_logs.where(:started_at => true, :stopped_at => true).sum("duration")
+      time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].not_eq(nil)).sum("duration")
   end
   
   def pause
-    log = time_logs.where(:started_at => true, :stopped_at => false).first
+    log = time_logs.where(:stopped_at => nil).where(TimeLog.arel_table[:started_at].not_eq(nil)).first
     if log
       log.update(:stopped_at => Time.now)
     end
@@ -51,7 +51,7 @@ class Task < MLS::Model
   end
   
   def paused?
-    !started_at.nil? && completed_at.nil? && time_logs.where(:started_at => true, :stopped_at => false).length == 0
+    !started_at.nil? && completed_at.nil? && time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].not_eq(nil)).length == 0
   end
   
 end
