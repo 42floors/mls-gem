@@ -1,4 +1,5 @@
 require 'sunstone'
+require 'arel/extensions'
 
 module MLS
 
