@@ -32,7 +32,7 @@ class Event < MLS::Model
     yield
     event
   ensure
-    Thread.current[:sunstone_headers].delete('Event-Id')
+    Thread.current[:sunstone_headers].try(:delete, 'Event-Id')
   end
   
 end
