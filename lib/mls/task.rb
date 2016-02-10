@@ -51,7 +51,7 @@ class Task < MLS::Model
   end
   
   def paused?
-    !started_at.nil? && completed_at.nil? && time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].not_eq(nil)).length == 0
+    !started_at.nil? && completed_at.nil? && time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].eq(nil)).length == 0
   end
   
 end
