@@ -1,3 +1,4 @@
+require 'phony'
 require 'sunstone'
 require 'arel/extensions'
 
