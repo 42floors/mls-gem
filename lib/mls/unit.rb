@@ -7,7 +7,9 @@ class Unit < MLS::Model
   belongs_to :property
   belongs_to :floorplan, :class_name => 'Document'
 
+
   has_many :listings
+  has_many :references, as: :subject
   has_many :image_orderings, as: :subject
   has_many :photos, through: :image_orderings, source: :image
   # has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
