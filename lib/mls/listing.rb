@@ -28,6 +28,10 @@ class Listing < MLS::Model
 
   has_one  :address
   has_many :addresses
+  
+  filter_on :organization_id, -> (v) {
+    where(organization_id: v)
+  }
 
   # has_many :comments
   # has_many :regions
