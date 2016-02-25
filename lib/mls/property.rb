@@ -11,7 +11,8 @@ class Property < MLS::Model
   has_many :image_orderings, as: :subject
   has_many :photos, through: :image_orderings, source: :image
 
-  has_and_belongs_to_many :uses
+  has_many :uses
+  # has_and_belongs_to_many :uses
 
   has_many   :addresses do
     def primary
