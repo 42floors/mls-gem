@@ -5,6 +5,25 @@ class Change < MLS::Model
   has_many :event_actions, :as => :action
   has_many :mistakes
   
+  filter_on :diff, -> (v) {
+    raise "needs to be hash" if !v.is_a? Hash
+    raise "missing keys for diff filter" if ([:key, :operator, :value, :index] - v.keys).length > 0
+
+    where(Change.arel_table[:diff][v[:key].to_sym][v[:index]].send(v[:operator], v[:value].to_s))
+  }
+  
+  filter_on :account_id, -> (v) {
+    if v == true
+      where(Change.arel_table[:account_id].not_eq(:nil))
+    else
+      where(:account_id => v)
+    end
+  }
+  
+  filter_on :subject_exists, -> (v){
+    where(:subject_exists => v)
+  }
+  
   def events
     event_actions.map(&:event)
   end
