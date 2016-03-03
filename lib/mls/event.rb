@@ -18,6 +18,15 @@ class Event < MLS::Model
     regards.map(&:thing)
   end
   
+  def encapsulate(&block)
+    Thread.current[:sunstone_headers] ||= {}
+    Thread.current[:sunstone_headers]['Event-Id'] = event.id
+    yield
+    event
+  ensure
+    Thread.current[:sunstone_headers].delete('Event-Id')
+  end
+
   # Allow you to encapsulate all modification to be attached to a single event
   #
   #   Event.encapsulate(source: '...', source_type: 'API') do
