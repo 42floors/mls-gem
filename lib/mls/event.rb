@@ -20,7 +20,7 @@ class Event < MLS::Model
   
   def encapsulate(&block)
     Thread.current[:sunstone_headers] ||= {}
-    Thread.current[:sunstone_headers]['Event-Id'] = event.id
+    Thread.current[:sunstone_headers]['Event-Id'] = self.id
     yield
     event
   ensure
