@@ -22,7 +22,7 @@ class Event < MLS::Model
     Thread.current[:sunstone_headers] ||= {}
     Thread.current[:sunstone_headers]['Event-Id'] = self.id
     yield
-    event
+    self
   ensure
     Thread.current[:sunstone_headers].delete('Event-Id')
   end
