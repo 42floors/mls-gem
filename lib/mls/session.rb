@@ -10,8 +10,8 @@ class Session < MLS::Model
       email_address = email_address[:email_address]
     end
     
-    Session.create(:email_address => email_address, :password => password)
-  rescue Sunstone::Exception::Unauthorized
+    Session.create!(:email_address => email_address, :password => password)
+  rescue Sunstone::Exception::Unauthorized, ActiveRecord::RecordInvalid
     nil
   end
 
