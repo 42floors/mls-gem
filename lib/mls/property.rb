@@ -3,6 +3,14 @@ class Property < MLS::Model
   include MLS::Slugger
   include MLS::Avatar
 
+  LEED_CERTIFICATIONS = %w(None Certified Silver Gold Platinum)
+  AMENITIES = %W(parking_garage lobby_attendant gym common_kitchen
+    common_bike_storage onsite_parking key_card_access freight_elevator 
+    ada_accessible on_site_security
+    elevators close_highway close_public_transit close_points_of_interest
+    parking_ratio number_of_buildings)
+  CONSTRUCTION_TYPES = %w(brick steel concrete masonry tiltwall wood glass)
+
   has_many :units
   has_many :references, as: :subject
   has_many :listings
