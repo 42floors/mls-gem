@@ -3,6 +3,11 @@ class Unit < MLS::Model
 
   include MLS::Slugger
   include MLS::Avatar
+  
+  TYPES = %w(unit floor building)
+  AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit
+    furniture natural_light high_ceilings plug_and_play additional_storage
+    storefront offices conference_rooms bathrooms)
 
   belongs_to :property
   belongs_to :floorplan, :class_name => 'Document'

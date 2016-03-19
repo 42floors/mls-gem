@@ -29,6 +29,8 @@ class Listing < MLS::Model
   has_one  :address
   has_many :addresses
   
+  accepts_nested_attributes_for :unit
+  
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
   }

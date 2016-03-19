@@ -108,7 +108,7 @@ class Property < MLS::Model
   def neighborhood_region
     return @neighborhood_region if defined? @neighborhood_region
     params = {:query => neighborhood} if neighborhood
-    params = {:type => "Neighborhood"}
+    params ||= {:type => "Neighborhood"}
     @neighborhood_region = fetch_region(params)
   end
   
