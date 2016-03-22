@@ -27,6 +27,8 @@ class Property < MLS::Model
       where(:primary => true).first
     end
   end
+  
+  accepts_nested_attributes_for :photos
 
   def contact
     @contact ||= listings.eager_load(:agents => [:email_addresses, :phones, :organization]).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'], :touched_at => {:gte => 90.days.ago})

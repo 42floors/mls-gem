@@ -31,6 +31,8 @@ class Account < MLS::Model
 
   end
   
+  accepts_nested_attributes_for :phones, :email_addresses
+  
   def email_address
     email_addresses.to_a.find{|p| p.primary }.try(:address)
   end
