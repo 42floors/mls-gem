@@ -29,7 +29,17 @@ class Account < MLS::Model
 
   end
   
-  accepts_nested_attributes_for :phones, :email_addresses, :clients
+  attr_accessor :password, :password_required
+  accepts_nested_attributes_for :phones, :email_addresses
+  
+  validates :password, :confirmation => true, :if => Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
+  validates :password_confirmation, :presence => true, :if => :password
+  
+  def password=(pass)
+    return if pass.blank?
+    @password = pass
+    self.password_digest = BCrypt::Password.create(pass)
+  end
   
   def email_address
     email_addresses.to_a.find{|p| p.primary }.try(:address)
@@ -48,5 +58,35 @@ class Account < MLS::Model
     return organization.name if organization
     return company
   end
+  
+  def self.send_reset_password_email(url, email_address)
+    req = Net::HTTP::Post.new("/accounts/password")
+    req.body = { email_address: email_address, url: url }.to_json
+    Account.connection.instance_variable_get(:@connection).send_request(req)
+  end
+  
+  def self.update_password(token, password, password_confirmation)
+    req = Net::HTTP::Put.new("/accounts/password")
+    req.body = {
+      token: token,
+      password: password,
+      password_confirmation: password_confirmation
+    }.to_json
+    Account.connection.instance_variable_get(:@connection).send_request(req)
+  end
+  
+  def self.confirm(token)
+    req = Net::HTTP::Post.new("/accounts/confirm")
+    req.body = { token: token }.to_json
+    Account.connection.instance_variable_get(:@connection).send_request(req)
+  end
+  
+  def confirm_email_address(url)
+    req = Net::HTTP::Post.new("/accounts/#{self.id}/confirm")
+    req.body = {url: url}.to_json
+    Account.connection.instance_variable_get(:@connection).send_request(req)
+  end
+  
+  
 
 end
