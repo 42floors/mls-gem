@@ -20,6 +20,8 @@ class Unit < MLS::Model
   # has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_and_belongs_to_many :uses
+  
+  accepts_nested_attributes_for :uses
 
   def tags
     read_attribute(:tags) || []
