@@ -76,12 +76,14 @@ class Property < MLS::Model
       ##Features
       #{description}
       EOS
-    elsif description
-      show_amenities = @property.amenities.select{ |k,v| v }
+    elsif description && description.exclude?("This building's amenities include")
+      show_amenities = amenities.select{ |k,v| v }
       <<~EOS
       #{description}
-      #{"This building's amenities include" + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
+      #{"This building's amenities include " + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
       EOS
+    elsif description
+      description
     else
       automated_description
     end
