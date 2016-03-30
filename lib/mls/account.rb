@@ -35,6 +35,10 @@ class Account < MLS::Model
   validates :password, :confirmation => true, :if => Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password_confirmation, :presence => true, :if => :password
   
+  def password_required?
+    @password_required != false
+  end
+  
   def password=(pass)
     return if pass.blank?
     @password = pass

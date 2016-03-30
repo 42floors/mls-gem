@@ -28,7 +28,25 @@ class Property < MLS::Model
     end
   end
   
-  accepts_nested_attributes_for :photos
+  accepts_nested_attributes_for :photos, :image_orderings
+
+  def photos_attributes=(attrs)
+    attrs ||= []
+    
+    self.photos = attrs.each_with_index.map do |photo_attrs, index|
+        photo = Image.find(photo_attrs.delete(:id))
+        photo.update(photo_attrs) unless photo_attrs.empty?
+        photo
+    end
+  end
+  
+  def photos=(array)
+    array.compact!
+    return if self.photos.map(&:id) == array.map(&:id)
+    
+    self.photos.clear
+    super
+  end
 
   def contact
     @contact ||= listings.eager_load(:agents => [:email_addresses, :phones, :organization]).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'], :touched_at => {:gte => 90.days.ago})
@@ -49,6 +67,24 @@ class Property < MLS::Model
   
   def automated_description
     external_data['narrativescience.com']
+  end
+  
+  def display_description
+    if description && description.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
+      <<~EOS
+      #{automated_description}
+      ##Features
+      #{description}
+      EOS
+    elsif description
+      show_amenities = @property.amenities.select{ |k,v| v }
+      <<~EOS
+      #{description}
+      #{"This building's amenities include" + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
+      EOS
+    else
+      automated_description
+    end
   end
   
   def internet_providers
