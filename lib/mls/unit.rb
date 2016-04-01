@@ -3,7 +3,7 @@ class Unit < MLS::Model
 
   include MLS::Slugger
   include MLS::Avatar
-  
+
   TYPES = %w(unit floor building)
   AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit
     furniture natural_light high_ceilings plug_and_play additional_storage
@@ -20,7 +20,7 @@ class Unit < MLS::Model
   # has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_and_belongs_to_many :uses
-  
+
   accepts_nested_attributes_for :uses
 
   def tags
@@ -29,17 +29,13 @@ class Unit < MLS::Model
 
   def name
     name = ""
-    case self.type
-    when 'unit'
-      name += "Unit"
-      name += " #{self.number}" if self.number
-      name += " (Floor #{self.floor})" if self.floor
-    when 'floor'
-      name += "Floor"
-      name += " #{self.floor}" if self.floor
-      name += " (Unit #{self.number})" if self.number
-    when 'building'
-      "Entire Building"
+    if type == "building"
+      name += "Entire Building"
+    else
+      name = "Unit #{self.number}" if self.number
+      name += " (" if self.number && self.floor
+      name += "Floor #{self.floor}" if self.floor
+      name += ")" if self.number && self.floor
     end
     name
   end

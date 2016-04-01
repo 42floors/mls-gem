@@ -5,7 +5,7 @@ class Property < MLS::Model
 
   LEED_CERTIFICATIONS = %w(None Certified Silver Gold Platinum)
   AMENITIES = %W(parking_garage lobby_attendant gym common_kitchen
-    common_bike_storage onsite_parking key_card_access freight_elevator 
+    common_bike_storage onsite_parking key_card_access freight_elevator
     ada_accessible on_site_security
     elevators close_highway close_public_transit close_points_of_interest
     parking_ratio number_of_buildings)
@@ -27,48 +27,48 @@ class Property < MLS::Model
       where(:primary => true).first
     end
   end
-  
+
   accepts_nested_attributes_for :photos, :image_orderings
 
   def photos_attributes=(attrs)
     attrs ||= []
-    
+
     self.photos = attrs.each_with_index.map do |photo_attrs, index|
         photo = Image.find(photo_attrs.delete(:id))
         photo.update(photo_attrs) unless photo_attrs.empty?
         photo
     end
   end
-  
+
   def photos=(array)
     array.compact!
     return if self.photos.map(&:id) == array.map(&:id)
-    
+
     self.photos.clear
     super
   end
 
-  def contact
+  def contacts
     @contact ||= listings.eager_load(:agents => [:email_addresses, :phones, :organization]).where(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'], :touched_at => {:gte => 90.days.ago})
-            .order(size: :desc).first.try(:contact)
+            .order(size: :desc).first.try(:contacts)
   end
 
   def address
     addresses.find(&:primary)
   end
-  
+
   def longitude
     location.x
   end
-  
+
   def latitude
     location.y
   end
-  
+
   def automated_description
     external_data['narrativescience.com']
   end
-  
+
   def display_description
     if description && description.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
       <<~EOS
@@ -88,10 +88,10 @@ class Property < MLS::Model
       automated_description
     end
   end
-  
+
   def internet_providers
     data = []
-    
+
     if external_data['broadbandmap.gov']
       if external_data['broadbandmap.gov']['wirelineServices']
         external_data['broadbandmap.gov']['wirelineServices'].sort_by{|p| p['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first['maximumAdvertisedDownloadSpeed']}.reverse.each do |provider|
@@ -137,36 +137,36 @@ class Property < MLS::Model
 
     data
   end
-  
+
   def closest_region
     region = neighborhood_region
     region ||= city_region
     region ||= market
     region
   end
-  
+
   def neighborhood_region
     return @neighborhood_region if defined? @neighborhood_region
     params = {:query => neighborhood} if neighborhood
     params ||= {:type => "Neighborhood"}
     @neighborhood_region = fetch_region(params)
   end
-  
+
   def city_region
     return @city_region if defined? @city_region
     @city_region = fetch_region(:type => "City")
   end
-  
+
   def market
     return @market if defined? @market
     @market = fetch_region(:is_market => true)
   end
-  
+
   def flagship
     return @flagship if defined? @flagship
     @flagship = fetch_region(:is_flagship => true)
   end
-  
+
   def fetch_region(params)
     params = params.map{|k,v| [k, v]}
     if params[0][0] == :query

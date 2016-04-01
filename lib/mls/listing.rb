@@ -28,9 +28,9 @@ class Listing < MLS::Model
 
   has_one  :address
   has_many :addresses
-  
+
   accepts_nested_attributes_for :unit, :agencies
-  
+
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
   }
@@ -46,8 +46,12 @@ class Listing < MLS::Model
   # has_many :agents, -> { order('agencies.order') }, :through => :agencies, :inverse_of => :listings, :source => :agent
   # has_many :lead_listings, :dependent => :delete_all
 
-  def contact
-    @contact ||= agents.first
+  def contacts
+    @contacts ||= agencies.filter(:receives_inquiries => true).map(&:agent)
+  end
+
+  def lead_contact
+    @lead_contact ||= agencies.filter(:lead => true).first.try(:agent)
   end
 
   def rate(units=nil)
