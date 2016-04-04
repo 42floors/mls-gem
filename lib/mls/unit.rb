@@ -21,7 +21,7 @@ class Unit < MLS::Model
 
   has_and_belongs_to_many :uses
 
-  accepts_nested_attributes_for :uses
+  accepts_nested_attributes_for :uses, :image_orderings
 
   def tags
     read_attribute(:tags) || []

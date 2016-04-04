@@ -70,23 +70,25 @@ class Property < MLS::Model
   end
 
   def display_description
+    return @display_description if @display_description
     if description && description.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
-      <<~EOS
+      @display_description = <<~EOS
       #{automated_description}
       ##Features
       #{description}
       EOS
     elsif description && description.exclude?("This building's amenities include")
       show_amenities = amenities.select{ |k,v| v }
-      <<~EOS
+      @display_description = <<~EOS
       #{description}
       #{"This building's amenities include " + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
       EOS
     elsif description
-      description
+      @display_description = description
     else
-      automated_description
+      @display_description = automated_description
     end
+    @display_description
   end
 
   def internet_providers
