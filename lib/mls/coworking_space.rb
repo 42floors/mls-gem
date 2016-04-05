@@ -9,7 +9,10 @@ class CoworkingSpace < MLS::Model
   has_many    :spaces
   has_many    :addresses, :through => :property
   
-  accepts_nested_attributes_for :spaces
+  has_many    :ownerships, as: :asset
+  has_many    :accounts, through: :ownerships
+  
+  accepts_nested_attributes_for :spaces, :ownerships, :accounts
   
   def name
     output = organization.name

@@ -11,6 +11,9 @@ class Account < MLS::Model
   has_many :agencies, :inverse_of => :agent, :foreign_key => :agent_id
   has_many :listings, :through => :agencies, :inverse_of => :agents
   
+  has_many :ownerships
+  has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
+  
   has_and_belongs_to_many :regions, :foreign_key => :agent_id
 
   has_many :email_addresses do
