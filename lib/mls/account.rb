@@ -88,12 +88,10 @@ class Account < MLS::Model
     Account.connection.instance_variable_get(:@connection).send_request(req)
   end
   
-  def confirm_email_address(url)
+  def send_confirmation_email(url)
     req = Net::HTTP::Post.new("/accounts/#{self.id}/confirm")
     req.body = {url: url}.to_json
     Account.connection.instance_variable_get(:@connection).send_request(req)
   end
-  
-  
 
 end
