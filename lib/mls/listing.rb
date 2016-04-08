@@ -23,13 +23,13 @@ class Listing < MLS::Model
 
   has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
-  has_many :agencies
-  has_many :agents, :through => :agencies, :source => :agent
+  has_many :ownerships, -> { order('"order"') }, as: :asset, dependent: :destroy, inverse_of: :asset
+  has_many :agents, through: :ownerships, source: :account, inverse_of: :listings
 
   has_one  :address
   has_many :addresses
 
-  accepts_nested_attributes_for :unit, :agencies
+  accepts_nested_attributes_for :unit, :ownerships
 
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
