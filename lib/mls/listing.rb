@@ -23,7 +23,7 @@ class Listing < MLS::Model
 
   has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
-  has_many :ownerships, -> { order('"order"') }, as: :asset, dependent: :destroy, inverse_of: :asset
+  has_many :ownerships, as: :asset
   has_many :agents, through: :ownerships, source: :account, inverse_of: :listings
 
   has_one  :address
@@ -35,23 +35,12 @@ class Listing < MLS::Model
     where(organization_id: v)
   }
 
-  # has_many :comments
-  # has_many :regions
-  # has_many :agents
-
-  # has_many :favoritizations, :foreign_key => :favorite_id
-  # has_many :accounts, :through => :favoritizations
-  # has_many :inquiries, :as => :subject, :inverse_of => :subject
-  # has_many :agencies, -> { order('"order"') }, :dependent => :destroy, :inverse_of => :subject, :as => :subject
-  # has_many :agents, -> { order('agencies.order') }, :through => :agencies, :inverse_of => :listings, :source => :agent
-  # has_many :lead_listings, :dependent => :delete_all
-
   def contacts
-    @contacts ||= agencies.filter(:receives_inquiries => true).map(&:agent)
+    @contacts ||= ownerships.filter(:receives_inquiries => true).map(&:account)
   end
 
   def lead_contact
-    @lead_contact ||= agencies.filter(:lead => true).first.try(:agent)
+    @lead_contact ||= ownerships.filter(:lead => true).first.try(:account)
   end
 
   def rate(units=nil)
