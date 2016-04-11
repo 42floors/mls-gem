@@ -14,7 +14,7 @@ class CoworkingSpace < MLS::Model
   
   accepts_nested_attributes_for :spaces, :ownerships, :accounts
   
-  def name
+  def display_name
     output = organization.name
     output += " - " + read_attribute(:name) if read_attribute(:name)
     output
