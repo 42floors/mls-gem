@@ -66,29 +66,28 @@ class Property < MLS::Model
   end
 
   def automated_description
-    external_data['narrativescience.com']
+    description_narrativescience
   end
 
   def display_description
-    return @display_description if @display_description
-    if description && description.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
-      @display_description = <<~MD
-      #{automated_description}
+    return description if description.present?
+    # If has bullets
+    if description_data_entry && description_data_entry.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
+      <<~MD
+      #{description_narrativescience}
       ##Features
-      #{description}
+      #{description_data_entry}
       MD
-    elsif description && description.exclude?("This building's amenities include")
+    elsif description_data_entry
       show_amenities = amenities.select{ |k,v| v }
-      @display_description = <<~MD
-      #{description}
+      <<~MD
+      #{description_narrativescience}
+      #{description_data_entry}
       #{"This building's amenities include " + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
       MD
-    elsif description
-      @display_description = description
     else
-      @display_description = automated_description
+      description_narrativescience
     end
-    @display_description
   end
 
   def internet_providers
