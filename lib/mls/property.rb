@@ -17,6 +17,7 @@ class Property < MLS::Model
   has_many :localities
   has_many :regions, :through => :localities
   has_many :image_orderings, as: :subject
+  has_many :data, as: :subject
   has_many :photos, through: :image_orderings, source: :image
 
   has_many :uses
@@ -91,11 +92,11 @@ class Property < MLS::Model
   end
 
   def internet_providers
-    data = []
+    idata = []
 
-    if external_data['broadbandmap.gov']
-      if external_data['broadbandmap.gov']['wirelineServices']
-        external_data['broadbandmap.gov']['wirelineServices'].sort_by{|p| p['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first['maximumAdvertisedDownloadSpeed']}.reverse.each do |provider|
+    if datum = data.where(source: 'broadbandmap.gov').first.try(:datum)
+      if datum['wirelineServices']
+        datum['wirelineServices'].sort_by{|p| p['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first['maximumAdvertisedDownloadSpeed']}.reverse.each do |provider|
            tech = provider['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first
            speedcase = -> (speedCode) {
              case speedCode
@@ -114,7 +115,7 @@ class Property < MLS::Model
              end
            }
 
-           data << {
+           idata << {
              provider_name: provider['doingBusinessAs'] || provider['providerName'],
              provider_url: provider['providerURL'],
              technology: case tech['technologyCode']
@@ -136,7 +137,7 @@ class Property < MLS::Model
       end
     end
 
-    data
+    idata
   end
 
   def closest_region
