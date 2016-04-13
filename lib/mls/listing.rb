@@ -28,6 +28,7 @@ class Listing < MLS::Model
 
   has_one  :address
   has_many :addresses
+  has_many :references, as: :subject
 
   accepts_nested_attributes_for :unit, :ownerships
 
@@ -36,11 +37,19 @@ class Listing < MLS::Model
   }
 
   def contacts
-    @contacts ||= ownerships.filter(:receives_inquiries => true).map(&:account)
+    if ownerships.loaded?
+      @contacts ||= ownerships.select{|o| o.receives_inquiries }.map(&:account)
+    else
+      @contacts ||= ownerships.filter(:receives_inquiries => true).map(&:account)
+    end
   end
 
   def lead_contact
-    @lead_contact ||= ownerships.filter(:lead => true).first.try(:account)
+    if ownerships.loaded?
+      @lead_contact ||= ownerships.select{|o| o.lead}.first.try(:account) 
+    else
+      @lead_contact ||= ownerships.filter(:lead => true).first.try(:account)
+    end
   end
 
   def rate(units=nil)
