@@ -85,6 +85,9 @@ class Account < MLS::Model
     req = Net::HTTP::Post.new("/accounts/confirm")
     req.body = { token: token }.to_json
     Account.connection.instance_variable_get(:@connection).send_request(req)
+    return true
+  rescue Sunstone::Exception::NotFound
+    return false
   end
   
   def send_confirmation_email(url)
