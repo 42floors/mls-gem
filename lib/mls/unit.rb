@@ -13,6 +13,7 @@ class Unit < MLS::Model
   belongs_to :property
   belongs_to :floorplan, :class_name => 'Document'
 
+  belongs_to :avatar, :class_name => 'Image'
 
   has_many :listings
   has_many :references, as: :subject

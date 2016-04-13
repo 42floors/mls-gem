@@ -93,48 +93,48 @@ class Property < MLS::Model
 
   def internet_providers
     idata = []
+    
+    datum = data.select{|d| d.source == "broadbandmap.gov"}.first.try(:datum) if data.loaded?
+    datum ||= data.where(source: 'broadbandmap.gov').first.try(:datum)
+    return idata unless datum && datum['wirelineServices']
 
-    if datum = data.where(source: 'broadbandmap.gov').first.try(:datum)
-      if datum['wirelineServices']
-        datum['wirelineServices'].sort_by{|p| p['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first['maximumAdvertisedDownloadSpeed']}.reverse.each do |provider|
-           tech = provider['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first
-           speedcase = -> (speedCode) {
-             case speedCode
-             when 1 then '200 kbps'
-             when 2 then '768 kbps'
-             when 3 then '1.5 Mb/s'
-             when 4 then '3 Mb/s'
-             when 5 then '6 Mb/s'
-             when 6 then '10 Mb/s'
-             when 7 then '25 Mb/s'
-             when 8 then '50 Mb/s'
-             when 9 then '100 Mb/s'
-             when 10 then '1 Gb/s'
-             when 11 then '1 Gb/s+'
-             else 'Unknown'
-             end
-           }
+    datum['wirelineServices'].sort_by{|p| p['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first['maximumAdvertisedDownloadSpeed']}.reverse.each do |provider|
+       tech = provider['technologies'].sort_by{|t| t['maximumAdvertisedDownloadSpeed']}.reverse.first
+       speedcase = -> (speedCode) {
+         case speedCode
+         when 1 then '200 kbps'
+         when 2 then '768 kbps'
+         when 3 then '1.5 Mb/s'
+         when 4 then '3 Mb/s'
+         when 5 then '6 Mb/s'
+         when 6 then '10 Mb/s'
+         when 7 then '25 Mb/s'
+         when 8 then '50 Mb/s'
+         when 9 then '100 Mb/s'
+         when 10 then '1 Gb/s'
+         when 11 then '1 Gb/s+'
+         else 'Unknown'
+         end
+       }
 
-           idata << {
-             provider_name: provider['doingBusinessAs'] || provider['providerName'],
-             provider_url: provider['providerURL'],
-             technology: case tech['technologyCode']
-               when 10 then 'DSL'
-               when 20 then 'DSL'
-               when 30 then 'Copper Wireline'
-               when 40 then 'Cable'
-               when 41 then 'Cable'
-               when 50 then 'Fiber'
-               when 90 then 'Power Line'
-               else 'Other'
-               end,
-             bandwidth: {
-               up: speedcase.call(tech['maximumAdvertisedUploadSpeed']),
-               down: speedcase.call(tech['maximumAdvertisedDownloadSpeed'])
-             }
-           }
-        end
-      end
+       idata << {
+         provider_name: provider['doingBusinessAs'] || provider['providerName'],
+         provider_url: provider['providerURL'],
+         technology: case tech['technologyCode']
+           when 10 then 'DSL'
+           when 20 then 'DSL'
+           when 30 then 'Copper Wireline'
+           when 40 then 'Cable'
+           when 41 then 'Cable'
+           when 50 then 'Fiber'
+           when 90 then 'Power Line'
+           else 'Other'
+           end,
+         bandwidth: {
+           up: speedcase.call(tech['maximumAdvertisedUploadSpeed']),
+           down: speedcase.call(tech['maximumAdvertisedDownloadSpeed'])
+         }
+       }
     end
 
     idata
