@@ -23,6 +23,10 @@ class Region < MLS::Model
     end
   end
   
+  def tree_name
+    slug.split("/").map(&:humanize).map(&:titleize).map{|r| r.length == 2 ? r.upcase : r}.reverse.join(", ")
+  end
+  
   def cover_photo_url(options={})
 
     options.reverse_merge!({
