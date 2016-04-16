@@ -13,7 +13,8 @@ class Account < MLS::Model
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :agents
   
-  has_and_belongs_to_many :regions, :foreign_key => :agent_id
+  has_many :accounts_regions, :foreign_key => :agent_id
+  has_many :regions, through: :accounts_regions
 
   has_many :email_addresses do
     def primary
@@ -32,7 +33,7 @@ class Account < MLS::Model
   end
   
   attr_accessor :password, :password_required
-  accepts_nested_attributes_for :phones, :email_addresses
+  accepts_nested_attributes_for :phones, :email_addresses, :regions
   
   validates :password, :confirmation => true, :if => Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password_confirmation, :presence => true, :if => :password
@@ -49,6 +50,16 @@ class Account < MLS::Model
   
   def email_address
     email_addresses.to_a.find{|p| p.primary }.try(:address)
+  end
+  
+  def regions_attributes=(regions_attrs)
+    # regions.clear was trying to destroy all regions going to "/accounts_regions/" method = Destroy
+    AccountsRegion.where(:agent_id => self.id).destroy_all
+    return if regions_attrs.nil?
+    regions_attrs.each do |attrs|
+      region = Region.find(attrs["id"])
+      regions.push(region)
+    end
   end
   
   def phone
