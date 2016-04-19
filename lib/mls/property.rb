@@ -11,7 +11,6 @@ class Property < MLS::Model
     parking_ratio number_of_buildings)
   CONSTRUCTION_TYPES = %w(brick steel concrete masonry tiltwall wood glass)
 
-  has_many :units
   has_many :references, as: :subject
   has_many :listings
   has_many :localities

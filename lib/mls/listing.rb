@@ -2,8 +2,10 @@ class Listing < MLS::Model
   self.inheritance_column = nil
 
   include MLS::Slugger
+  include MLS::Avatar
 
-  SPACE_TYPES = %w(unit floor building)
+  UNIT_TYPES = %w(unit floor building)
+  FLOORS = ["Basement", "Mezzanine", "Penthouse", "Concourse", "Lower Level"] + (1..150).to_a
   TYPES = %w(Sale Lease Sublease)
   TERMS = ['Full Service', 'Net Lease', 'NN', 'NNN', 'Absolute NNN', 'Gross Lease', 'Modified Gross', 'Industrial Gross', 'Absolute Gross', 'Ground Lease', 'Other']
   SALE_TERMS = ['Cash to Seller', 'Purchase Money Mtg.', 'Owner Financing', 'Build-to-Suit', 'Sale/Leaseback', 'Other']
@@ -14,23 +16,28 @@ class Listing < MLS::Model
     '/yr' => 'rate_per_year',
   }
   TERM_UNITS = ['years', 'months']
-  AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit furniture
-                  natural_light high_ceilings plug_and_play additional_storage storefront)
+  AMENITIES = %W(kitchen showers outdoor_space reception turnkey build_to_suit
+                    furniture natural_light high_ceilings plug_and_play additional_storage
+                    storefront offices conference_rooms bathrooms)
 
   belongs_to :flyer, :class_name => 'Document'
-  belongs_to :unit
+  belongs_to :floorplan, :class_name => 'Document'
   belongs_to :property
 
   has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
 
   has_many :ownerships, as: :asset
   has_many :agents, through: :ownerships, source: :account, inverse_of: :listings
-
+  has_many :image_orderings, as: :subject
+  has_many :photos, through: :image_orderings, source: :image
+  
+  has_and_belongs_to_many :uses
+  
   has_one  :address
   has_many :addresses
   has_many :references, as: :subject
 
-  accepts_nested_attributes_for :unit, :ownerships
+  accepts_nested_attributes_for :uses, :image_orderings, :ownerships
 
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
@@ -128,7 +135,15 @@ class Listing < MLS::Model
   end
 
   def name
-    return read_attribute(:name) if read_attribute(:name)
-    unit.name
+    name = ""
+    if type == "building"
+      name += "Entire Building"
+    else
+      name = "Unit #{self.unit}" if self.unit
+      name += " (" if self.unit && self.floor
+      name += "Floor #{self.floor}" if self.floor
+      name += ")" if self.unit && self.floor
+    end
+    name
   end
 end
