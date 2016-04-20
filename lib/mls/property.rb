@@ -111,7 +111,9 @@ class Property < MLS::Model
          when 8 then '50 Mb/s'
          when 9 then '100 Mb/s'
          when 10 then '1 Gb/s'
-         when 11 then '1 Gb/s+'
+         when 11 then '10 Gb/s'
+         when 12 then '100 Gb/s'
+         when 13 then '100 Gb/s+'
          else 'Unknown'
          end
        }
