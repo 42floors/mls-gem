@@ -1,8 +1,9 @@
 class Change < MLS::Model
   self.inheritance_column = nil
   
+  belongs_to :event
   belongs_to :subject, :polymorphic => true
-  has_many :event_actions, :as => :action
+  
   has_many :mistakes
   
   filter_on :diff, -> (v) {
@@ -23,11 +24,7 @@ class Change < MLS::Model
   filter_on :subject_exists, -> (v){
     where(:subject_exists => v)
   }
-  
-  def events
-    event_actions.map(&:event)
-  end
-  
+    
   # Returns the association instance for the given name, instantiating it if it doesn't already exist
   def association(name) #:nodoc:
     association = super
