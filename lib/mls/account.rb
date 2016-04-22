@@ -4,7 +4,6 @@ class Account < MLS::Model
   include MLS::Avatar
 
   belongs_to :organization
-  belongs_to :green_sheet, :foreign_key => :green_sheet_uuid
 
   has_many :tasks
   has_many :sources
