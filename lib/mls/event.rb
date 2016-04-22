@@ -6,13 +6,9 @@ class Event < MLS::Model
   belongs_to :task
   belongs_to :api_key
   
-  has_many :event_actions
+  has_many :actions, class_name: 'Change'
   
   has_many :regards
-  
-  def actions
-    event_actions.map(&:action)
-  end
   
   def regarding
     regards.map(&:thing)
