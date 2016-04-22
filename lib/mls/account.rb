@@ -15,6 +15,7 @@ class Account < MLS::Model
   
   has_many :accounts_regions, :foreign_key => :agent_id
   has_many :regions, through: :accounts_regions
+  has_many :credit_cards
 
   has_many :email_addresses do
     def primary
@@ -37,6 +38,10 @@ class Account < MLS::Model
   
   validates :password, :confirmation => true, :if => Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password_confirmation, :presence => true, :if => :password
+  
+  def properties
+    Property.filter(listings: {ownerships: {account_id: self.id}})
+  end
   
   def password_required?
     @password_required != false
