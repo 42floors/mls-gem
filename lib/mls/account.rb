@@ -11,6 +11,7 @@ class Account < MLS::Model
   has_many :assets, through: :ownerships
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :agents
+  has_many :subscriptions
   
   has_many :accounts_regions do 
     def primary
