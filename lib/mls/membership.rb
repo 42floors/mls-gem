@@ -7,7 +7,7 @@ class Membership < MLS::Model
   end
   
   def cost_per_property
-    read_attribute(:cost_per_property) / 100 if read_attribute(:cost)
+    read_attribute(:cost_per_property) / 100 if read_attribute(:cost_per_property)
   end
   
 end
