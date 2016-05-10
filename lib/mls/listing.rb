@@ -24,8 +24,6 @@ class Listing < MLS::Model
   belongs_to :floorplan, :class_name => 'Document'
   belongs_to :property
 
-  has_many :photos, -> { order(:order => :asc) }, :as => :subject, :inverse_of => :subject
-
   has_many :ownerships, as: :asset
   has_many :agents, through: :ownerships, source: :account, inverse_of: :listings
   has_many :image_orderings, as: :subject
@@ -37,11 +35,21 @@ class Listing < MLS::Model
   has_many :addresses
   has_many :references, as: :subject
 
-  accepts_nested_attributes_for :uses, :image_orderings, :ownerships
+  accepts_nested_attributes_for :uses, :image_orderings, :ownerships, :photos
 
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
   }
+  
+  def photos_attributes=(attrs)
+    attrs ||= []
+
+    self.photos = attrs.each_with_index.map do |photo_attrs, index|
+        photo = Image.find(photo_attrs.delete(:id))
+        photo.update(photo_attrs) unless photo_attrs.empty?
+        photo
+    end
+  end
 
   def contacts
     if ownerships.loaded?
