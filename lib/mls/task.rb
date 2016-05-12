@@ -47,7 +47,8 @@ class Task < MLS::Model
   end
   
   def resume
-    time_logs << TimeLog.create(:started_at => Time.now)
+    #time_logs << TimeLog.create(:started_at => Time.now)
+    TimeLog.create(task_id: self.id, started_at: Time.now)
   end
   
   def paused?
