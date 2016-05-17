@@ -4,6 +4,7 @@ class Account < MLS::Model
   include MLS::Avatar
 
   belongs_to :organization
+  belongs_to :membership
 
   has_many :tasks
   has_many :sources
@@ -26,9 +27,6 @@ class Account < MLS::Model
   end
   
   has_many :credit_cards
-  
-  has_many :memberships
-  has_one :membership, -> { where(ended_at: nil) }
 
   has_many :email_addresses do
     def primary
