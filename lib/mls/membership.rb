@@ -1,8 +1,10 @@
 class Membership < MLS::Model
+  self.inheritance_column = nil
   
   has_many :accounts
   has_many :invoices
   belongs_to :billing_contact, class_name: "Account"
+  belongs_to :credit_card
   has_and_belongs_to_many :properties
   
   def cost_per_account
