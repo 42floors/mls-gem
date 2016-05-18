@@ -1,6 +1,7 @@
 class Membership < MLS::Model
   
   has_many :accounts
+  has_many :invoices
   belongs_to :billing_contact, class_name: "Account"
   has_and_belongs_to_many :properties
   
