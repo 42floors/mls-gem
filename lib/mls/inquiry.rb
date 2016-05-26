@@ -12,27 +12,31 @@ class Inquiry < MLS::Model
   end
   
   def account_attributes=(account_attrs)
-    if account_attrs[:email_addresses_attributes]
-      account = Account.filter(
-        :email_addresses => {
-          :address => account_attrs[:email_addresses_attributes][0][:address].try(:downcase)
-        }
-      ).first
-      if account
-        account_attrs.delete(:email_addresses_attributes)
-        account_attrs[:phones_attributes].each_with_index do |phone_attrs, index|
-          number = PhoneValidator.normalize(phone_attrs[:number])
-          account_attrs[:phones_attributes].delete_at(index) if Phone.where(number: number).count > 0
-        end
-        self.account_id = account.id
-        account_attrs[:id] = account.id
-        account.update_attributes(account_attrs)
-        super
-      else
-        super
-      end
+    account_attrs = account_attrs&.with_indifferent_access
+    self.account = if account_attrs.nil?
+      nil
+    elsif account_attrs["id"]
+      accnt = Account.find(account_attrs.delete("id"))
+      accnt.assign_attributes(account_attrs)
+      accnt
     else
-      super
+      if account_attrs["email_addresses_attributes"]
+        email_address = EmailAddress.filter(address: account_attrs["email_addresses_attributes"].map{|ea| ea["address"].downcase}, account_id: true).first
+        accnt = email_address.account
+        accnt.assign_attributes(account_attrs)
+      end
+      
+      if !accnt && account_attrs["phones_attributes"]
+        phone = Phone.filter(number: account_attrs["phones_attributes"].map{|p| PhoneValidator.normalize(p["number"])}, account_id: true).first
+        accnt = phone.account
+        accnt.assign_attributes(account_attrs)
+      end
+      
+      if !accnt
+        accnt = Account.new(account_attrs)
+      end
+
+      accnt
     end
   end
 
