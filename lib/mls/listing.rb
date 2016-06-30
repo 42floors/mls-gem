@@ -147,10 +147,10 @@ class Listing < MLS::Model
     if type == "building"
       name += "Entire Building"
     else
-      name = "Unit #{self.unit}" if self.unit
-      name += " (" if self.unit && self.floor
-      name += "Floor #{self.floor}" if self.floor
-      name += ")" if self.unit && self.floor
+      name = "Unit #{self.unit}" if self.unit.present?
+      name += " (" if self.unit.present? && self.floor.present?
+      name += "Floor #{self.floor}" if self.floor.present?
+      name += ")" if self.unit.present? && self.floor.present?
     end
     name
   end

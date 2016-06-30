@@ -14,6 +14,7 @@ class Property < MLS::Model
   has_many :references, as: :subject
   has_many :listings
   has_many :localities
+  has_many :coworking_spaces
   has_many :regions, :through => :localities
   has_many :image_orderings, as: :subject
   has_many :data, as: :subject
