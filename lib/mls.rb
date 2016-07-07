@@ -101,8 +101,12 @@ module MLS::Slugger
       def find(*ids)
         friendly = -> (id) { id.respond_to?(:to_i) && id.to_i.to_s != id.to_s }
         return super if ids.size > 1 || !ids.all? { |x| friendly.call(x) }
-
-        find_by_slug!(ids.first)
+        
+        if ids.first.include?("@")
+          self.filter(email_addresses: {address: ids.first}).first
+        else
+          find_by_slug!(ids.first)
+        end
       end
 
     end
