@@ -25,13 +25,12 @@ class Membership < MLS::Model
     case type
     when "free"
       0
-    when "elite_coworking"
-      cost_per_coworking_space * coworking_space_ids.length
     when "elite"
+      coworking_rate = cost_per_coworking_space * coworking_space_ids.length
       account_rate = cost_per_account * account_ids.length
       properties_rate = cost_per_property * ([property_ids.length, minimum_property_count].max - included_properties)
       properties_rate = 0 if properties_rate < 0
-      account_rate + properties_rate
+      account_rate + properties_rate + coworking_rate
     else
       nil
     end
