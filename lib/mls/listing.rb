@@ -129,6 +129,14 @@ class Listing < MLS::Model
 
     price.round(2)
   end
+  
+  def longitude
+    location.x
+  end
+
+  def latitude
+    location.y
+  end
 
   def lease? # TODO: test me
     type == 'Lease'

@@ -20,5 +20,13 @@ class CoworkingSpace < MLS::Model
     output += " - " + read_attribute(:name) if read_attribute(:name)
     output
   end
+  
+  def longitude
+    location.x
+  end
+
+  def latitude
+    location.y
+  end
 
 end
