@@ -26,7 +26,8 @@ class Membership < MLS::Model
     when "free"
       0
     when "elite"
-      coworking_rate = cost_per_coworking_space * coworking_space_ids.length
+      coworking_rate = cost_per_coworking_space * coworking_space_ids.length - 1
+      coworking_rate = 0 if coworking_rate < 0
       account_rate = cost_per_account * account_ids.length
       properties_rate = cost_per_property * ([property_ids.length, minimum_property_count].max - included_properties)
       properties_rate = 0 if properties_rate < 0
