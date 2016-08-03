@@ -3,11 +3,12 @@ class Membership < MLS::Model
   
   has_many :accounts
   has_many :invoices
-  has_many :coworking_spaces
+  has_many :subscriptions
   belongs_to :organization
   belongs_to :billing_contact, class_name: "Account"
   belongs_to :credit_card
-  has_and_belongs_to_many :properties
+  
+  accepts_nested_attributes_for :subscriptions
   
   def cost_per_account
     read_attribute(:cost_per_account) / 100 if read_attribute(:cost_per_account)
@@ -22,19 +23,7 @@ class Membership < MLS::Model
   end
   
   def rate
-    case type
-    when "free"
-      0
-    when "elite"
-      coworking_rate = cost_per_coworking_space * coworking_space_ids.length - 1
-      coworking_rate = 0 if coworking_rate < 0
-      account_rate = cost_per_account * account_ids.length
-      properties_rate = cost_per_property * ([property_ids.length, minimum_property_count].max - included_properties)
-      properties_rate = 0 if properties_rate < 0
-      account_rate + properties_rate + coworking_rate
-    else
-      nil
-    end
+    subscriptions.sum(&:cost)
   end
   
 end
