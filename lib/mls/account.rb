@@ -47,8 +47,9 @@ class Account < MLS::Model
   attr_accessor :password, :password_required
   accepts_nested_attributes_for :phones, :email_addresses, :regions, :accounts_regions
   
-  validates :password, :confirmation => true, :if => Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
-  validates :password_confirmation, :presence => true, :if => :password
+  validates :password, confirmation: true, if: Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
+  validates :password, length: { minimum: 6 }, if: :password
+  validates :password_confirmation, presence: true, if: :password
   
   def properties
     Property.where(listings: {ownerships: {account_id: self.id}})
