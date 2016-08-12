@@ -10,20 +10,12 @@ class Membership < MLS::Model
   
   accepts_nested_attributes_for :subscriptions
   
-  def cost_per_account
-    read_attribute(:cost_per_account) / 100 if read_attribute(:cost_per_account)
-  end
-  
-  def cost_per_property
-    read_attribute(:cost_per_property) / 100 if read_attribute(:cost_per_property)
-  end
-  
-  def cost_per_coworking_space
-    read_attribute(:cost_per_coworking_space) / 100 if read_attribute(:cost_per_coworking_space)
-  end
-  
   def rate
-    subscriptions.sum(&:cost)
+    subscriptions.select{|x| !x.ends_at}.map(&:cost).compact.sum
   end
   
+  def costs
+    (read_attribute(:costs) || {}).with_indifferent_access
+  end
+
 end
