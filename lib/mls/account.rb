@@ -51,7 +51,7 @@ class Account < MLS::Model
   validates :password_confirmation, :presence => true, :if => :password
   
   def properties
-    Property.filter(listings: {ownerships: {account_id: self.id}})
+    Property.where(listings: {ownerships: {account_id: self.id}})
   end
   
   def password_required?
