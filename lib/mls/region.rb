@@ -4,6 +4,8 @@ class Region < MLS::Model
   
   self.inheritance_column = nil
 
+  CITY_TYPES = ["City", "Municipality", "Village", "Rural Municipality", "Town", "Resort Village", "Community Government"]
+
   belongs_to :cover_photo, :class_name => 'Image'
   belongs_to :market, :class_name => 'Region'
   belongs_to :flagship, :class_name => 'Region'

@@ -14,18 +14,6 @@ class Account < MLS::Model
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :agents
   has_many :email_digests
   
-  has_many :accounts_regions do 
-    def primary
-      where(primary: true).order(asset_count: :desc)
-    end
-  end
-  
-  has_many :regions, through: :accounts_regions do 
-    def primary
-      where(accounts_regions: {primary: true}).order(:"accounts_regions.asset_count" => :desc)
-    end
-  end
-  
   has_many :credit_cards
 
   has_many :email_addresses do
@@ -45,11 +33,19 @@ class Account < MLS::Model
   end
   
   attr_accessor :password, :password_required
-  accepts_nested_attributes_for :phones, :email_addresses, :regions, :accounts_regions
+  accepts_nested_attributes_for :phones, :email_addresses
   
   validates :password, confirmation: true, if: Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password, length: { minimum: 6 }, if: :password
   validates :password_confirmation, presence: true, if: :password
+  
+  def regions
+    Region.filter(id: {in: self.advertised_region_ids})
+  end
+  
+  def city_regions
+    regions.filter(type: Region::CITY_TYPES)
+  end
   
   def properties
     Property.where(listings: {ownerships: {account_id: self.id}})
