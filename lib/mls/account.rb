@@ -32,6 +32,8 @@ class Account < MLS::Model
 
   end
   
+  has_and_belongs_to_many :advertised_regions, join_table: 'accounts_regions_advertised', class_name: 'Region'
+    
   attr_accessor :password, :password_required
   accepts_nested_attributes_for :phones, :email_addresses
   
