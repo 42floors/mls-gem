@@ -46,7 +46,7 @@ class Account < MLS::Model
   end
   
   def city_regions
-    regions.filter(type: Region::CITY_TYPES)
+    advertised_regions.filter(type: Region::CITY_TYPES)
   end
   
   def properties
