@@ -11,7 +11,7 @@ class Account < MLS::Model
   has_many :ownerships, :inverse_of => :account, :dependent => :delete_all
   has_many :assets, through: :ownerships
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
-  has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :agents
+  has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :accounts
   has_many :email_digests
   
   has_many :credit_cards
