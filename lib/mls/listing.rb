@@ -25,7 +25,7 @@ class Listing < MLS::Model
   belongs_to :property
 
   has_many :ownerships, as: :asset
-  has_many :agents, through: :ownerships, source: :account, inverse_of: :listings
+  has_many :accounts, through: :ownerships, source: :account, inverse_of: :listings
   has_many :image_orderings, as: :subject
   has_many :photos, through: :image_orderings, source: :image
   
