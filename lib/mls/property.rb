@@ -29,7 +29,7 @@ class Property < MLS::Model
     end
   end
 
-  accepts_nested_attributes_for :photos, :image_orderings
+  accepts_nested_attributes_for :photos, :image_orderings, :addresses
 
   def photos_attributes=(attrs)
     attrs ||= []
@@ -66,28 +66,21 @@ class Property < MLS::Model
     location.y
   end
 
-  def automated_description
-    description_narrativescience
-  end
-
   def display_description
     return description if description.present?
+    return unless description_data_entry
     # If has bullets
     if description_data_entry && description_data_entry.split("\n").all? { |x| ['-','*', '•'].include?(x.strip[0]) }
       <<~MD
-      #{description_narrativescience}
       ##Features
       #{description_data_entry}
       MD
-    elsif description_data_entry
+    else description_data_entry
       show_amenities = amenities.select{ |k,v| v }
       <<~MD
-      #{description_narrativescience}
       #{description_data_entry}
       #{"This building's amenities include " + show_amenities.map {|key, v| key.to_s.humanize.downcase }.to_sentence + "."}
       MD
-    else
-      description_narrativescience
     end
   end
 
