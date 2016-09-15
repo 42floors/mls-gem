@@ -34,19 +34,14 @@ class Property < MLS::Model
   def photos_attributes=(attrs)
     attrs ||= []
 
-    self.photos = attrs.each_with_index.map do |photo_attrs, index|
+    self.image_orderings.each(&:destroy)
+    photos_from_attributes = attrs.each_with_index.map do |photo_attrs, index|
         photo = Image.find(photo_attrs.delete(:id))
         photo.update(photo_attrs) unless photo_attrs.empty?
         photo
     end
-  end
 
-  def photos=(array)
-    array.compact!
-    return if self.photos.map(&:id) == array.map(&:id)
-
-    self.photos.clear
-    super
+    self.photos = photos_from_attributes if photos_from_attributes.compact.length > 0
   end
 
   def contacts
