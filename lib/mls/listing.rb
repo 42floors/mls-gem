@@ -35,21 +35,11 @@ class Listing < MLS::Model
   has_many :addresses
   has_many :references, as: :subject
 
-  accepts_nested_attributes_for :uses, :image_orderings, :ownerships, :photos
+  accepts_nested_attributes_for :uses, :ownerships, :image_orderings
 
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
   }
-  
-  def photos_attributes=(attrs)
-    attrs ||= []
-
-    self.photos = attrs.each_with_index.map do |photo_attrs, index|
-        photo = Image.find(photo_attrs.delete(:id))
-        photo.update(photo_attrs) unless photo_attrs.empty?
-        photo
-    end
-  end
 
   def contacts
     if ownerships.loaded?
