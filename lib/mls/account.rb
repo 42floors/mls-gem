@@ -91,6 +91,15 @@ class Account < MLS::Model
     return company
   end
   
+  def merge_in(account_id)
+    req = Net::HTTP::Put.new("/accounts/#{self.id}/merge")
+    req.body = { account_id: account_id }.to_json
+    Account.connection.instance_variable_get(:@connection).send_request(req)
+    return true
+  rescue Sunstone::Exception::NotFound
+    return false
+  end
+  
   def self.send_reset_password_email(url, email_address)
     req = Net::HTTP::Post.new("/accounts/password")
     req.body = { email_address: email_address, url: url }.to_json
