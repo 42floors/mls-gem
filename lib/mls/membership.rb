@@ -17,5 +17,9 @@ class Membership < MLS::Model
   def costs
     (read_attribute(:costs) || {}).with_indifferent_access
   end
+  
+  def value
+    read_attribute(:value) / 100.0 if read_attribute(:value)
+  end
 
 end
