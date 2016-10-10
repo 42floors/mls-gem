@@ -6,9 +6,11 @@ class Event < MLS::Model
   belongs_to :task
   belongs_to :api_key
   
-  has_many :actions, class_name: 'Change'
+  has_many :actions
   
   has_many :regards
+  
+  enum type: { create: 0, update: 1, delete: 2 }, _suffix: true
   
   def regarding
     regards.map(&:thing)

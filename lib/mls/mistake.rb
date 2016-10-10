@@ -4,7 +4,7 @@ class Mistake < MLS::Model
   TYPES = %w(missing spelling incorrect other)
   
   belongs_to :task
-  belongs_to :change
+  belongs_to :action
   belongs_to :account
   
 end
