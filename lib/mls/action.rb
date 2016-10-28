@@ -6,4 +6,12 @@ class Action < MLS::Model
   
   has_many :mistakes
   
+  def self.by_performer(filter)
+    req = Net::HTTP::Get.new("/actions/by_performer")
+    req.body = {
+      where: filter
+    }.to_json
+    JSON.parse(connection.instance_variable_get(:@connection).send_request(req).body)
+  end
+  
 end
