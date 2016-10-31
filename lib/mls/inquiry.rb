@@ -39,5 +39,13 @@ class Inquiry < MLS::Model
       accnt
     end
   end
+  
+  def self.by_day(filter)
+    req = Net::HTTP::Get.new("/inquiries/by_day")
+    req.body = {
+      where: filter
+    }.to_json
+    connection.instance_variable_get(:@connection).send_request(req).body
+  end
 
 end
