@@ -7,4 +7,10 @@ class Invoice < MLS::Model
     read_attribute(:amount) / 100.0 if read_attribute(:amount)
   end
   
+  def status
+    return "refunded" if refunded_at
+    return "paid" if cleared_at
+    return "pending"
+  end
+  
 end
