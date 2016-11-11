@@ -5,8 +5,8 @@ class Subscription < MLS::Model
   belongs_to :subject, polymorphic: true
   belongs_to :credit_card
 
-  def type
-    case read_attribute(:type)
+  def name
+    case self.type
     when "unlimited"
       "Unlimited"
     when "premium"
