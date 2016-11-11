@@ -1,4 +1,5 @@
 class Subscription < MLS::Model
+  self.inheritance_column = nil
 
   belongs_to :membership
   belongs_to :subject, polymorphic: true
