@@ -6,12 +6,14 @@ class Subscription < MLS::Model
   belongs_to :credit_card
 
   def type
-    case self.subject_type
-    when "Property"
+    case self.type
+    when "unlimited"
+      "Unlimited"
+    when "premium"
       "Premium Property"
-    when "Account"
+    when "elite"
       "Elite Membership"
-    when "CoworkingSpace"
+    when "coworking"
       "Coworking Space"
     end
   end
