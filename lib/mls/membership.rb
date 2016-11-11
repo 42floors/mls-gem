@@ -7,6 +7,7 @@ class Membership < MLS::Model
   belongs_to :organization
   belongs_to :billing_contact, class_name: "Account"
   belongs_to :credit_card
+  belongs_to :sourced_by, class_name: "Account"
   
   accepts_nested_attributes_for :subscriptions
   
