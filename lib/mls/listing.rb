@@ -151,7 +151,7 @@ class Listing < MLS::Model
       name += "Floor #{self.floor}" if self.floor.present?
       name += ")" if self.unit.present? && self.floor.present?
     end
-    name = "Listing #{self.id}" if name.blank?
+    name = "Listing" if name.blank?
     name
   end
 end
