@@ -120,6 +120,10 @@ class Listing < MLS::Model
     price.round(2)
   end
   
+  def regions
+    Region.where(:id => self.region_ids)
+  end
+  
   def longitude
     location.x
   end

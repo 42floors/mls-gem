@@ -1,7 +1,7 @@
 class Inquiry < MLS::Model
 
   has_many :emails
-  belongs_to :lead
+  has_many :leads
   belongs_to :subject, polymorphic: true
   belongs_to :account
 
@@ -39,7 +39,7 @@ class Inquiry < MLS::Model
       accnt
     end
   end
-  
+
   def self.by_day(filter)
     req = Net::HTTP::Get.new("/inquiries/by_day")
     req.body = {
