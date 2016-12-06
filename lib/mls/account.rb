@@ -61,7 +61,6 @@ class Account < MLS::Model
   end
   
   def password=(pass)
-    return if pass.blank?
     @password = pass
     self.password_digest = BCrypt::Password.create(pass)
   end
