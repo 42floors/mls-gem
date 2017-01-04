@@ -20,7 +20,11 @@ class Account < MLS::Model
   has_many :email_addresses do
     def primary
       # For cases where the number is not primary we order
-      order(:primary => :desc).first
+      if loaded?
+        select{|x| x.primary}.first
+      else
+        order(:primary => :desc).first
+      end
     end
   end
 
@@ -28,7 +32,11 @@ class Account < MLS::Model
 
     def primary
       # For cases where the number is not primary we order
-      order(:primary => :desc).first
+      if loaded?
+        select{|x| x.primary}.first
+      else
+        order(:primary => :desc).first
+      end
     end
 
   end
