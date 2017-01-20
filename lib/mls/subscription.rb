@@ -8,11 +8,11 @@ class Subscription < MLS::Model
   def name
     case self.type
     when "unlimited"
-      "Unlimited"
+      "Unlimited Premium Listings"
     when "premium"
-      "Premium Property"
+      "Premium Listings"
     when "elite"
-      "Elite Membership"
+      "Elite Account"
     when "coworking"
       "Coworking Space"
     end
