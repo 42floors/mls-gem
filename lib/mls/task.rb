@@ -35,6 +35,10 @@ class Task < MLS::Model
     type == "crawl"
   end
   
+  def paused?
+    status == 'paused'
+  end
+  
   def duration
       time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].not_eq(nil)).sum("duration")
   end
@@ -49,10 +53,6 @@ class Task < MLS::Model
   def resume
     #time_logs << TimeLog.create(:started_at => Time.now)
     TimeLog.create(task_id: self.id, started_at: Time.now)
-  end
-  
-  def paused?
-    !started_at.nil? && completed_at.nil? && time_logs.where(TimeLog.arel_table[:started_at].not_eq(nil)).where(TimeLog.arel_table[:stopped_at].eq(nil)).length == 0
   end
   
 end
