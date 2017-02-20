@@ -64,6 +64,10 @@ class Account < MLS::Model
     Property.where(listings: {ownerships: {account_id: self.id}})
   end
   
+  def paying?
+    self.membership&.subscriptions&.filter(started_at: true, ends_at: false)&.count.try(:>, 0)
+  end
+  
   def password_required?
     @password_required != false
   end
