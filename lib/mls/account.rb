@@ -14,6 +14,7 @@ class Account < MLS::Model
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :accounts
   has_many :email_digests
   has_many :subscriptions, as: :subject
+  has_many :leads
   
   has_many :credit_cards
 
@@ -62,6 +63,14 @@ class Account < MLS::Model
   
   def properties
     Property.where(listings: {ownerships: {account_id: self.id}})
+  end
+  
+  def tim_alerts?
+    self.membership&.subscriptions&.filter(started_at: true, ends_at: false, type: "tim_alerts", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
+  end
+
+  def unlimited?
+    self.membership&.subscriptions&.filter(started_at: true, ends_at: false, type: "unlimited", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
   end
   
   def paying?

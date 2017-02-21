@@ -40,6 +40,10 @@ class Listing < MLS::Model
   filter_on :organization_id, -> (v) {
     where(organization_id: v)
   }
+  
+  def premium_property?
+    Subscription.filter(started_at: true, ends_at: false, type: "premium", subject_type: "Property", subject_id: self.property_id).count > 0
+  end
 
   def contacts
     if ownerships.loaded?
