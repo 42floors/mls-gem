@@ -21,4 +21,9 @@ class Subscription < MLS::Model
   def cost
     read_attribute(:cost) / 100.0 if read_attribute(:cost)
   end
+  
+  def update_listing_status
+    req = Net::HTTP::Post.new("/subscriptions/#{self.id}/update_listing_status")
+    Subscription.connection.instance_variable_get(:@connection).send_request(req)
+  end
 end
