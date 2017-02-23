@@ -1,5 +1,7 @@
 class Document < MLS::Model
   
+  has_many :image_orderings, foreign_key: :image_id
+  
   def self.create(file)
     if doc = find_matching(file)
       doc

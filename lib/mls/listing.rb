@@ -45,7 +45,7 @@ class Listing < MLS::Model
     if ownerships.loaded?
       @contacts ||= ownerships.select{|o| o.receives_inquiries }.map(&:account)
     else
-      @contacts ||= ownerships.filter(:receives_inquiries => true).map(&:account)
+      @contacts ||= ownerships.eager_load(:account).filter(:receives_inquiries => true).map(&:account)
     end
   end
 
@@ -53,7 +53,7 @@ class Listing < MLS::Model
     if ownerships.loaded?
       @lead_contact ||= ownerships.select{|o| o.lead}.first.try(:account) 
     else
-      @lead_contact ||= ownerships.filter(:lead => true).first.try(:account)
+      @lead_contact ||= ownerships.eager_load(:account).filter(:lead => true).first.try(:account)
     end
   end
 
