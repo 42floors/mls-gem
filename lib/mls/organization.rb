@@ -4,6 +4,7 @@ class Organization < MLS::Model
   
   has_many :accounts, :class_name => 'Account'
   has_many :listings, -> { distinct }, through: :accounts
+  has_many :references, as: :subject
   has_and_belongs_to_many :regions
   
   def name
