@@ -66,15 +66,15 @@ class Account < MLS::Model
   end
   
   def tim_alerts?
-    self.membership&.subscriptions&.filter(started_at: true, ends_at: false, type: "tim_alerts", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
+    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"}, type: "tim_alerts", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
   end
 
   def unlimited?
-    self.membership&.subscriptions&.filter(started_at: true, ends_at: false, type: "unlimited", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
+    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"}, type: "unlimited", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
   end
   
   def paying?
-    self.membership&.subscriptions&.filter(started_at: true, ends_at: false)&.count.try(:>, 0)
+    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"})&.count.try(:>, 0)
   end
   
   def password_required?
