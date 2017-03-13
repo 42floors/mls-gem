@@ -155,4 +155,12 @@ class Property < MLS::Model
       regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
     end
   end
+  
+  def self.by_inquiry_size(filter)
+    req = Net::HTTP::Get.new("/properties/by_inquiry_size")
+    req.body = {
+      where: filter
+    }.to_json
+    connection.instance_variable_get(:@connection).send_request(req).body
+  end
 end

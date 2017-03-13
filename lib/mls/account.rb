@@ -153,5 +153,22 @@ class Account < MLS::Model
     req.body = {url: url}.to_json
     Account.connection.instance_variable_get(:@connection).send_request(req)
   end
+  
+  def self.by_lead_size(filter)
+    req = Net::HTTP::Get.new("/accounts/by_lead_size")
+    req.body = {
+      where: filter
+    }.to_json
+    connection.instance_variable_get(:@connection).send_request(req).body
+  end
+  
+  def self.by_inquiry_size(filter)
+    req = Net::HTTP::Get.new("/accounts/by_inquiry_size")
+    req.body = {
+      where: filter
+    }.to_json
+    connection.instance_variable_get(:@connection).send_request(req).body
+  end
+    
 
 end
