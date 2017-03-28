@@ -8,6 +8,7 @@ class Membership < MLS::Model
   belongs_to :billing_contact, class_name: "Account"
   belongs_to :credit_card
   belongs_to :sourced_by, class_name: "Account"
+  has_and_belongs_to_many     :invoice_recipients, class_name: 'EmailAddress'
   
   accepts_nested_attributes_for :subscriptions
   
