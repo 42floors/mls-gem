@@ -1,11 +1,12 @@
 class Action < MLS::Model
   self.inheritance_column = nil
-  
+
   belongs_to :event
   belongs_to :subject, :polymorphic => true
-  
+
   has_many :mistakes
-  
+  has_many :metadata, foreign_key: :event_id, primary_key: :event_id
+
   def self.by_performer(filter)
     req = Net::HTTP::Get.new("/actions/by_performer")
     req.body = {
