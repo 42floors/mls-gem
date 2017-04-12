@@ -1,6 +1,6 @@
 class Lead < MLS::Model
 
-  belongs_to  :account
-  belongs_to  :inquiry
+  has_many  :inquiries
+  has_many  :tim_alerts
 
 end
