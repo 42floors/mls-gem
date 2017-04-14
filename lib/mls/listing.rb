@@ -147,7 +147,7 @@ class Listing < MLS::Model
   def name
     return "New Listing" if !self.id
     name = ""
-    if self.type == "building"
+    if self.unit_type == "building"
       name += "Entire Building"
     else
       name = "Unit #{self.unit}" if self.unit.present?
