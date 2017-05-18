@@ -37,6 +37,10 @@ class Listing < MLS::Model
 
   accepts_nested_attributes_for :uses, :ownerships, :image_orderings
   
+  def is_elite?
+    ((property.elite_account_ids || []) & accounts.map(&:id)).length > 0
+  end
+  
   def premium_property?
     Subscription.filter(started_at: true, ends_at: false, type: "premium", subject_type: "Property", subject_id: self.property_id).count > 0
   end

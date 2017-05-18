@@ -1,24 +1,19 @@
 class Subscription < MLS::Model
   self.inheritance_column = nil
-
-  belongs_to :membership
-  belongs_to :subject, polymorphic: true
+  
+  has_many :accounts
+  has_many :invoices
+  has_many :services
+  belongs_to :organization
+  belongs_to :billing_contact, class_name: "Account"
   belongs_to :credit_card
-
-  def name
-    case self.type
-    when "unlimited"
-      "Unlimited Premium Listings"
-    when "premium"
-      "Premium Listings"
-    when "elite"
-      "Elite Account"
-    when "coworking"
-      "Coworking Space"
-    end
-  end
-    
+  
+  has_and_belongs_to_many     :invoice_recipients, class_name: 'EmailAddress'
+  
+  accepts_nested_attributes_for :services
+  
   def cost
-    read_attribute(:cost) / 100.0 if read_attribute(:cost)
+    servicete(:cost) / 100.0 if read_attribute(:cost)
   end
+
 end

@@ -4,8 +4,8 @@ class Account < MLS::Model
   include MLS::Avatar
 
   belongs_to :organization
-  belongs_to :membership
-
+  
+  has_many :subscriptions
   has_many :tasks
   has_many :sources
   has_many :ownerships, :inverse_of => :account, :dependent => :delete_all
@@ -13,7 +13,7 @@ class Account < MLS::Model
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :accounts
   has_many :email_digests
-  has_many :subscriptions, as: :subject
+  has_many :services, as: :subject
   has_many :tim_alerts
   
   has_many :credit_cards
@@ -66,15 +66,19 @@ class Account < MLS::Model
   end
   
   def tim_alerts?
-    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"}, type: "tim_alerts", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
+    subscriptions.map{|x| x.services.filter(status: "active", type: "tim_alerts").count}.sum > 0
   end
 
   def unlimited?
-    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"}, type: "unlimited", subject_id: self.id, subject_type: "Account")&.count.try(:>, 0)
+    subscriptions.map{|x| x.services.filter(status: "active", type: "unlimited").count}.sum > 0
+  end
+  
+  def referral?
+    subscriptions.map{|x| x.services.filter(status: "active", type: "referral").count}.sum > 0
   end
   
   def paying?
-    self.membership&.subscriptions&.filter(started_at: true, status: {not: "closed"})&.count.try(:>, 0)
+    subscriptions.map{|x| x.services.filter(status: "active").count}.sum > 0
   end
   
   def password_required?

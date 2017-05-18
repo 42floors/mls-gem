@@ -19,7 +19,7 @@ class Property < MLS::Model
   has_many :image_orderings, as: :subject
   has_many :data, as: :subject
   has_many :photos, through: :image_orderings, source: :image
-  has_many :subscriptions, as: :subject
+  has_many :services, as: :subject
 
   has_many :uses
   # has_and_belongs_to_many :uses
@@ -47,6 +47,11 @@ class Property < MLS::Model
 
   def latitude
     location.y
+  end
+  
+  def is_elite_for_account_ids?(*account_ids)
+    account_ids = Array(account_ids).flatten
+    (self.elite_account_ids & account_ids).length > 0
   end
 
   def display_description

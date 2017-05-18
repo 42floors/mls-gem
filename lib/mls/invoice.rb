@@ -1,7 +1,7 @@
 class Invoice < MLS::Model
   
   belongs_to :credit_card
-  belongs_to :membership
+  belongs_to :subscription
   
   def amount
     read_attribute(:amount) / 100.0 if read_attribute(:amount)

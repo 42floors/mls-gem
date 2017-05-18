@@ -4,7 +4,6 @@ class CoworkingSpace < MLS::Model
   
   belongs_to  :organization
   belongs_to  :property
-  belongs_to  :membership
   has_many    :image_orderings, as: :subject
   has_many    :photos, through: :image_orderings, source: :image
   has_many    :spaces
