@@ -1,7 +1,7 @@
 class Subscription < MLS::Model
   self.inheritance_column = nil
   
-  has_many :accounts
+  has_and_belongs_to_many :accounts
   has_many :invoices
   has_many :services
   belongs_to :organization
@@ -13,7 +13,7 @@ class Subscription < MLS::Model
   accepts_nested_attributes_for :services
   
   def cost
-    servicete(:cost) / 100.0 if read_attribute(:cost)
+    read_attribute(:cost) / 100.0 if read_attribute(:cost)
   end
 
 end

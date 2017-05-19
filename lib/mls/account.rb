@@ -5,7 +5,7 @@ class Account < MLS::Model
 
   belongs_to :organization
   
-  has_many :subscriptions
+  has_and_belongs_to_many :subscriptions
   has_many :tasks
   has_many :sources
   has_many :ownerships, :inverse_of => :account, :dependent => :delete_all
