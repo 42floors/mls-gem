@@ -53,11 +53,11 @@ class Listing < MLS::Model
     end
   end
 
-  def lead_contact
+  def lead_contacts
     if ownerships.loaded?
-      @lead_contact ||= ownerships.select{|o| o.lead}.first.try(:account) 
+      @lead_contacts ||= ownerships.select{|o| o.lead}.map(&:account)
     else
-      @lead_contact ||= ownerships.eager_load(:account).filter(:lead => true).first.try(:account)
+      @lead_contacts ||= ownerships.eager_load(:account).filter(:lead => true).map(&:account)
     end
   end
 
