@@ -20,8 +20,12 @@ class Region < MLS::Model
   def name
     if common_name.try(:[], 'eng')
       common_name['eng'].is_a?(Array) ? common_name['eng'].first : common_name['eng']
-    else
+    elsif official_name.try(:[], 'eng')
       official_name['eng'].is_a?(Array) ? official_name['eng'].first : official_name['eng']
+    elsif common_name && common_name.size > 0
+      common_name.values.first
+    else
+      official_name.values.first
     end
   end
   
