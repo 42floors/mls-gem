@@ -162,4 +162,16 @@ class Listing < MLS::Model
     name = "Space" if name.blank?
     name
   end
+  
+  def status
+    if self.leased_at
+     "Leased"
+    elsif self.archived
+     "Deleted"
+    elsif self.touched_at < 90.days.ago
+     "Expired"
+    else
+     "Active"
+    end
+  end
 end

@@ -50,6 +50,7 @@ class Property < MLS::Model
   end
   
   def is_elite_for_account_ids?(*account_ids)
+    return false unless self.elite_account_ids && self.elite_account_ids.length > 0
     account_ids = Array(account_ids).flatten
     (self.elite_account_ids & account_ids).length > 0
   end

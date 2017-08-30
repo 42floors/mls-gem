@@ -4,7 +4,7 @@ class EmailDigest < MLS::Model
   accepts_nested_attributes_for :account
   
   def filter
-    (read_attribute(:filter) || {}).with_indifferent_access
+    JSON.parse (read_attribute(:filter) || {}).to_json, object_class: OpenStruct
   end
 
 end
