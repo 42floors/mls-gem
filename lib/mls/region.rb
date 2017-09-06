@@ -5,7 +5,7 @@ class Region < MLS::Model
   self.inheritance_column = nil
 
   COUNTRY_TYPES = ["Monarchy", "Republic"]
-  STATE_TYPE = ["State", "Territory", "Commonwealth", "Province"]
+  STATE_TYPES = ["State", "Territory", "Commonwealth", "Province"]
   CITY_TYPES = ["City", "Municipality", "Village", "Rural Municipality", "Town", "Resort Village", "Community Government"]
 
   belongs_to :cover_photo, :class_name => 'Image'
