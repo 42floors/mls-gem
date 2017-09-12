@@ -128,6 +128,7 @@ class Property < MLS::Model
     region = neighborhood_region
     region ||= city_region
     region ||= market
+    region ||= regions.to_a.first
     region
   end
 
