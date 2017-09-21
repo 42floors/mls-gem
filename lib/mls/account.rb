@@ -16,6 +16,10 @@ class Account < MLS::Model
   has_many :services, as: :subject
   has_many :tim_alerts
   
+  has_many :searches
+  has_many :deals, class_name: "Search", foreign_key: "broker_id"
+  has_many :suggestions, foreign_key: "suggested_by_id"
+  
   has_many :credit_cards
 
   has_many :email_addresses do
@@ -156,6 +160,12 @@ class Account < MLS::Model
     req = Net::HTTP::Post.new("/accounts/#{self.id}/confirm")
     req.body = {url: url}.to_json
     Account.connection.instance_variable_get(:@connection).send_request(req)
+  end
+  
+  def set_confirmation_token
+    req = Net::HTTP::Get.new("/accounts/#{self.id}/confirm")
+    response = Account.connection.instance_variable_get(:@connection).send_request(req)
+    self.confirmation_token = response.body
   end
     
 
