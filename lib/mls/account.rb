@@ -17,7 +17,6 @@ class Account < MLS::Model
   has_many :tim_alerts
   
   has_many :searches
-  has_many :deals, class_name: "Search", foreign_key: "broker_id"
   has_many :suggestions, foreign_key: "suggested_by_id"
   
   has_many :credit_cards
@@ -31,6 +30,10 @@ class Account < MLS::Model
         order(:primary => :desc).first
       end
     end
+  end
+  
+  def deals
+    Search.filter([{manager_id: self.id}, "OR", {broker_id: self.id}])
   end
 
   has_many :phones do
