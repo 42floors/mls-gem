@@ -10,6 +10,8 @@ class Search < MLS::Model
   has_many :suggestions
   has_many :email_digests
   
+  accepts_nested_attributes_for :account
+  
   def filter
     JSON.parse (read_attribute(:filter) || {}).to_json, object_class: OpenStruct
   end
