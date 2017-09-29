@@ -128,7 +128,7 @@ class Property < MLS::Model
     region = neighborhood_region
     region ||= city_region
     region ||= market
-    region ||= regions.sort_by(&:depth).reverse.first
+    region ||= regions.where(depth: true).sort_by(&:depth).reverse.first
     region
   end
 
