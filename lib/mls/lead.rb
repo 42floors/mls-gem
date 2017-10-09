@@ -8,5 +8,19 @@ class Lead < MLS::Model
   def regions
     Region.where(id: region_ids)
   end
+  
+  def term_units(value=nil)
+    value ||= self.term
+    case value
+    when "<1"
+      "year"
+    when "flexible"
+      ""
+    when nil
+      ""
+    else
+      "years"
+    end
+  end
 
 end
