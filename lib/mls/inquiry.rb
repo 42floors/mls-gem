@@ -1,4 +1,6 @@
 class Inquiry < MLS::Model
+  
+  TERMS = %w(<1 1-2 3-5 5+ flexible)
 
   has_many :emails
   belongs_to :subject, polymorphic: true
@@ -8,6 +10,20 @@ class Inquiry < MLS::Model
 
   def property
     subject.is_a? MLS::Model::Listing ? subject.property : subject
+  end
+
+  def term_units(value=nil)
+    value ||= self.term
+    case value
+    when "<1"
+      "year"
+    when "flexible"
+      ""
+    when nil
+      ""
+    else
+      "years"
+    end
   end
   
   def account_attributes=(account_attrs)
