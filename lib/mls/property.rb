@@ -141,12 +141,25 @@ class Property < MLS::Model
 
   def city_region
     return @city_region if defined? @city_region
-    @city_region = fetch_region(:type => "City")
+    @city_region = fetch_region(:type => Region::CITY_TYPES)
+  end
+  
+  def state_region
+    return @state_region if defined? @state_region
+    @state_region = fetch_region(:type => Region::STATE_TYPES)
   end
 
   def market
     return @market if defined? @market
     @market = fetch_region(:is_market => true)
+  end
+  
+  def human_breadcrumbs
+    [
+      neighborhood.present? ? neighborhood : neighborhood_region&.name,
+      city.present? ? city : city_region&.name,
+      state.present? ? state : state_region&.slug&.split("/")&.last&.upcase
+    ].compact
   end
 
   def flagship
@@ -159,7 +172,13 @@ class Property < MLS::Model
     if params[0][0] == :query
       regions.to_a.find{|r| r.name == params[0][1]}
     else
-      regions.to_a.find{|r| r[params[0][0]] == params[0][1]}
+      regions.to_a.find{|r|
+        if params[0][1].is_a? Array
+          params[0][1].include? (r[params[0][0]])
+        else
+          r[params[0][0]] == params[0][1]
+        end
+      }
     end
   end
 end
