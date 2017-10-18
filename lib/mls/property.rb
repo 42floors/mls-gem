@@ -157,7 +157,9 @@ class Property < MLS::Model
   def human_breadcrumbs
     [
       neighborhood.present? ? neighborhood : neighborhood_region&.name,
-      city.present? ? city : city_region&.name,
+      city.present? ? city : (city_region&.name || regions.select{|r|
+        r.depth >= 3
+      }.sort_by(&:depth).first&.name),
       state.present? ? state : state_region&.slug&.split("/")&.last&.upcase
     ].compact
   end
