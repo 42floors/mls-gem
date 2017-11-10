@@ -1,6 +1,7 @@
 class Action < MLS::Model
   self.inheritance_column = nil
-
+  attr_accessor :account_id
+  
   belongs_to :event
   belongs_to :subject, :polymorphic => true
 
