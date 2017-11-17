@@ -1,7 +1,7 @@
 class Search < MLS::Model
 
-  STATUS_OPTIONS = %w(active closed nurturing)
-  STAGE_OPTIONS = %w(initiated delivered connected toured loi signed)
+  STATUS_OPTIONS = %w(active hold cold closed)
+  STAGE_OPTIONS = %w(initiated contacted delivered connected toured loi signed)
   BUDGET_UNITS = %w(per_month per_year per_sqft_per_year)
   TERMS = %w(<1 1-2 3-5 5+ flexible)
   MOVE_INS = %w(<3 3-6 6-12 12+ flexible)
@@ -12,6 +12,7 @@ class Search < MLS::Model
   
   has_many :suggestions
   has_many :email_digests
+  has_many :tasks, :as => :subject
   
   accepts_nested_attributes_for :account
   
