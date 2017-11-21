@@ -12,6 +12,7 @@ class Account < MLS::Model
   has_many :assets, through: :ownerships
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
   has_many :listings, through: :ownerships, source: :asset, source_type: 'Listing', inverse_of: :accounts
+  has_many :sites, through: :ownerships, source: :asset, source_type: 'Site', inverse_of: :accounts
   has_many :email_digests
   has_many :services, as: :subject
   has_many :tim_alerts
