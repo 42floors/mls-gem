@@ -9,6 +9,7 @@ class Search < MLS::Model
   belongs_to :account
   belongs_to :broker, class_name: "Account"
   belongs_to :manager, class_name: "Account"
+  belongs_to :lead
   
   has_many :suggestions
   has_many :email_digests

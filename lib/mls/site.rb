@@ -6,6 +6,7 @@ class Site < MLS::Model
 
   has_many :ownerships, as: :asset
   has_many :accounts, through: :ownerships, source: :account, inverse_of: :sites
+  has_many :services, as: :subject
 
   def contacts
     if ownerships.loaded?
