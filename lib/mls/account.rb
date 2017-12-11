@@ -16,6 +16,7 @@ class Account < MLS::Model
   has_many :email_digests
   has_many :services, as: :subject
   has_many :tim_alerts
+  has_many :references, as: :subject
   
   has_many :searches
   has_many :suggestions, foreign_key: "suggested_by_id"
