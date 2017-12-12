@@ -4,6 +4,7 @@ class Account < MLS::Model
   include MLS::Avatar
 
   belongs_to :organization
+  belongs_to :cobroke_manager, class_name: "Account"
   
   has_and_belongs_to_many :subscriptions
   has_many :tasks
