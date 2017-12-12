@@ -17,6 +17,10 @@ class Search < MLS::Model
   
   accepts_nested_attributes_for :account
   
+  def name
+    account.company || account.name
+  end
+  
   def filter
     JSON.parse (read_attribute(:filter) || {}).to_json, object_class: OpenStruct
   end
