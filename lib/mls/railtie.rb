@@ -1,6 +1,5 @@
 # See notes from 'active_record/railtie'
 require "action_controller/railtie"
-require "active_record/railtie"
 
 class MLS::Railtie < Rails::Railtie
   
@@ -8,7 +7,7 @@ class MLS::Railtie < Rails::Railtie
   
   config.action_dispatch.rescue_responses.merge!(
     "Sunstone::Exception::NotFound"     => :not_found,
-    "Sunstone::Exception::Unauthorized" => :conflict,
+    "Sunstone::Exception::Unauthorized" => :unauthorized,
     "Sunstone::Exception::Gone"         => :gone
   )
   
