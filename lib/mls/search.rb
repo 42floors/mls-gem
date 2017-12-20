@@ -21,6 +21,13 @@ class Search < MLS::Model
     account.company || account.name
   end
   
+  def to_json(options={})
+    output = super(options)
+    output = JSON.parse(super)
+    output["filter"] = read_attribute(:filter)
+    output.to_json
+  end
+  
   def filter
     JSON.parse (read_attribute(:filter) || {}).to_json, object_class: OpenStruct
   end
