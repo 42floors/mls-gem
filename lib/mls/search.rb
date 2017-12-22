@@ -18,7 +18,7 @@ class Search < MLS::Model
   accepts_nested_attributes_for :account
   
   def name
-    account.company || account.name
+    read_attribute(:name) || account&.company || account&.name
   end
   
   def to_json(options={})
