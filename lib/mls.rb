@@ -158,6 +158,6 @@ module MLS::Avatar
 
 end
 
-Dir.glob(File.join(File.dirname(__FILE__), 'mls', '*.rb'), &method(:require))
+Dir.glob(File.join(File.dirname(__FILE__), 'mls', 'models', '*.rb'), &method(:require))
 
 require 'mls/railtie' if defined?(Rails)
