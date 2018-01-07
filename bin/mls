@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../lib/mls/cli', __FILE__)
+
+case ARGV.shift.downcase.strip
+when "documents:backup"
+  MLS::CLI.parse_args(ARGV).inspect
+  directory = ARGV.shift
+  
+  if directory.nil? || !File.directory?(directory)
+    puts "Usage: mls documents:backup dir [options...]"
+    exit 1
+  end
+    
+  MLS::CLI::Documents.backup(directory)
+else
+  puts "Usage: mls documents:backup dir [options...]"
+end

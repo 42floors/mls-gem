@@ -1,0 +1,1 @@
+require File.expand_path('../storage/s3', __FILE__)
