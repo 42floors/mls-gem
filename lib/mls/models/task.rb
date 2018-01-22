@@ -11,6 +11,8 @@ class Task < MLS::Model
   has_many :reviews, -> { where(:type => "review") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
   has_many :fixes, -> { where(:type => "fix") }, :class_name => "Task", :as => :subject, :inverse_of => :subject
   
+  has_and_belongs_to_many :regions
+
   def for_source?
     subject_type == "Source"
   end
