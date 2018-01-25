@@ -33,7 +33,7 @@ class Property < MLS::Model
   accepts_nested_attributes_for :image_orderings, :addresses
 
   def contacts
-    @contact ||= listings.eager_load(:accounts => [:email_addresses, :phones, :organization]).filter(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'], :touched_at => {:gte => 90.days.ago})
+    @contact ||= listings.eager_load(:accounts => [:email_addresses, :phones, :organization]).filter(leased_at: nil, authorized: true, type: ['Lease', 'Sublease'], :touched_at => {:gte => 180.days.ago})
             .order(size: :desc).first.try(:contacts)
   end
 

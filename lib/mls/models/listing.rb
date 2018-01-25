@@ -168,7 +168,7 @@ class Listing < MLS::Model
      "Leased"
     elsif self.archived
      "Deleted"
-    elsif self.touched_at < 90.days.ago
+    elsif self.touched_at < 180.days.ago
      "Expired"
     else
      "Active"
