@@ -128,7 +128,7 @@ class Property < MLS::Model
     region = neighborhood_region
     region ||= city_region
     region ||= market
-    region ||= regions.where(depth: true).sort_by(&:depth).reverse.first
+    region ||= regions.filter(depth: true).select{ |r| r.type != "Zip Code Tabulation Area" }.sort_by(&:depth).reverse.name
     region
   end
 
