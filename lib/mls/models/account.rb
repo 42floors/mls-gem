@@ -21,6 +21,7 @@ class Account < MLS::Model
   
   has_many :searches
   has_many :suggestions, foreign_key: "suggested_by_id"
+  has_many :broadcasts, foreign_key: :sender_id
   
   has_many :credit_cards
 

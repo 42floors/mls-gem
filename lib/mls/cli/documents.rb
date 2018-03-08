@@ -33,7 +33,7 @@ module MLS::CLI::Documents
     
     query = if File.exist?(last_sync_file)
       from_timestamp = Time.iso8601(File.read(last_sync_file))
-      Document.filter(created_at: {gte: from_timestamp})
+      Document.where(Document.arel_table['created_at'].gteq(from_timestamp))
     else
       Document.all
     end
@@ -51,15 +51,16 @@ module MLS::CLI::Documents
         raise 'unkown storage engine'
       end
       
-      puts "Downloading #{document.id}"
+      print "Downloading #{document.id.to_s.ljust(7)} "
       storage_engine.copy_to_tempfile(document.send(key)) do |file|
         digests = calculate_digest(file)
+        puts partition(document.sha256)
         
         raise 'MD5 does not match' if digests[:md5] != document.md5
         document.update!(digests.merge({provider: ['s3/hash_key']}))
         
         FileUtils.mkdir_p(File.dirname(File.join(dir, partition(document.sha256))))
-        FileUtils.mv(file.path, File.join(dir, partition(document.sha256)), verbose: true)
+        FileUtils.mv(file.path, File.join(dir, partition(document.sha256)))
       end
       
       File.write(last_sync_file, document.created_at.iso8601(6))
