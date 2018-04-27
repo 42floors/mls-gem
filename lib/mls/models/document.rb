@@ -18,7 +18,7 @@ class Document < MLS::Model
   end
   
   def url(style=:original)
-    MLS.config['document_host'] + '/' + path(style)
+    MLS.config['document_host'].gsub(/\/$/, '') + '/' + path(style)
   end
   
   def path(style=:original)
