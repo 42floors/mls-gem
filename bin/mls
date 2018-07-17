@@ -3,7 +3,7 @@ require File.expand_path('../../lib/mls/cli', __FILE__)
 
 case ARGV.shift.downcase.strip
 when "documents:backup"
-  MLS::CLI.parse_args(ARGV).inspect
+  MLS::CLI.parse_args(ARGV)
   directory = ARGV.shift
   
   if directory.nil? || !File.directory?(directory)
@@ -12,6 +12,27 @@ when "documents:backup"
   end
     
   MLS::CLI::Documents.backup(directory)
+when "documents:migrate"
+  MLS::CLI.parse_args(ARGV)
+  directory = ARGV.shift
+
+  if directory.nil? || !File.directory?(directory)
+    puts "Usage: mls documents:backup dir [options...]"
+    exit 1
+  end
+
+  b2 = MLS::CLI::Storage::B2.new(MLS::CLI.options[:b2])
+  Document.where(excludes: 'b2/sha256').find_each do |document|
+    if document.sha256 && File.exists?(File.join(directory, MLS::CLI::Documents.partition(document.sha256)))
+      b2.upload_file(documents.sha256, File.open(File.join(directory, MLS::CLI::Documents.partition(document.sha256))), {
+        filename: document.filename,
+        sha1: document.sha1,
+        content_type: document.content_type,
+        size: document.size
+      })
+    end
+  end
+when "documents:check"
 else
   puts "Usage: mls documents:backup dir [options...]"
 end

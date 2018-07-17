@@ -32,7 +32,19 @@ module MLS::CLI
             end
           end
         when 'b2'
-          
+          MLS::CLI.options[:b2] = {
+            account_id:         URI.unescape(url.user),
+            application_key:    URI.unescape(url.password),
+            bucket:             URI.unescape(url.host)
+            prefix:             url.path&.empty? ? url.path : nil
+          }
+          url.query.split('&').each do |qp|
+            key, value = qp.split('=').map { |d| URI.unescape(d) }
+            case key
+            when 'partition'
+              MLS::CLI.options[:b2][:partition] = value.to_i
+            end
+          end
         when 'mls'
           arg = arg.sub('mls://', 'https://')
           MLS::CLI.options[:mls] = arg
