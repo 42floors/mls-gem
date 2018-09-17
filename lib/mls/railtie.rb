@@ -13,20 +13,28 @@ class MLS::Railtie < Rails::Railtie
   
   initializer 'mls' do |app|
     
-    url = app.config.mls.fetch('url') { app.secrets.mls }
+    configs = if app.secrets.mls.is_a?(String)
+      h = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(app.secrets.mls).to_hash.symbolize_keys
+      h[:api_key] = h.delete(:username)
+      if h[:adapter] != 'sunstone'
+        h[:use_ssl] = h[:adapter] == 'https'
+        h[:adapter] = 'sunstone'
+      end
+      h
+    else
+      app.secrets.mls
+    end
+    
+
     user_agent = []
     user_agent << app.config.mls.fetch('user_agent') {
       app.class.name.split('::')[0..-2].join('::')
     }
     user_agent << "Rails/#{Rails.version}"
+    h[:user_agent] = user_agent.compact.join(' ')
     
     
-    MLS::Model.establish_connection({
-      adapter: 'sunstone',
-      url: url,
-      user_agent: user_agent.compact.join(' ')
-    })
-
+    MLS::Model.establish_connection(h)
   end
   
 end
