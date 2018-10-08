@@ -19,11 +19,11 @@ class Document < MLS::Model
   end
   
   def url(style=:original)
-    MLS.config['document_host'].gsub(/\/$/, '') + '/' + path(style)
+    File.join(MLS.config['document_host'].gsub(/\/$/, ''), path(style))
   end
   
   def path(style=:original)
-    "#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}"
+    File.join("documents", "#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}")
   end
 
   def partition(value)
