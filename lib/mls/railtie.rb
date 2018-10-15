@@ -21,9 +21,9 @@ class MLS::Railtie < Rails::Railtie
         h[:adapter] = 'sunstone'
       end
       h
-    elsif app.config.mls.fetch('url').is_a?(String)
+    elsif app.config_for(:mls)['url']
       ActiveSupport::Deprecation.warn("Using mls.yml has been deprecated. Move to secrets.yml")
-      h = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(app.config.mls.fetch('url')).to_hash.symbolize_keys
+      h = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(app.config_for(:mls)['url']).to_hash.symbolize_keys
       h[:api_key] = h.delete(:username)
       if h[:adapter] != 'sunstone'
         h[:use_ssl] = h[:adapter] == 'https'
