@@ -4,6 +4,7 @@ class Task < MLS::Model
   belongs_to  :subject, :polymorphic => true
   belongs_to  :account
   belongs_to  :source
+  belongs_to  :team
   
   has_many :events
   has_many :mistakes
