@@ -21,18 +21,26 @@ when "documents:migrate"
     exit 1
   end
 
-  b2 = MLS::CLI::Storage::B2.new(MLS::CLI.options[:b2])
-  Document.where(excludes: 'b2/sha256').find_each do |document|
+  b2 = StandardStorage::B2.new(MLS::CLI.options[:b2])
+  shas = []
+  
+  Document.where(provider: {excludes: 'b2/sha256'}).limit(1000).each do |document|
+    next if shas.include?(document.sha256)
     if document.sha256 && File.exists?(File.join(directory, MLS::CLI::Documents.partition(document.sha256)))
-      b2.upload_file(documents.sha256, File.open(File.join(directory, MLS::CLI::Documents.partition(document.sha256))), {
+      b2.write(document.sha256, File.open(File.join(directory, MLS::CLI::Documents.partition(document.sha256))), {
         filename: document.filename,
         sha1: document.sha1,
         content_type: document.content_type,
         size: document.size
       })
+      
+      Documents.where(md5: document.md5).find_each do |d|
+        next if d.sha256 != document.sha256
+        d.update!(provider: d.provider + ['b2/sha256'])
+      end
+      shas << document.sha256
     end
   end
-when "documents:check"
 else
   puts "Usage: mls documents:backup dir [options...]"
 end

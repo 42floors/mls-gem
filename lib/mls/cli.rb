@@ -35,7 +35,7 @@ module MLS::CLI
           MLS::CLI.options[:b2] = {
             account_id:         URI.unescape(url.user),
             application_key:    URI.unescape(url.password),
-            bucket:             URI.unescape(url.host)
+            bucket:             URI.unescape(url.host),
             prefix:             url.path&.empty? ? url.path : nil
           }
           url.query.split('&').each do |qp|
@@ -56,5 +56,5 @@ module MLS::CLI
   
 end
 
-require File.expand_path('../cli/storage', __FILE__)
+require 'standard_storage'
 require File.expand_path('../cli/documents', __FILE__)

@@ -45,7 +45,7 @@ module MLS::CLI::Documents
       end
       
       if document.provider.nil? || document.provider.include?('s3/hash_key')
-        storage_engine = MLS::CLI::Storage::S3.new(MLS::CLI.options[:s3])
+        storage_engine = StandardStorage::S3.new(MLS::CLI.options[:s3])
         key = 'hash_key'
       else
         raise 'unkown storage engine'
@@ -68,5 +68,3 @@ module MLS::CLI::Documents
   end
 
 end
-
-

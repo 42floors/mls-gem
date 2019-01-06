@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "mls"
-  s.version     = '1.7.0'
+  s.version     = '1.8.0'
   s.authors     = ["Jon Bracy", "James R. Bracy"]
   s.email       = ["jon@42floors.com", "james@42floors.com"]
   s.homepage    = "http://mls.42floors.com"
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sdoc-templates-42floors'
 
   # Runtime
+  s.add_runtime_dependency 'standardstorage'
   s.add_runtime_dependency 'phony'
   s.add_runtime_dependency 'arel-extensions'
   s.add_runtime_dependency 'rgeo', '>= 0.4.0'
