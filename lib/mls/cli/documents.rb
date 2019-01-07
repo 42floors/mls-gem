@@ -30,6 +30,9 @@ module MLS::CLI::Documents
   
   def self.backup(dir)
     last_sync_file = File.join(dir, '.last_sync')
+    storage_engines = {}
+    storage_engines[:s3] = StandardStorage::S3.new(MLS::CLI.options[:s3]) if MLS::CLI.options[:s3]
+    storage_engines[:b2] = StandardStorage::B2.new(MLS::CLI.options[:b2]) if MLS::CLI.options[:b2]
     
     query = if File.exist?(last_sync_file)
       from_timestamp = Time.iso8601(File.read(last_sync_file))
@@ -43,9 +46,15 @@ module MLS::CLI::Documents
         puts "Downloaded #{document.id}"
         next
       end
-      
-      if document.provider.nil? || document.provider.include?('s3/hash_key')
-        storage_engine = StandardStorage::S3.new(MLS::CLI.options[:s3])
+    
+      if document.provider.nil?
+        storage_engine = storage_engines[:s3]
+        key = 'hash_key'
+      elsif document.provider.include?('b2/sha256')
+        storage_engine = storage_engines[:b2]
+        key = 'sha256'
+      elsif document.provider.include?('s3/hash_key')
+        storage_engine = storage_engines[:s3]
         key = 'hash_key'
       else
         raise 'unkown storage engine'
