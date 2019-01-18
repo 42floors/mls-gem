@@ -19,7 +19,10 @@ class Document < MLS::Model
   end
   
   def url(style=:original)
-    File.join(MLS.config['document_host'].gsub(/\/$/, ''), path(style))
+    URI::HTTPS.build(
+      host: MLS.config['document_host'].gsub(/\/$/, ''),
+      path: path(style)
+    )
   end
   
   def path(style=:original)
