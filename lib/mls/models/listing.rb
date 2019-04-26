@@ -33,6 +33,7 @@ class Listing < MLS::Model
   
   has_one  :address
   has_many :addresses
+  has_many :testfits
   has_many :references, as: :subject
 
   accepts_nested_attributes_for :uses, :ownerships, :image_orderings
