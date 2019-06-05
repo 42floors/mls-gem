@@ -8,7 +8,6 @@ class Account < MLS::Model
   
   has_and_belongs_to_many :subscriptions
   has_many :tasks
-  has_many :sources
   has_many :ownerships, :inverse_of => :account, :dependent => :delete_all
   has_many :assets, through: :ownerships
   has_many :coworking_spaces, through: :ownerships, source: :asset, source_type: 'CoworkingSpace'
