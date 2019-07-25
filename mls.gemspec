@@ -35,6 +35,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'phony'
   s.add_runtime_dependency 'arel-extensions'
   s.add_runtime_dependency 'rgeo', '>= 0.4.0'
-  s.add_runtime_dependency 'sunstone', '>= 2.0.1'
+  s.add_runtime_dependency 'sunstone', '>= 6.0.0.4'
   s.add_runtime_dependency 'bcrypt'
 end

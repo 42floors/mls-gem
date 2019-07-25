@@ -62,6 +62,8 @@ class Account < MLS::Model
   validates :password, confirmation: true, if: Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password, length: { minimum: 6 }, if: :password
   validates :password_confirmation, presence: true, if: :password
+
+  rpc :unsubscribe_from_broadcasts
   
   def regions
     Region.filter(id: {in: self.advertised_region_ids})
