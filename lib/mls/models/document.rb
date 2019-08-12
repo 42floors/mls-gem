@@ -56,9 +56,9 @@ class Document < MLS::Model
     # If we can tell the possible mime-type from the filename, use the
     # first in the list; otherwise, use "application/octet-stream"
     content_type = file.content_type if file.respond_to?(:content_type)
-    content_type ||= (MIME::Types.type_for(filename)[0] || MIME::Types["application/octet-stream"][0]).simplified
+    content_type ||= MiniMime.lookup_by_filename(filename).content_type || 'application/octet-stream'
 
-    matching_docs = Document.where(:filename => filename, :content_type => content_type, :size => file.size)
+    matching_docs = Document.where(filename: filename, content_type: content_type, size: file.size)
     if matching_docs.count > 0
       matching_docs = matching_docs.where(:md5 => Digest::MD5.file(file.path).hexdigest)
     end
@@ -132,7 +132,7 @@ module Multipart
       # If we can tell the possible mime-type from the filename, use the
       # first in the list; otherwise, use "application/octet-stream"
       @content_type = file.content_type if file.respond_to?(:content_type)
-      @content_type ||= (MIME::Types.type_for(@filename)[0] || MIME::Types["application/octet-stream"][0]).simplified
+      @content_type ||= MiniMime.lookup_by_filename(@filename).content_type || 'application/octet-stream'
     end
 
     def to_multipart
