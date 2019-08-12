@@ -37,4 +37,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rgeo', '>= 0.4.0'
   s.add_runtime_dependency 'sunstone', '>= 6.0.0.4'
   s.add_runtime_dependency 'bcrypt'
+  s.add_runtime_dependency 'mini_mime', '>= 1.0.0'
 end
