@@ -1,7 +1,6 @@
 require 'phony'
 require 'sunstone'
 require 'arel/extensions'
-require 'bcrypt'
 
 module MLS
 

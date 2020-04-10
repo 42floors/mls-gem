@@ -56,12 +56,10 @@ class Account < MLS::Model
   has_and_belongs_to_many :inquiries
   has_and_belongs_to_many :teams
     
-  attr_accessor :password, :password_required
+  attr_accessor :password_required
   accepts_nested_attributes_for :phones, :email_addresses
   
-  validates :password, confirmation: true, if: Proc.new {|a| (!a.persisted? && a.password_required?) || !a.password.nil? }
   validates :password, length: { minimum: 6 }, if: :password
-  validates :password_confirmation, presence: true, if: :password
 
   rpc :unsubscribe_from_broadcasts
   
@@ -95,11 +93,6 @@ class Account < MLS::Model
   
   def password_required?
     @password_required != false
-  end
-  
-  def password=(pass)
-    @password = pass
-    self.password_digest = BCrypt::Password.create(pass)
   end
   
   def email_address
@@ -145,12 +138,11 @@ class Account < MLS::Model
     Account.connection.instance_variable_get(:@connection).send_request(req)
   end
   
-  def self.update_password(token, password, password_confirmation)
+  def self.update_password(token, password)
     req = Net::HTTP::Put.new("/accounts/password")
     req.body = {
       token: token,
-      password: password,
-      password_confirmation: password_confirmation
+      password: password
     }.to_json
     Account.connection.instance_variable_get(:@connection).send_request(req)
   end
