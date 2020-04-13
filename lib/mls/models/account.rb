@@ -56,10 +56,7 @@ class Account < MLS::Model
   has_and_belongs_to_many :inquiries
   has_and_belongs_to_many :teams
     
-  attr_accessor :password_required
   accepts_nested_attributes_for :phones, :email_addresses
-  
-  validates :password, length: { minimum: 6 }, if: :password
 
   rpc :unsubscribe_from_broadcasts
   
@@ -89,10 +86,6 @@ class Account < MLS::Model
   
   def paying?
     subscriptions.map{|x| x.services.filter(status: "active").count}.sum > 0
-  end
-  
-  def password_required?
-    @password_required != false
   end
   
   def email_address
