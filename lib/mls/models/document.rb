@@ -20,7 +20,7 @@ class Document < MLS::Model
   
   def url(style=:original)
     URI::HTTPS.build(
-      host: MLS.config['document_host'].gsub(/\/$/, ''),
+      host:  URI(MLS.config['document_host']).host,
       path: "/" + path(style)
     )
   end
