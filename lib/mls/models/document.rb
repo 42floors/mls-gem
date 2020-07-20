@@ -18,15 +18,13 @@ class Document < MLS::Model
     end
   end
   
-  def url(style=:original)
-    URI::HTTPS.build(
-      host:  URI(MLS.config['document_host']).host,
-      path: "/" + path(style)
-    )
+  def url
+    c = MLS::Model.connection.raw_connection
+    "http#{c.use_ssl ? 's' : ''}://#{c.host}/#{path}/download"
   end
   
-  def path(style=:original)
-    File.join("documents", "#{partition(style == :original ? hash_key : "#{hash_key}-#{style}")}")
+  def path
+    File.join("documents", hash_key)
   end
 
   def partition(value)
